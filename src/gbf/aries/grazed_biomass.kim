@@ -1,0 +1,305 @@
+private namespace gbf.aries.grazed_biomass
+using
+(ADJUSTED_GPP_TABLE) from gbf.aries.grazed_biomass.input_tables,
+(VEGETATION_SUITABLE_FOR_PASTURE) from gbf.aries.grazed_biomass.input_tables,
+(IPCC_LIVESTOCK_WEIGHT) from gbf.aries.grazed_biomass.input_tables;
+
+abstract attribute Vegetation
+	describes im:Type of ecology:HerbaceousVegetation earth:LandCover within earth:Location
+	has disjoint children 
+	(abstract Grassland has children
+	(CultivatedGrassland
+	"Areas where grasses and other forage plants have been intentionally planted and managed, as well as areas of native grassland-type vegetation where they clearly exhibit active and 'heavy' management for specific human-directed uses, such as directed grazing of livestock."),
+	(NaturalSeminaturalGrassland
+	"Relatively undisturbed native grasslands/short-height vegetation, such as steppes and tundra, as well as areas that have experienced varying degrees of human activity in the past, which may contain a mix of native and introduced species due to historical land use and natural processes. In general, they exhibit natural-looking patterns of varied vegetation and clearly ordered hydrological relationships throughout the landscape.")
+	),
+	(Shrubland has children
+		(OpenShrubland "Land on which the vegetation is dominated by low-growing woody plants, characterized by a sparse distribution of shrubs and dominated by woody perennials. Typically covers 50—75% of the area, with significant open ground (with or without herbaceous understory) between them, where shrub canopies are less than 10 meters in diameter, and tree cover is below 10%, meaning they do not form a continuous or semi-continuous canopy")
+	),
+	SparseVegetation;
+
+	
+
+//class GrasslandType
+//	is type of Grassland;
+
+quantity Intake; //kg of dry biomass required to sustain livestock animals
+quantity LightUseEfficiency;
+quantity GrossPrimaryProductivity;
+
+/*
+ * Summary of resources from STAC
+ */
+
+//Dominant grassland type
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
+
+
+//GPP 
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2020,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2024
+ 
+//Uganda small area
+observe earth:Region named area_of_testing_grazing_biomass_uganda
+over space(shape="EPSG:4326 POLYGON ((34.5221204785619 1.3183493778487332, 34.497289468275554 1.0662906901491738, 34.42375067921644 0.823898951667303, 34.30433016580706 0.6004962870331667, 34.143617191405944 0.4046745903333573, 33.94778786549046 0.243964243282349, 33.72436779923318 0.1245443689916499, 33.48194290048496 0.0510056712746945, 33.22982942215124 0.0261746668147964, 32.97771594381752 0.0510056712746945, 32.735291045069296 0.1245443689916499, 32.51187097881202 0.243964243282349, 32.31604165289653 0.4046745903333573, 32.155328678495415 0.6004962870331667, 32.035908165086035 0.823898951667303, 31.962369376026924 1.0662906901491738, 31.937538365740572 1.3183493778487332, 31.962369376026924 1.5703825490789285, 32.035908165086035 1.812701625058068, 32.155328678495415 2.035995548804948, 32.31604165289653 2.231688986488024, 32.51187097881202 2.392271084918022, 32.735291045069296 2.5115822434190136, 32.97771594381752 2.5850483037307583, 33.22982942215124 2.609853802117044, 33.48194290048496 2.5850483037307583, 33.72436779923318 2.5115822434190136, 33.94778786549046 2.392271084918022, 34.143617191405944 2.231688986488024, 34.30433016580706 2.035995548804948, 34.42375067921644 1.812701625058068, 34.497289468275554 1.5703825490789285, 34.5221204785619 1.3183493778487332))",
+	 grid="30 m"),
+	 time(year=2020); 
+
+ 
+/* Add data resources  */
+
+@colormap(values = {
+	gbf.aries.grazed_biomass:CultivatedGrassland: (255, 205, 115)
+	gbf.aries.grazed_biomass:NaturalSeminaturalGrassland: (255, 153, 22)
+	gbf.aries.grazed_biomass:OpenShrubland: (168, 139, 75)
+})
+model 
+//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
+//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
+	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
+	as type of Grassland classified into
+		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
+		gbf.aries.grazed_biomass:NaturalSeminaturalGrassland if 2,
+		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
+
+number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020 as gpw_grassland;
+
+private model
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic
+	as landcover:LandCoverType classified according to im:glc-fcs30-enconding;
+
+//// GPW annual GPP dataset (unit gC/m2/year)
+model local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2020
+	as im:Gross chemistry:Carbon ecology:PrimaryProductivity  in g/m^2 //* year
+	set to [self == 65000 ? unknown : self ];
+
+/* MODELLING DRY MATTER PRODUCTIVITY (SUPPLY) */
+
+model LightUseEfficiency named light_use_efficiency
+	observing
+		type of Grassland named vegetation_cover,
+//		type of landcover:LandCover named lc
+		landcover:LandCoverType named lc
+	lookup (vegetation_cover, lc, ?) into ADJUSTED_GPP_TABLE; 
+
+//TODO:check if k.lab does the gC/m2 > tDM/ha conversion
+model ecology:Vegetation ecology:PrimaryProductivity in t/ha
+	observing
+		im:Gross chemistry:Carbon ecology:PrimaryProductivity in g/m^2 named gross_primary_productivity,
+		LightUseEfficiency named light_use_efficiency
+	set to [ gross_primary_productivity * light_use_efficiency*2.7*0.01];
+
+model type of Vegetation named type_of_natural_vegetation
+	observing
+		type of Grassland named grassland_type, 
+		landcover:LandCoverType named landcover 
+  	lookup (grassland_type, landcover,*, *, ? )
+  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+
+model type of im:Natural Vegetation named type_of_natural_vegetation
+	observing
+		type of Grassland named grassland_type, 
+		landcover:LandCoverType named landcover 
+  	lookup (grassland_type, landcover,*, im:Natural, ? )
+  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+
+model presence of im:Potential ecology:Vegetation earth:Region for agriculture:Pasture named presence_pastureland
+	observing
+		type of Grassland named grassland_type, 
+		landcover:LandCoverType named landcover 
+  	lookup (grassland_type, landcover, ? ) 
+  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+
+model presence of im:Potential ecology:Vegetation earth:Region for im:Natural agriculture:Pasture named presence_natural_pastureland
+	observing
+		type of Grassland named grassland_type, 
+		landcover:LandCoverType named landcover 
+  	lookup (grassland_type, landcover, ? ,im:Natural) 
+  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+
+model im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named potential_natural_vegetation_supply_for_grazing
+	observing
+		presence of im:Potential ecology:Vegetation earth:Region for im:Natural agriculture:Pasture named presence_natural_pastureland,
+		ecology:Vegetation ecology:PrimaryProductivity in t/ha named productivity
+	set to [(presence_natural_pastureland) ? productivity : unknown];
+
+model im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named potenital_vegetation_supply_for_grazing
+	observing
+		presence of im:Potential ecology:Vegetation earth:Region for agriculture:Pasture  named presence_pastureland,
+		ecology:Vegetation ecology:PrimaryProductivity in t/ha named productivity
+	set to [(presence_pastureland) ? productivity : unknown];	
+
+/* MODELLING DRY MATTER DEMAND */
+
+// Livestock grazing distribution (GPW) number of heads of livestock per 1km grid cell (FAO stat adjusted) 
+@extensive(space)
+model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1'
+ 	as count of biology:Individual agriculture:Cattle
+// 	set to [self/Math.sqrt(space.area)]
+ 	; //agriculture:Grazing biology:Individual agriculture:Cattle
+
+//@parameter(
+//    name        = cattle_type_proportion,
+//    default     = 0.5,
+//    label       = "Cattle_type_proportion",
+//    description = "Proportion of cattle that are DairyCattle (0–1), rest are BeefCattle"
+//)
+define CATTLE_DISTRIBUTION_TABLE as {{
+  region                        | diary_cattle | beef_cattle
+  ---------------------------------------------------------
+  geography:UnitedStates        | 0.24       | 0.76     ,
+  geography:Brazil              | 0.49       | 0.51     ,
+  geography:India               | 0.71       | 0.29     ,
+  geography:China               | 0.05       | 0.95     ,
+  geography:Germany             | 0.25       | 0.75     ,
+  geography:Argentina           | 0.18       | 0.82     ,
+  geography:Australia           | 0.2        | 0.8      ,
+  geography:Mexico              | 0.42       | 0.58     ,
+  geography:France              | 0.47       | 0.53     ,
+  geography:Russia              | 0.05       | 0.95     ,
+  geography:AfricanRegion       | 0.37       | 0.63     ,
+  geography:AsianRegion         | 0.67       | 0.33     ,
+  geography:EuropeanRegion      | 0.47       | 0.53     ,
+  geography:NorthAmericanRegion | 0.09       | 0.91     ,
+  geography:OceanicRegion       | 0.33       | 0.67     ,
+  geography:SouthAmericanRegion | 0.08       | 0.92     
+}};
+
+@extensive(space)
+model count of biology:Individual agriculture:DairyCattle
+	observing
+	type of geography:ContinentalRegion named region,
+	count of biology:Individual agriculture:Cattle named cattle_count
+	lookup(region, ?,*) into CATTLE_DISTRIBUTION_TABLE
+	set to [ cattle_count*self];
+//	set to [ cattle_count > 0 ? cattle_count*cattle_type_proportion : nodata];
+
+@extensive(space)
+model count of biology:Individual agriculture:BeefCattle
+	observing
+	type of geography:ContinentalRegion named region,
+	count of biology:Individual agriculture:Cattle named cattle_count
+	lookup(region, *,?) into CATTLE_DISTRIBUTION_TABLE
+	set to [ cattle_count*self ];
+//	set to [ cattle_count > 0 ? cattle_count*cattle_type_proportion : nodata];
+
+@extensive(space)
+model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1'
+ 	as count of biology:Individual agriculture:Sheep
+// 	set to [self/Math.sqrt(space.area)]
+ 	; //agriculture:Grazing biology:Individual agriculture:Cattle
+@extensive(space)
+model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1'
+ 	as count of biology:Individual agriculture:Goat
+// 	set to [self/Math.sqrt(space.area)]
+ 	; //agriculture:Grazing biology:Individual agriculture:Cattle
+@extensive(space)
+model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1' /// horses not available?
+ 	as count of biology:Individual agriculture:Horse
+// 	set to [self/Math.sqrt(space.area)]
+ 	; //agriculture:Grazing biology:Individual agriculture:Cattle
+
+
+@extensive(space)
+model im:Mean agriculture:BeefCattle im:Weight in kg
+observing
+	type of geography:ContinentalRegion named region
+	lookup (agriculture:BeefCattle,region,?) into IPCC_LIVESTOCK_WEIGHT;
+
+@extensive(space)
+model im:Mean agriculture:DairyCattle im:Weight in kg
+observing
+	type of geography:ContinentalRegion named region
+	lookup (agriculture:DairyCattle,region,?) into IPCC_LIVESTOCK_WEIGHT;
+
+//model annual cattle intake needs 
+/// MC: not sure nutrient is the right terminology, as we arent measuring their nutrition requirements
+//model im:Yearly agriculture:Cattle biology:Nutrient im:Weight in t
+@extensive(space)
+model im:Yearly agriculture:DairyCattle biology:Nutrient biology:Biomass in t
+observing
+	im:Mean agriculture:DairyCattle im:Weight in kg named average_dairy_cattle_weight,
+	count of biology:Individual agriculture:DairyCattle named diary_cattle_units
+	set to [ average_dairy_cattle_weight * diary_cattle_units *0.025*365*0.001];
+
+@extensive(space)
+model im:Yearly agriculture:BeefCattle biology:Nutrient biology:Biomass in t
+observing
+	im:Mean agriculture:BeefCattle im:Weight in kg named average_beef_cattle_weight,
+	count of biology:Individual agriculture:DairyCattle named beef_cattle_units
+	set to [ average_beef_cattle_weight * beef_cattle_units *0.025*365*0.001];
+	
+// Sheep 
+model im:Mean agriculture:Sheep im:Weight in kg
+observing
+	type of geography:ContinentalRegion named region
+	lookup (agriculture:Sheep,region,?) into IPCC_LIVESTOCK_WEIGHT;
+
+//model annual sheep dry matter biology:Biomass in t needs 
+model im:Yearly agriculture:Sheep biology:Nutrient biology:Biomass in t
+observing
+	im:Mean agriculture:Sheep im:Weight in kg named average_sheep_weight,
+	count of biology:Individual agriculture:Sheep named sheep_units
+	set to [ average_sheep_weight * sheep_units *0.025*365*0.001];
+
+// Goats 
+model im:Mean agriculture:Goat im:Weight in kg
+observing
+	type of geography:ContinentalRegion named region
+	lookup (agriculture:Goat,region,?) into IPCC_LIVESTOCK_WEIGHT;
+
+@extensive(space) 
+model im:Yearly agriculture:Goat biology:Nutrient biology:Biomass in t
+observing
+	im:Mean agriculture:Goat im:Weight in kg named average_goat_weight,
+	count of biology:Individual agriculture:Goat named goat_units
+	set to [ average_goat_weight * goat_units *0.025*365*0.001];
+	
+// Horses 
+model im:Mean agriculture:Horse im:Weight in kg
+observing
+	type of geography:ContinentalRegion named region
+	lookup (agriculture:Horse,region,?) into IPCC_LIVESTOCK_WEIGHT;
+
+@extensive(space)
+model im:Yearly agriculture:Horse biology:Nutrient biology:Biomass in t
+observing
+	im:Mean agriculture:Horse im:Weight in kg named average_horse_weight,
+	count of biology:Individual agriculture:Horse named horse_units
+	set to [ average_horse_weight * horse_units *0.025*365*0.001];
+
+@extensive(space)
+model im:Yearly agriculture:Livestock biology:Nutrient biology:Biomass in t named total_livestock_demand
+observing 
+	im:Yearly agriculture:DairyCattle biology:Nutrient biology:Biomass in t named yearly_dairy_cattle_nutrient_intake,
+	im:Yearly agriculture:BeefCattle biology:Nutrient biology:Biomass in t named yearly_beef_cattle_nutrient_intake,
+	im:Yearly agriculture:Goat biology:Nutrient biology:Biomass in t named yearly_goat_nutrient_intake,
+	im:Yearly agriculture:Sheep biology:Nutrient biology:Biomass in t named yearly_sheep_nutrient_intake,
+	im:Yearly agriculture:Horse biology:Nutrient biology:Biomass in t named yearly_horse_nutrient_intake
+	set to [yearly_dairy_cattle_nutrient_intake + yearly_beef_cattle_nutrient_intake + yearly_goat_nutrient_intake + yearly_sheep_nutrient_intake + yearly_horse_nutrient_intake];
+
+/* MODELLING GRAZED BIOMASS USE */
+
+model ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named estimated_use_of_natural_grazed_biomass
+observing
+	im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named potential_natural_vegetation_supply_for_grazing,
+	im:Yearly agriculture:Livestock biology:Nutrient biology:Biomass in t named total_livestock_demand
+//	set to [ (natural_vegetation_biomass_supply_for_grazing == nodata || total_livestock_demand == nodata) 
+	set to [ (natural_vegetation_biomass_supply_for_grazing == unknown || total_livestock_demand == uknown) 
+			? 0 :
+			(potential_natural_vegetation_supply_for_grazing > total_livestock_demand)
+			? total_livestock_demand : potential_natural_vegetation_supply_for_grazing];
+
+
+////Don't erase, to be shown to the developers to fix
+//model ecology:Vegetation ecology:PrimaryProductivity for agriculture:Pasture in t/ha named natural_and_seminatural_vegetation_biomass_use_for_grazing
+//observing
+//	im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named natural_vegetation_biomass_supply_for_grazing,
+//	im:Yearly agriculture:Livestock biology:Nutrient biology:Biomass in t named total_livestock_demand
+//	set to [ (natural_vegetation_biomass_supply_for_grazing == nodata || total_livestock_demand == nodata) 
+//			? 0 :
+//			(natural_vegetation_biomass_supply_for_grazing > total_livestock_demand)
+//			? total_livestock_demand : natural_vegetation_biomass_supply_for_grazing];
