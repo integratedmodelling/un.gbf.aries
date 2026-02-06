@@ -92,14 +92,14 @@ model ecology:Vegetation ecology:PrimaryProductivity in t/ha
 		LightUseEfficiency named light_use_efficiency
 	set to [ gross_primary_productivity * light_use_efficiency*2.7*0.01];
 
-model type of Vegetation named type_of_natural_vegetation
+model type of Vegetation 
 	observing
 		type of Grassland named grassland_type, 
 		landcover:LandCoverType named landcover 
   	lookup (grassland_type, landcover,*, *, ? )
   	into	VEGETATION_SUITABLE_FOR_PASTURE;
 
-model type of im:Natural Vegetation named type_of_natural_vegetation
+model type of im:Natural Vegetation
 	observing
 		type of Grassland named grassland_type, 
 		landcover:LandCoverType named landcover 
