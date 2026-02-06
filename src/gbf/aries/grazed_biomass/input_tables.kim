@@ -1,0 +1,108 @@
+project private namespace gbf.aries.grazed_biomass.input_tables
+using gbf.aries.grazed_biomass;
+
+//(PDF) Light Use Efficiency (LUE) based bimonthly Gross Primary Productivity (GPP) for global grasslands at 30 m spatial resolution (2000-2022). Available from: https://www.researchgate.net/publication/386558109_Light_Use_Efficiency_LUE_based_bimonthly_Gross_Primary_Productivity_GPP_for_global_grasslands_at_30_m_spatial_resolution_2000-2022 [accessed Nov 27 2025].
+// https://www.researchgate.net/publication/386558109_Light_Use_Efficiency_LUE_based_bimonthly_Gross_Primary_Productivity_GPP_for_global_grasslands_at_30_m_spatial_resolution_2000-2022
+define ADJUSTED_GPP_TABLE as {{
+  vegetation                                             | landcover                      		| lue  
+  -----------------------------------------------------------------------------------------------------
+  gbf.aries.grazed_biomass:CultivatedGrassland	         | #                                  	| 0.86  ,
+  gbf.aries.grazed_biomass:NaturalSeminaturalGrassland	 | #                                   	| 0.86  ,
+  gbf.aries.grazed_biomass:OpenShrubland	             | #                                   	| 0.841 ,
+//  #                                                       | landcover:EvergreenConiferousForest | 0.962 ,
+//  #                                                       | landcover:EvergreenBroadleafForest  | 1.268 ,
+//  #                                                       | landcover:DeciduousConiferousForest | 1.086 ,
+//  #                                                       | landcover:DeciduousBroadleafForest  | 1.165 ,
+//  #                                                       | landcover:MixedForest               | 1.051 ,
+  #                                                      | landcover:DenseShrubland            	| 1.281 ,
+  #                                                      | landcover:OpenShrubland             	| 0.841 ,
+  #                                                      | landcover:Shrubland             		| 1.061 , 
+  #                                                      | landcover:ClosedSavanna             	| 1.239 ,
+  #                                                      | landcover:OpenSavanna               	| 1.206 ,
+  #                                                      | landcover:Grassland                 	| 0.86  ,
+  #                                                      | landcover:ArableLand                	| 1.302
+}};
+
+
+//define VEGETATION_SUITABLE_FOR_PASTURE as {{
+// 					grassland_type							|			landcover 			| suitable_land |natural_vegetation| type_of_vegetation                    
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  	gbf.aries.grazed_biomass:NaturalSeminaturalGrassland	|				#				| 	    true	|	im:Natural		|gbf.aries.grazed_biomass:NaturalSeminaturalGrassland,
+//  		gbf.aries.grazed_biomass:OpenShrubland				|				#				|       true	|	im:Natural		|gbf.aries.grazed_biomass:OpenShrubland				,
+//    gbf.aries.grazed_biomass:CultivatedGrassland			|				# 				| 		true	|		false		|gbf.aries.grazed_biomass:CultivatedGrassland		,
+// 						#									|	landcover:Shrubland 		| 		true	|	im:Natural		|gbf.aries.grazed_biomass:Shrubland					,
+//						#									|	landcover:Grassland 		| 		true	|	im:Natural		|gbf.aries.grazed_biomass:Grassland					,
+//						#									|	landcover:SparseVegetation 	| 		true	|	im:Natural		|gbf.aries.grazed_biomass:SparseVegetation
+//}};
+
+define VEGETATION_SUITABLE_FOR_PASTURE as {{
+ 					grassland_type							|			landcover 			| suitable_land |natural_vegetation| type_of_vegetation                    
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------
+  gbf.aries.grazed_biomass:NaturalSeminaturalGrassland		|				#				| 	    true	|	im:Natural		|gbf.aries.grazed_biomass:NaturalSeminaturalGrassland,
+  		gbf.aries.grazed_biomass:OpenShrubland				|				#				|       true	|	im:Natural		|gbf.aries.grazed_biomass:OpenShrubland				 ,
+    gbf.aries.grazed_biomass:CultivatedGrassland			|				# 				| 		true	|		false		|gbf.aries.grazed_biomass:CultivatedGrassland		 ,
+
+  						#									|	landcover:Shrubland 		| 		true	|	im:Natural		|gbf.aries.grazed_biomass:Shrubland					 ,
+						#									|	landcover:Grassland 		| 		true	|		false		|gbf.aries.grazed_biomass:Grassland					,
+						#									|	landcover:SparseVegetation 	| 		true	|	im:Natural		|gbf.aries.grazed_biomass:SparseVegetation
+}};
+
+
+define IPCC_LIVESTOCK_WEIGHT as {{
+  livestock_type          | region                        | average_weight
+  ------------------------------------------------------------------------
+  agriculture:DairyCattle | geography:NorthAmericanRegion | 650            ,
+  agriculture:DairyCattle | geography:WesternEurope       | 600            ,
+  agriculture:DairyCattle | geography:EasternEurope       | 550            ,
+  agriculture:DairyCattle | geography:OceanicRegion       | 488            ,
+  agriculture:DairyCattle | geography:SouthAmericanRegion | 508            ,
+  agriculture:DairyCattle | geography:AfricanRegion       | 260            ,
+  agriculture:DairyCattle | geography:MiddleEastRegion    | 349            ,
+  agriculture:DairyCattle | geography:AsianRegion         | 386            ,
+  agriculture:DairyCattle | geography:IndianRegion        | 285            ,
+  agriculture:BeefCattle  | geography:NorthAmericanRegion | 407            ,
+  agriculture:BeefCattle  | geography:WesternEurope       | 405            ,
+  agriculture:BeefCattle  | geography:EasternEurope       | 389            ,
+  agriculture:BeefCattle  | geography:OceanicRegion       | 359            ,
+  agriculture:BeefCattle  | geography:SouthAmericanRegion | 303            ,
+  agriculture:BeefCattle  | geography:AfricanRegion       | 236            ,
+  agriculture:BeefCattle  | geography:MiddleEastRegion    | 275            ,
+  agriculture:BeefCattle  | geography:AsianRegion         | 299            ,
+  agriculture:BeefCattle  | geography:IndianRegion        | 226            ,
+  agriculture:Cattle      | geography:NorthAmericanRegion | 528.5           ,
+  agriculture:Cattle      | geography:WesternEurope       | 502.5           ,
+  agriculture:Cattle      | geography:EasternEurope       | 469.5           ,
+  agriculture:Cattle      | geography:OceanicRegion       | 423.5           ,
+  agriculture:Cattle      | geography:SouthAmericanRegion | 405.5           ,
+  agriculture:Cattle      | geography:AfricanRegion       | 248            ,
+  agriculture:Cattle      | geography:MiddleEastRegion    | 312            ,
+  agriculture:Cattle      | geography:AsianRegion         | 342.5           ,
+  agriculture:Cattle      | geography:IndianRegion        | 255.5           ,
+  agriculture:Sheep       | geography:NorthAmericanRegion | 40             ,
+  agriculture:Sheep       | geography:WesternEurope       | 40             ,
+  agriculture:Sheep       | geography:EasternEurope       | 40             ,
+  agriculture:Sheep       | geography:OceanicRegion       | 40             ,
+  agriculture:Sheep       | geography:SouthAmericanRegion | 31             ,
+  agriculture:Sheep       | geography:AfricanRegion       | 31             ,
+  agriculture:Sheep       | geography:MiddleEastRegion    | 31             ,
+  agriculture:Sheep       | geography:AsianRegion         | 31             ,
+  agriculture:Sheep       | geography:IndianRegion        | 31             ,
+  agriculture:Goat        | geography:NorthAmericanRegion | 41             ,
+  agriculture:Goat        | geography:WesternEurope       | 40             ,
+  agriculture:Goat        | geography:EasternEurope       | 36             ,
+  agriculture:Goat        | geography:OceanicRegion       | 33             ,
+  agriculture:Goat        | geography:SouthAmericanRegion | 24             ,
+  agriculture:Goat        | geography:AfricanRegion       | 24             ,
+  agriculture:Goat        | geography:MiddleEastRegion    | 24             ,
+  agriculture:Goat        | geography:AsianRegion         | 24             ,
+  agriculture:Goat        | geography:IndianRegion        | 24             ,
+  agriculture:Horse       | geography:NorthAmericanRegion | 377            ,
+  agriculture:Horse       | geography:WesternEurope       | 377            ,
+  agriculture:Horse       | geography:EasternEurope       | 377            ,
+  agriculture:Horse       | geography:OceanicRegion       | 377            ,
+  agriculture:Horse       | geography:SouthAmericanRegion | 238            ,
+  agriculture:Horse       | geography:AfricanRegion       | 238            ,
+  agriculture:Horse       | geography:MiddleEastRegion    | 238            ,
+  agriculture:Horse       | geography:AsianRegion         | 238            ,
+  agriculture:Horse       | geography:IndianRegion        | 238           
+}};
