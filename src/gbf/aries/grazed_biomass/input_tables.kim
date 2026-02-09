@@ -1,5 +1,4 @@
-project private namespace gbf.aries.grazed_biomass.input_tables
-using gbf.aries.grazed_biomass;
+project private namespace gbf.aries.grazed_biomass.input_tables;
 
 //(PDF) Light Use Efficiency (LUE) based bimonthly Gross Primary Productivity (GPP) for global grasslands at 30 m spatial resolution (2000-2022). Available from: https://www.researchgate.net/publication/386558109_Light_Use_Efficiency_LUE_based_bimonthly_Gross_Primary_Productivity_GPP_for_global_grasslands_at_30_m_spatial_resolution_2000-2022 [accessed Nov 27 2025].
 // https://www.researchgate.net/publication/386558109_Light_Use_Efficiency_LUE_based_bimonthly_Gross_Primary_Productivity_GPP_for_global_grasslands_at_30_m_spatial_resolution_2000-2022
