@@ -1,0 +1,21 @@
+project private namespace gbf.aries.grazed_biomass.summary_tables
+using gbf.aries.grazed_biomass;
+
+
+//TODO: Check the unit of the output, if possible generate results with extensive properties
+define table grazing_biomass_supply_by_natural_ecosystem_typology_static as {
+	title: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes)",
+	label: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes)",
+	target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha
+	columns:({ title:  "{classifier}", target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha, filter: landcover:LandCoverType}
+			 {title: "Total", summarize: sum, style: bold}),
+	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
+
+/// name has been changed as below table is all grazing lands, not just nat/sn (check in kactor)
+define table grazing_biomass_supply_total_ecosystem_typology_static as {
+	title: "Potential supply of dry matter for grazing by ecosystem type (tonnes)",
+	label: "Potential supply of dry matter for grazing by ecosystem type (tonnes)",
+	target: im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha
+	columns:({ title:  "{classifier}", target: im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha, filter: landcover:LandCoverType}
+			 {title: "Total", summarize: sum, style: bold}),
+	rows:   ({ title: "Dry Matter {start} (tonnes)" })};	
