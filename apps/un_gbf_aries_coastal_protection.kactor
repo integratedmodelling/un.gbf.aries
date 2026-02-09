@@ -1,0 +1,65 @@
+script un.gbf.aries.coastal_protection
+
+action main:
+
+coastal_protection_spatial_boundaries = 
+//'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_4326'
+'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_2km_buffer_4326'
+
+output_folder_directory = "UN_GBF/Coastal_Protection"
+
+	set observables_urns (
+		aries.global.coastalprotection.exposurevulnerability.stratified.cp_demand
+//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_mangrove
+//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_saltmarsh
+//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_coral
+//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_seagrass
+		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply		
+//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_mangrove
+//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_saltmarsh
+//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_coral_reef
+//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_seagrass
+//		aries.global.coastalprotection.exposurevulnerability.stratified.combined_delta		
+
+)
+/*
+ * Set the tables to summarise statistics or generate indicator for an observation (as .xls files) 
+ */
+ 	set table_urns (
+//    	aries.global.coastalprotection.exposurevulnerability.stratified.cp_demand_table
+//    	aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_table
+//    	aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_hazard_reduction_table  
+	)
+ 	
+	resolution = 300.m
+	for year in (2020 2021 2022) (
+		for feature in coastal_protection_spatial_boundaries (
+//			if [feature.id == 'GMB'](
+			if [feature.tile_index == '34476' || '34116' || '33396'](
+			for urn in observables_urns(
+		    	context(country,resolution,Time(year=year),urn): state -> (
+				set urn_name ""
+				if [urn.toString().startsWith("[")] (
+					set urn_name [urn.name]
+				)
+				else (
+					set urn_name urn
+				)	
+				if [state.toString().contains("[nothing")] (
+					warning(["Observation " + urn_name + " return nothing"])
+				) else ( 
+					state.export([output_folder_directory + "/" + year + "/" + "maps" + "/" + urn_name + _ + feature.tile_index +".tiff"])
+				)
+			)
+		)					
+//				(for table_urn in table_urns(
+//					context(country,resolution,Time(year=year), table_urn)
+//					pack(:tables): url -> download(url, filename=[output_folder_directory + "/" + year + "/" + "tables" + "/" + table_urn + ".xlsx"])
+
+//				)
+//			)
+		)
+	  )
+	)
+
+
