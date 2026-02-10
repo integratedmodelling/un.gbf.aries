@@ -9,12 +9,13 @@ coastal_protection_spatial_boundaries =
 output_folder_directory = "UN_GBF/Coastal_Protection"
 
 	set observables_urns (
-		aries.global.coastalprotection.exposurevulnerability.stratified.cp_demand
+		{landcover:LandCoverType}
+//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_demand
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_mangrove
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_saltmarsh
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_coral
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_seagrass
-		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply		
+//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply		
 //		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_mangrove
 //		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_saltmarsh
 //		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_coral_reef
@@ -35,9 +36,9 @@ output_folder_directory = "UN_GBF/Coastal_Protection"
 	for year in (2020 2021 2022) (
 		for feature in coastal_protection_spatial_boundaries (
 //			if [feature.id == 'GMB'](
-			if [feature.tile_index == '34476' || '34116' || '33396'](
+			if [feature.tile_index == '5345' || '5465' ](
 			for urn in observables_urns(
-		    	context(country,resolution,Time(year=year),urn): state -> (
+		    	context(feature,resolution,Time(year=year),urn): state -> (
 				set urn_name ""
 				if [urn.toString().startsWith("[")] (
 					set urn_name [urn.name]
