@@ -1,0 +1,609 @@
+project private namespace gbf.aries.coastal_protection;
+
+abstract attribute ProtectiveHabitat
+	has children
+		WaterBody,
+		Mangrove,
+		SaltMarsh,
+		CoralReef,
+		SeaGrass,
+		All;
+
+quality ProtectiveHabitatType is type of ProtectiveHabitat;
+
+/*
+ * **********************************
+ * ************   DATA   ************
+ * **********************************
+ */
+number	'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2020_mosaic',
+		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2021_mosaic',
+		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2022_mosaic'
+	as landcover;
+
+number 'local:samjinoj:im.data.global:im-data-global-marine:coral_systems_4326'
+	as coral_systems;
+	
+model ProtectiveHabitatType
+ // coral first
+ 	observing 
+		landcover, 
+		coral_systems
+	set to [
+	(coral_systems == 1 ? gbf.aries.coastal_protection:CoralReef : 
+		(coral_systems == 6 ? gbf.aries.coastal_protection:SeaGrass : 
+			(landcover == 185 ? gbf.aries.coastal_protection:Mangrove :
+				(landcover == 183 ? gbf.aries.coastal_protection:SaltMarsh : 
+					(landcover == 255 ? gbf.aries.coastal_protection:WaterBody : unknown)							
+				)
+			)
+		)
+	)];
+
+model 
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2020',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2021',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2022',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2023',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2024' 
+			as value of risk:ExposureMetric physical:Wave;
+
+model 
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_mhwl_4326_2020',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_mhwl_4326_2021',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_mhwl_4326_2022',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_mhwl_4326_2023',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_mhwl_4326_2024' 
+			as  value of im:Maximal im:Level im:Short im:Duration of earth:Sea;
+			
+model 
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wind_exposure_1_4326_2020',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wind_exposure_1_4326_2021',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wind_exposure_1_4326_2022',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wind_exposure_1_4326_2023',
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wind_exposure_1_4326_2024'
+	 		as value of risk:ExposureMetric earth:Wind;
+
+model 
+	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2020',
+    'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2021',
+    'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2022',
+    'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2023',
+    'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2024' 
+       		as value of im:Mean im:Level earth:Sea;
+
+model each 
+	'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_4326'	
+			as earth:Coastline;
+
+define EXPOSURE_THRESHOLD_RANK as {{
+		sea_level_index	|surge_level	|elevation		|wave_exposure	|wind_exposure	| rank
+	    ------------------------------------------------------------------------------------------------------------
+		< 0.044 		|< 0.396 		| > 20			|< 790		 	|< 615		 	| 1,
+		0.044 to 0.069	|0.396 to 0.549 |15 to 20		|790 to 1844 	|615 to 876 	| 2,
+		0.069 to 0.076	|0.549 to 0.725 |10 to 15		|1844 to 3397 	|876 to 1018 	| 3,
+		0.076 to 0.086	|0.725 to 1.024	|5 to 10		|3397 to 8123 	|1018 to 1265	| 4,
+			 > 0.086	|> 1.024 		|0 to 5			|> 8123 		|> 1265.40		| 5
+}};
+
+/*
+ * **********************************
+ * ******* INITIAL MODELS   *********
+ * **********************************
+ */
+model im:Predicted value of im:Maximal im:Level im:Short im:Duration of earth:Sea
+    observing  
+    	value of im:Maximal im:Level im:Short im:Duration of earth:Sea named surge_95_percentile
+    set to 	[   
+    return (surge_95_percentile)
+ 	];
+ 			 
+model im:Predicted value of im:Mean im:Level of earth:Sea	 
+	observing
+	value of im:Mean im:Level earth:Sea named sea_level
+	set to [
+	( sea_level )
+	 ];
+	 		
+	 		
+model value of ProtectiveHabitatType 
+	observing
+		ProtectiveHabitatType named habitat
+	lookup (habitat, ?) into
+		habitat 	|	rank 
+	----------------------------
+		WaterBody	|	5		,
+		Mangrove	|	1.8		,
+		SaltMarsh	|	2.55	,
+		CoralReef 	|	1.8	,
+		SeaGrass	|	4.05	,
+// are we using dunefield and beachdune or is it a placeholder for later?
+		# 			| 	1
+		;  		
+
+model value of WaterBody
+	observing
+		ProtectiveHabitatType named habitat
+	set to [(habitat ? 5 : 1)];
+	
+model value of Mangrove
+	observing
+		ProtectiveHabitatType named habitat
+	set to [habitat == gbf.aries.coastal_protection:Mangrove ? 1.8 : (habitat ? 5 : 1)];
+
+model value of SaltMarsh
+	observing
+		ProtectiveHabitatType named habitat
+	set to [habitat == gbf.aries.coastal_protection:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
+
+model value of CoralReef
+	observing
+		ProtectiveHabitatType named habitat
+	set to [habitat == gbf.aries.coastal_protection:CoralReef ? 1.8 : (habitat ? 5 : 1)];
+	
+model value of SeaGrass
+	observing
+		ProtectiveHabitatType named habitat
+	set to [habitat == gbf.aries.coastal_protection:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
+//	
+//	lookup (habitat, ?) into
+//		habitat 	|	rank 
+//	----------------------------
+//		WaterBody	|	5		,
+//		Mangrove	|	1.8		,
+//		SaltMarsh	|	5		,
+//		CoralReef 	|	5		,
+//		SeaGrass	|	5		,
+//// are we using dunefield and beachdune or is it a placeholder for later?
+//		# 			| 	1
+//		;
+//model value of Mangrove
+//	observing
+//		ProtectiveHabitatType named habitat
+//	lookup (habitat, ?) into
+//		habitat 	|	rank 
+//	----------------------------
+//		WaterBody	|	5		,
+//		Mangrove	|	1.8		,
+//		SaltMarsh	|	5		,
+//		CoralReef 	|	5		,
+//		SeaGrass	|	5		,
+//// are we using dunefield and beachdune or is it a placeholder for later?
+//		# 			| 	1
+//		;  		  		
+
+
+model im:Potential value of risk:ExposureMetric physical:Wave
+	observing 
+	value of risk:ExposureMetric physical:Wave named wave_exposure
+    lookup (*,*,*,wave_exposure,*,?) into EXPOSURE_THRESHOLD_RANK;
+
+model im:Potential value of risk:ExposureMetric earth:Wind
+	observing 
+	value of risk:ExposureMetric earth:Wind named wind_exposure
+    lookup (*,*,*,*,wind_exposure,?) into EXPOSURE_THRESHOLD_RANK;
+			 
+model im:Potential value of risk:ExposureMetric im:HeightLevel
+	observing
+	geography:Elevation in m named elevation
+	lookup  (*,*,elevation,*,*, ?) into EXPOSURE_THRESHOLD_RANK;	
+    			 
+model im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea
+	observing 
+	im:Predicted value of im:Maximal im:Level im:Short im:Duration of earth:Sea named surge_level
+    lookup (*, surge_level,*,*,*, ?) into EXPOSURE_THRESHOLD_RANK;		 
+			 
+model im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea
+	observing 
+	im:Predicted value of im:Mean im:Level of earth:Sea	 named sea_level_index
+    lookup (sea_level_index, *, *,*,*, ?) into EXPOSURE_THRESHOLD_RANK;
+    
+private model (value of landcover:LandCoverType risk:VulnerabilityMetric) caused by earth:Marine earth:Flood
+	observing
+		landcover:LandCoverType named land_cover
+	lookup (land_cover, ?) into 
+			    land_cover   					 	 	| levels
+	    ---------------------------------------------------------
+			landcover:GreenUrbanArea 				 	|  3,
+			landcover:RecreationalFacility			 	|  1,
+			landcover:Forest						 	|  3,
+			landcover:ScrubHerbaceousVegetation 	 	|  3,
+			landcover:SeminaturalForest  			 	|  3,
+			landcover:NonIrrigatedArableLand  		 	|  4,
+			landcover:PermanentlyIrrigatedArableLand 	|  3,
+			landcover:OilseedLegume					 	|  3,
+			landcover:Vegetable						 	|  3,
+			landcover:InactiveAgriculturalLand		 	|  3,
+			landcover:PermanentCropland				 	|  3,
+			landcover:AgroforestryLand				 	|  3,
+			landcover:Pastureland					 	|  3,
+			landcover:HeterogeneousAgriculturalLand  	|  3,
+			landcover:BareRock  					 	|  1,
+			landcover:BeachDuneSand					 	|  5,
+			landcover:BareDegradedLand				 	|  4,
+			landcover:BurnedLand					 	|  4,
+			landcover:LichenMoss					 	|  3,
+			landcover:SparseVegetation				 	|  3,
+			landcover:SecondaryVegetationTransitioning  |  3,
+			landcover:Watercourse						|  4,
+			landcover:StillWaterBody					|  4,
+			landcover:Canal								|  4,
+			landcover:ArtificialWaterBody				|  4,
+			landcover:CoastalLagoon						|  4,
+			landcover:Estuary							|  4,
+			landcover:MarineAquaculturePond  			|  4,
+			landcover:InlandWetland						|  5,
+			landcover:CoastalWetland					|  5,
+			landcover:Saline							|  5,
+			landcover:Urban  						 	|  1,
+			landcover:IndustrialCommercialTransport  	|  1,
+			landcover:MineDumpConstruction			 	|  2,
+			#											| 1
+	over space (urn='local:benat_egidazu:im.aries.risk:im-data-global-landcover:corine_extent');
+	
+private model (value of landcover:LandCoverType risk:VulnerabilityMetric) caused by earth:Marine earth:Flood
+	observing
+		landcover:LandCoverType named land_cover
+	lookup (land_cover, ?) into 
+			    land_cover   					 	 			| levels
+	    ---------------------------------------------------------
+				landcover:ArtificialSurface 					| 1,
+				landcover:Forest 								| 3,
+				landcover:EvergreenBroadleafForest 				| 3,
+				landcover:DeciduousBroadleafForest 				| 3,
+				landcover:MixedForest 							| 3,
+				landcover:EvergreenConiferousForest 			| 3,
+				landcover:DeciduousConiferousForest 			| 3,
+				landcover:ClosedDeciduousConiferousForest 		| 3,
+				landcover:Grassland 							| 3,
+				landcover:Shrubland 							| 3,
+				landcover:OpenSavanna 							| 3,
+				landcover:ClosedSavanna 						| 3,
+				landcover:NonIrrigatedArableLand 				| 4,
+				landcover:PermanentlyIrrigatedArableLand 		| 3,
+				landcover:PermanentCropland 					| 3,
+				landcover:ComplexCultivationPatternedLand 		| 3,
+				landcover:AgriculturalLandWithNaturalVegetation | 3,
+				landcover:BareRock 								| 1,
+				landcover:BeachDuneSand 						| 5,
+				landcover:BareArea								| 2,
+				landcover:LichenMoss 							| 3,
+				landcover:SparseVegetation 						| 3,
+				landcover:InlandSwamp 							| 5,
+				landcover:Mangrove 								| 5,
+				landcover:Wetland								| 5,
+				#												| 1; 
+
+/*
+ * 
+ */
+ 
+ // ************************ (1) With Ecosystem (Mangrove, Seagrass, Coral & Saltmarsh) Natural Habitat	***************************************************	
+@colormap(values = {
+1: (0,204,0),
+2: (204, 204, 0),
+3: (204, 102, 0),
+4: (204, 0, 0),
+5: (204, 0, 204)
+}, continuous=true)	
+model im:Predicted value of risk:Hazard earth:Coast with All
+	observing
+	im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
+	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
+	value of ProtectiveHabitatType named natural_habitat_index,
+	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
+	distance to earth:Coastline in m named coast
+set to [
+	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * natural_habitat_index * geomorphology_index)**(1.0/6);
+	return ( coast < 20000 ? hazard_index : null );
+		];
+		
+// ************************ (2) Without Natural Habitat	********************************************************************************************************	
+@colormap(values = {
+1: (0,204,0),
+2: (204, 204, 0),
+3: (204, 102, 0),
+4: (204, 0, 0),
+5: (204, 0, 204)
+}, continuous=true)
+model im:Predicted value of risk:Hazard earth:Coast
+	observing
+	im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
+	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
+	value of WaterBody named water_cover_without_et,		
+	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
+	distance to earth:Coastline in m named coast
+	set to [
+	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * geomorphology_index * water_cover_without_et)**(1.0/7);
+	return ( coast < 20000 ? hazard_index : null );
+	];
+
+// ************************ (3) With Mangrove Ecosystem Natural Habitat	******************************************************************************************************	
+@colormap(values = {
+1: (0,204,0),
+2: (204, 204, 0),
+3: (204, 102, 0),
+4: (204, 0, 0),
+5: (204, 0, 204)
+}, continuous=true)
+model im:Predicted value of risk:Hazard earth:Coast with Mangrove
+	observing
+	im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
+	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
+	value of gbf.aries.coastal_protection:Mangrove named mangrove_only,
+	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
+	distance to earth:Coastline in m named coast
+	set to [
+	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * mangrove_only * wind_index * geomorphology_index)**(1.0/7);
+	return ( coast < 20000 ? hazard_index : null );
+	];
+
+// ************************ (4) With SaltMarsh Ecosystem Natural Habitat ******************************************************************************************************	
+@colormap(values = {
+1: (0,204,0),
+2: (204, 204, 0),
+3: (204, 102, 0),
+4: (204, 0, 0),
+5: (204, 0, 204)
+}, continuous=true)
+model im:Predicted value of risk:Hazard earth:Coast with SaltMarsh
+	observing
+	im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
+	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
+	value of SaltMarsh named saltmarsh_only,
+	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
+	distance to earth:Coastline in m named coast
+	set to [
+	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * saltmarsh_only * geomorphology_index)**(1.0/7);
+	return ( coast < 20000 ? hazard_index : null );
+	];
+
+// ************************ (5) With Coral Ecosystem Natural Habitat **********************************************************************************************************	
+@colormap(values = {
+1: (0,204,0),
+2: (204, 204, 0),
+3: (204, 102, 0),
+4: (204, 0, 0),
+5: (204, 0, 204)
+}, continuous=true)
+model im:Predicted value of risk:Hazard earth:Coast with CoralReef
+	observing
+	im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
+	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
+	value of CoralReef named coral_only,
+	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
+	distance to earth:Coastline in m named coast
+	set to [
+	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * coral_only * geomorphology_index)**(1.0/7);
+	return ( coast < 20000 ? hazard_index : null );
+	];
+
+// ************************ (6) With Seagrass Ecosystem Natural Habitat	******************************************************************************************************
+@colormap(values = {
+1: (0,204,0),
+2: (204, 204, 0),
+3: (204, 102, 0),
+4: (204, 0, 0),
+5: (204, 0, 204)
+}, continuous=true)	
+model im:Predicted value of risk:Hazard earth:Coast with SeaGrass
+	observing
+	im:Potential value of risk:ExposureMetric im:High im:Level of earth:Sea named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
+	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
+	value of SeaGrass named seagrass_only,
+	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
+	distance to earth:Coastline in m named coast
+	set to [
+	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * seagrass_only * geomorphology_index)**(1.0/7);
+	return ( coast < 20000 ? hazard_index : null );
+	];		
+	
+// *********************************************************
+
+/*
+ * DATA
+ */ 
+number 'local:caterina.gilli:im.data.global:im-data-global-demography.global_nasa_grdiv1_sociodemographic_epsg4326_1km_2010_2020_v1'
+	as grdi
+	set to [nodata(self) ? 500 : self]; 
+//model 'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_r2025a_epsg4326_100m_2020_v1'
+////	as worldpop_r2025a_v1_2020;
+//	as count of demography:HumanIndividual;
+
+//UPDATED RESOURCES FOR WORLDPOP 2020-2022. Change the resource above for global coverage for the year 2020 
+model 	'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2020_r2025a_v1',
+		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2021_r2025a_v1',
+		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2022_r2025a_v1' 
+	as count of demography:HumanIndividual;
+
+
+
+ 
+ ///// placeholder
+// @colormap(values = {
+//	1: (0,204,0),
+//	2: (204, 204, 0),
+//	3: (204, 102, 0),
+//	4: (204, 0, 0),
+//	5: (204, 0, 204)
+//}, continuous=true)	
+//number 'local:caterina.gilli:local.sandbox:Indonesia_1000_resolution_with_Natural_Habitat'
+//	as withnaturalhab;
+//
+//@colormap(values = {
+//	1: (0,204,0),
+//	2: (204, 204, 0),
+//	3: (204, 102, 0),
+//	4: (204, 0, 0),
+//	5: (204, 0, 204)
+//}, continuous=true)	
+//number 'local:caterina.gilli:local.sandbox:Indonesia_1000_resolution_without_Natural_Habitat'
+//	as withoutnaturalhab;
+//
+//model 'local:caterina.gilli:local.sandbox:tile_33043_with_natural_habitat'
+//	as im:Predicted value of risk:Hazard earth:Coast with im:Natural ecology:Habitat;
+//	
+//model 'local:caterina.gilli:local.sandbox:tile_33043_without_natural_habitat'
+//	as im:Predicted value of risk:Hazard earth:Coast;
+//	
+//model 'local:caterina.gilli:local.sandbox:tile_33043_with_mangrove'
+//	as im:Predicted value of risk:Hazard earth:Coast with landcover:Mangrove;
+//	
+//model 'local:caterina.gilli:local.sandbox:tile_3304_with_saltmarsh'
+//	as im:Predicted value of risk:Hazard earth:Coast with landcover:SaltMarsh;
+//	
+//model 'local:caterina.gilli:local.sandbox:tile_33043_with_coralreef'
+//	as im:Predicted value of risk:Hazard earth:Coast with ecology:CoralReefHabitat;
+//	
+//model 'local:caterina.gilli:local.sandbox:tile_33043_seagrass'
+//	as im:Predicted value of risk:Hazard earth:Coast with ecology:SeagrassHabitat;
+/*
+ * HAZARD
+ * we are now looking at coastal risk  from 1 to 5
+ */	
+//number delta_hazard
+//	observing
+//		withnaturalhab,
+//		withoutnaturalhab
+//	set to [withoutnaturalhab - withnaturalhab];
+
+@colormap(values = {
+	0: (0,204,0),
+	1: (204, 0, 0),
+	2: (204, 0, 204)
+}, continuous=true)		
+number delta_hazard_mangrove
+	observing
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:Mangrove named hazard_with_mangrove,
+		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
+	set to [hazard_without_hab - hazard_with_mangrove];
+
+number delta_all
+	observing
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:All named hazard_with_all,
+		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
+	set to [hazard_without_hab - hazard_with_all];
+
+@colormap(values = {
+	0: (0,204,0),
+	1: (204, 0, 0),
+	2: (204, 0, 204)
+}, continuous=true)		
+number delta_hazard_saltmarsh
+	observing
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:SaltMarsh named hazard_with_saltmarsh,
+		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
+	set to [hazard_without_hab - hazard_with_saltmarsh];
+
+@colormap(values = {
+	0: (0,204,0),
+	1: (204, 0, 0),
+	2: (204, 0, 204)
+}, continuous=true)		
+number delta_hazard_coral_reef
+	observing
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:CoralReef named hazard_with_coral_reef,
+		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
+	set to [hazard_without_hab - hazard_with_coral_reef];
+
+@colormap(values = {
+	0: (0,204,0),
+	1: (204, 0, 0),
+	2: (204, 0, 204)
+}, continuous=true)		
+number delta_hazard_seagrass
+	observing
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:SeaGrass named hazard_with_seagrass,
+		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
+	set to [hazard_without_hab - hazard_with_seagrass];	
+
+@colormap(values = {
+	0: (0,204,0),
+	1: (204, 0, 0),
+	2: (204, 0, 204)
+}, continuous=true)		
+number combined_delta
+	observing
+		delta_hazard_mangrove,
+		delta_hazard_saltmarsh,
+		delta_hazard_coral_reef,
+		delta_hazard_seagrass
+	set to [
+		def variables = [delta_hazard_mangrove, delta_hazard_saltmarsh, delta_hazard_coral_reef, delta_hazard_seagrass\]
+		return variables.max()
+	];
+	
+//abstract attribute FakeProtectiveHabitat
+//	has children
+//		WaterBody,
+//		Mangrove,
+//		SaltMarsh,
+//		CoralReef,
+//		SeaGrass;
+//
+//quality FakeProtectiveHabitatType is type of FakeProtectiveHabitat;	
+//model FakeProtectiveHabitatType
+//	observing
+//		delta_hazard_mangrove,
+//		delta_hazard_saltmarsh,
+//		delta_hazard_coral_reef,
+//		delta_hazard_seagrass
+//	set to [
+//		delta_hazard_mangrove>0 ? aries.global.coastalprotection.exposurevulnerability.stratified:Mangrove :
+//			(delta_hazard_saltmarsh > 0 ? aries.global.coastalprotection.exposurevulnerability.stratified:SaltMarsh :
+//				(delta_hazard_coral_reef>0 ? aries.global.coastalprotection.exposurevulnerability.stratifiedCoralReef :
+//					(delta_hazard_seagrass>0 ? aries.global.coastalprotection.exposurevulnerability.stratified:SeaGrass : unknown)
+//				)
+//			)
+//	];	
+//		
+/*
+ * ---------------------------------------------
+ * CONTEXT
+ * one of the precomputed tiles
+ * ---------------------------------------------
+ */
+observe earth:Region named first_coastline_chunk
+     over space(
+			urn = 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_2km_buffer_4326#tile_index=2000',
+    		grid = "100 m",
+    		projection = "EPSG:4326"),
+    	 time(
+    	 	year = 2020
+    	 ); 
+ 
+observe earth:Region named one_tile
+     over space(
+			urn = 'klab:grid:tiles:square.1#select=33043',
+    		grid = "1000 m",
+    		projection = "EPSG:4326"),
+    	 time(
+    	 	year = 2020
+    	 );
+    	 
+observe earth:Region named one_tile_with_mangroves
+     over space(
+			urn = 'klab:grid:tiles:square.1#select=30559',
+    		grid = "1000 m",
+    		projection = "EPSG:4326"),
+    	 time(
+    	 	year = 2020
+    	 );
