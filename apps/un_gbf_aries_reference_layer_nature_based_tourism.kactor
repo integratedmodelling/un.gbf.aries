@@ -1,0 +1,38 @@
+script un.gbf.aries.reference_layer.nature_based_tourism
+
+action main:
+
+nature_based_tourism_spatial_boundaries = "local:ferdinando.villa:im.data.global:admin.countries.un.split"
+
+output_folder_directory = "UN_GBF/Nature_Based_Tourism"
+
+	set observables_urns (
+		{distance to conservation:ProtectedArea in m}
+
+)
+
+ 	
+	resolution = 300.m
+	for year in (2020) (
+		for country in nature_based_tourism_spatial_boundaries (
+			if [country.gid == 'SEN' || country.gid=="KEN"] (
+			for urn in observables_urns(
+		    	context(country,resolution,Time(year=year),urn): state -> (
+				set urn_name ""
+				if [urn.toString().startsWith("[")] (
+					set urn_name [urn.name]
+				)
+				else (
+					set urn_name urn
+				)	
+				if [state.toString().contains("[nothing")] (
+					warning(["Observation " + urn_name + " return nothing"])
+				) else ( 
+					state.export([output_folder_directory + "/" + "Reference_layers" + "/" + "maps" + "/" + urn_name + "_" + country.gid +".tiff"])
+					)
+				)
+			)
+		)
+	)
+)
+
