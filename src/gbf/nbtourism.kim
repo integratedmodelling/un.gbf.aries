@@ -1,0 +1,14 @@
+private namespace gbf.nbtourism;
+
+/* 1. Getting national tourism statistics metrics per country per year */
+
+model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitors'
+	as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
+	set to [ country_overnight_visitors == 0 ? null : country_overnight_visitors;          
+  
+////default only as number
+////TBD: enable user provided data in app?
+//@parameter(label = "visitors", default = "country_overnight_visitors", name = user_provided_country_visitors, description = "country specific user provided statistics on tourism")
+//number	user_provided_visitors
+//    observing country_overnight_visitors
+//	set to [user_provided_country_visitors];
