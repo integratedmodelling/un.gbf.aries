@@ -145,34 +145,7 @@ model value of SeaGrass
 	observing
 		ProtectiveHabitatType named habitat
 	set to [habitat == aries.global.coastalprotection.newsemantics:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
-//	
-//	lookup (habitat, ?) into
-//		habitat 	|	rank 
-//	----------------------------
-//		WaterBody	|	5		,
-//		Mangrove	|	1.8		,
-//		SaltMarsh	|	5		,
-//		CoralReef 	|	5		,
-//		SeaGrass	|	5		,
-//// are we using dunefield and beachdune or is it a placeholder for later?
-//		# 			| 	1
-//		;
-//model value of Mangrove
-//	observing
-//		ProtectiveHabitatType named habitat
-//	lookup (habitat, ?) into
-//		habitat 	|	rank 
-//	----------------------------
-//		WaterBody	|	5		,
-//		Mangrove	|	1.8		,
-//		SaltMarsh	|	5		,
-//		CoralReef 	|	5		,
-//		SeaGrass	|	5		,
-//// are we using dunefield and beachdune or is it a placeholder for later?
-//		# 			| 	1
-//		;  		  		
-
-
+	  		
 model im:Potential value of risk:ExposureMetric physical:Wave
 	observing 
 	value of risk:ExposureMetric physical:Wave named wave_exposure
@@ -433,57 +406,6 @@ model 	'local:justus.muhando:im.data.global:im-data-global-demography.global_wor
 		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2021_r2025a_v1',
 		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2022_r2025a_v1' 
 	as count of demography:HumanIndividual;
-
-
-
- 
- ///// placeholder
-// @colormap(values = {
-//	1: (0,204,0),
-//	2: (204, 204, 0),
-//	3: (204, 102, 0),
-//	4: (204, 0, 0),
-//	5: (204, 0, 204)
-//}, continuous=true)	
-//number 'local:caterina.gilli:local.sandbox:Indonesia_1000_resolution_with_Natural_Habitat'
-//	as withnaturalhab;
-//
-//@colormap(values = {
-//	1: (0,204,0),
-//	2: (204, 204, 0),
-//	3: (204, 102, 0),
-//	4: (204, 0, 0),
-//	5: (204, 0, 204)
-//}, continuous=true)	
-//number 'local:caterina.gilli:local.sandbox:Indonesia_1000_resolution_without_Natural_Habitat'
-//	as withoutnaturalhab;
-//
-//model 'local:caterina.gilli:local.sandbox:tile_33043_with_natural_habitat'
-//	as im:Predicted value of risk:Hazard earth:Coast with im:Natural ecology:Habitat;
-//	
-//model 'local:caterina.gilli:local.sandbox:tile_33043_without_natural_habitat'
-//	as im:Predicted value of risk:Hazard earth:Coast;
-//	
-//model 'local:caterina.gilli:local.sandbox:tile_33043_with_mangrove'
-//	as im:Predicted value of risk:Hazard earth:Coast with landcover:Mangrove;
-//	
-//model 'local:caterina.gilli:local.sandbox:tile_3304_with_saltmarsh'
-//	as im:Predicted value of risk:Hazard earth:Coast with landcover:SaltMarsh;
-//	
-//model 'local:caterina.gilli:local.sandbox:tile_33043_with_coralreef'
-//	as im:Predicted value of risk:Hazard earth:Coast with ecology:CoralReefHabitat;
-//	
-//model 'local:caterina.gilli:local.sandbox:tile_33043_seagrass'
-//	as im:Predicted value of risk:Hazard earth:Coast with ecology:SeagrassHabitat;
-/*
- * HAZARD
- * we are now looking at coastal risk  from 1 to 5
- */	
-//number delta_hazard
-//	observing
-//		withnaturalhab,
-//		withoutnaturalhab
-//	set to [withoutnaturalhab - withnaturalhab];
 
 @colormap(values = {
 	0: (0,204,0),
