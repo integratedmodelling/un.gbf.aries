@@ -1,4 +1,4 @@
-project private namespace gbf.aries.coastal_protection;
+project private namespace gbf.aries.coastal_protection_hazard;
 
 abstract attribute ProtectiveHabitat
 	has children
