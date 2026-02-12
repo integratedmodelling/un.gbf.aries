@@ -36,7 +36,10 @@ output_folder_directory = "UN_GBF/Coastal_Protection"
 	for year in (2020 2021 2022) (
 		for feature in coastal_protection_spatial_boundaries (
 //			if [feature.id == 'GMB'](
+<<<<<<< HEAD
 // 			'34476' || '34116' || '33396'
+=======
+>>>>>>> branch 'master' of https://github.com/integratedmodelling/un.gbf.aries.git
 			if [feature.tile_index == '5345' || '5465' ](
 			for urn in observables_urns(
 		    	context(feature,resolution,Time(year=year),urn): state -> (
