@@ -30,11 +30,11 @@ model ProtectiveHabitatType
 		landcover, 
 		coral_systems
 	set to [
-	(coral_systems == 1 ? gbf.aries.coastal_protection:CoralReef : 
-		(coral_systems == 6 ? gbf.aries.coastal_protection:SeaGrass : 
-			(landcover == 185 ? gbf.aries.coastal_protection:Mangrove :
-				(landcover == 183 ? gbf.aries.coastal_protection:SaltMarsh : 
-					(landcover == 255 ? gbf.aries.coastal_protection:WaterBody : unknown)							
+	(coral_systems == 1 ? aries.global.coastalprotection.newsemantics:CoralReef : 
+		(coral_systems == 6 ? aries.global.coastalprotection.newsemantics:SeaGrass : 
+			(landcover == 185 ? aries.global.coastalprotection.newsemantics:Mangrove :
+				(landcover == 183 ? aries.global.coastalprotection.newsemantics:SaltMarsh : 
+					(landcover == 255 ? aries.global.coastalprotection.newsemantics:WaterBody : unknown)							
 				)
 			)
 		)
@@ -79,11 +79,11 @@ model each
 define EXPOSURE_THRESHOLD_RANK as {{
 		sea_level_index	|surge_level	|elevation		|wave_exposure	|wind_exposure	| rank
 	    ------------------------------------------------------------------------------------------------------------
-		< 0.044 		|< 0.396 		| > 20			|< 790		 	|< 615		 	| 1,
+		< 0.044 		|< 0.396 		|20	to 1000		|< 790		 	|< 615		 	| 1,
 		0.044 to 0.069	|0.396 to 0.549 |15 to 20		|790 to 1844 	|615 to 876 	| 2,
 		0.069 to 0.076	|0.549 to 0.725 |10 to 15		|1844 to 3397 	|876 to 1018 	| 3,
 		0.076 to 0.086	|0.725 to 1.024	|5 to 10		|3397 to 8123 	|1018 to 1265	| 4,
-			 > 0.086	|> 1.024 		|0 to 5			|> 8123 		|> 1265.40		| 5
+			 > 0.086	|> 1.024 		|-50 to 5		|> 8123 		|> 1265.40		| 5
 }};
 
 /*
@@ -129,22 +129,22 @@ model value of WaterBody
 model value of Mangrove
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection:Mangrove ? 1.8 : (habitat ? 5 : 1)];
+	set to [habitat == aries.global.coastalprotection.newsemantics:Mangrove ? 1.8 : (habitat ? 5 : 1)];
 
 model value of SaltMarsh
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
+	set to [habitat == aries.global.coastalprotection.newsemantics:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
 
 model value of CoralReef
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection:CoralReef ? 1.8 : (habitat ? 5 : 1)];
+	set to [habitat == aries.global.coastalprotection.newsemantics:CoralReef ? 1.8 : (habitat ? 5 : 1)];
 	
 model value of SeaGrass
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
+	set to [habitat == aries.global.coastalprotection.newsemantics:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
 //	
 //	lookup (habitat, ?) into
 //		habitat 	|	rank 
