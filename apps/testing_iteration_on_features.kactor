@@ -1,0 +1,60 @@
+//script testing.iteration_on_features
+//
+//action main:
+//
+//	set observables_urns (
+////		data.global.landcover.land-cover-type-resolver
+//		{landcover:LandCoverType}
+//		)
+//	// add spatial and temporal context
+//
+//	spatial_contexts_urn = "local:ferdinando.villa:im.data.global:admin.countries.un.split"
+//	
+//	resolution = 3000.m
+//	
+//	// add years or set as parameter
+//	for year in (2005) (
+//		for country in spatial_contexts_urn(
+//			warning(["country:"+country.toString()])
+//			
+//		)
+//	)
+
+script un.gbf.aries.reference_layer.nature_based_tourism
+
+action main:
+
+nature_based_tourism_spatial_boundaries = "local:ferdinando.villa:im.data.global:admin.countries.un.split"
+
+output_folder_directory = "UN_GBF/Nature_Based_Tourism"
+
+	set observables_urns (
+		{distance to conservation:ProtectedArea in m}
+
+)
+
+ 	
+	resolution = 2000.m
+	for year in (2020) (
+		for country in nature_based_tourism_spatial_boundaries (
+			if [country.gid == 'SEN' || country.gid=="BEL"|| country.gid=="KEN"] (
+			for urn in observables_urns(
+		    	context(country,resolution,Time(year=year),urn): state -> (
+				set urn_name ""
+				if [urn.toString().startsWith("[")] (
+					set urn_name [urn.name]
+				)
+				else (
+					set urn_name urn
+				)	
+				if [state.toString().contains("[nothing")] (
+					warning(["Observation " + urn_name + " return nothing"])
+				) else ( 
+					state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + _ + country.gid +".tiff"])
+					)
+				)
+			)
+		)
+	)
+)
+
