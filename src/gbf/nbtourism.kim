@@ -4,7 +4,8 @@ private namespace gbf.nbtourism;
 
 model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitors'
 	as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
-	set to [ country_overnight_visitors == 0 ? null : country_overnight_visitors;          
+	set to [ country_overnight_visitors == 0 ? null : country_overnight_visitors.mean];          
+//need to enable the mode.
   
 ////default only as number
 ////TBD: enable user provided data in app?
@@ -12,3 +13,97 @@ model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitor
 //number	user_provided_visitors
 //    observing country_overnight_visitors
 //	set to [user_provided_country_visitors];
+
+/*2. Separate Nature-Based Contribution   */
+
+//multiply country stats by nature-based ratio
+model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region  
+	observing 
+		behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors,
+		proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:Numerosity named nature_based_visitor_ratio
+	set to [country_overnight_visitors * nature_based_visitor_ratio];
+	
+/*routine to identify the nature-based ratio by landcover/ecosystems proportion */	
+
+/* As in INCA,  we use ecosystem extent statistics of the land classified as attractive and accessible 
+ * over the entire country region, using the categories with accessible and medium and high opportunities 
+ * for recreation (i.e., classes 5,6,8,9) of the official Recreation Opportunity Spectrum (ROS) 
+ * map for EU (EUROSTAT 2024) --> in our RECREATION_OPPORTUNITY_TABLE these are the classes (4,5,7,8).
+ * We cut class 5 to make it more restrictive (only easily accessible with medium provision): 
+ * decision taken after testing in Uganda, Indonesia, Colombia and South Africa.
+ */ 
+
+// use ROS to select the NB tourism area
+model presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation  
+	observing 
+		im:Potential value of behavior:Outdoor behavior:Recreation named recreation_opportunity_spectrum
+	set to [
+		    recreation_opportunity_spectrum == 4 ||    // 'medium provision, easily accessible',
+//		    recreation_opportunity_spectrum == 5 ||    // 'medium provision, accessible'    // uncomment to enable this class                              
+		    recreation_opportunity_spectrum == 7 ||    // 'high provision, easily accessible'
+		    recreation_opportunity_spectrum == 8 	]; // 'high provision, accessible' 	    
+
+/*compare extension of NB tourism area vs all country region */
+model value of behavior:Outdoor im:Extent named cell_area_where_realized_outdoor_value
+	observing
+		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area 
+	set to [realized_outdoor_value_area ? space.area : unknown]; 
+
+//use only terrestrial part of the context 
+model value of earth:Terrestrial im:Extent named cell_area_where_terrestrial
+  observing
+		geography:Slope > 0 named terrestrial_area
+	set to [terrestrial_area / terrestrial_area * space.area];  
+
+model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:Numerosity 
+		observing
+		cell_area_where_realized_outdoor_value,
+		cell_area_where_terrestrial
+	set to [ cell_area_where_realized_outdoor_value.getCurrentSum(context)  / cell_area_where_terrestrial.getCurrentSum(context)]; 
+	
+/*3. Spatial allocation of Tourists */
+
+/* As in INCA, the spatial allocation is based on a weighted distribution inside the country region, whereby the
+ * percentage of overnights stays attributed to an ecosystem is equal to the attractiveness metric (one component of the ROS)
+ * of the ecosystem divided by the sum of all attractiveness metrics within the country region. 
+ * While INCA uses 3 classes of weights low = 0, medium = 0,5 and high = 1 here we use the 
+ * NB tourism revised im:Theoretical value of behavior:Outdoor behavior:Recreation, but rescaled where NB toursim is realized 
+ */
+
+model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 // update using behavior:Tourism
+	observing 
+		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area,
+		im:Theoretical value of behavior:Outdoor behavior:Recreation  named theoretical_recreation_supply
+	set to [ 
+		    def rescaled = 1 + ((((theoretical_recreation_supply  - 0.65) / 0.35) **3  )* 9) // power 3 rescaled from 1 to 10
+		    return (realized_outdoor_value_area ? rescaled : unknown)
+	];
+
+@extensive(space) // make it intensive
+model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+	 observing 
+		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, 
+		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region   named nature_based_country_visitors
+	 set to [visitors_indicator_weight * nature_based_country_visitors / visitors_indicator_weight.getCurrentSum(context)]; 	
+
+
+/*4. Tabular reporting by ecosystem type or land cover type */
+
+@var(timespan=(init end))
+define table tourism_biophysical_supply_dynamic as {
+	name: "tourism_biophysical"
+	title: "Tourism Physical Supply (Visitors)",
+	label: "Tourism Physical Supply (Visitors) Change Summary",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: landcover:LandCoverType	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
+};
