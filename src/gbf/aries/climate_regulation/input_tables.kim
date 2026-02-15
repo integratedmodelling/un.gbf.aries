@@ -1,4 +1,4 @@
-private namespace gbf.aries.climate_regulation.input_tables
+project private namespace gbf.aries.climate_regulation.input_tables
 using nca.landuse.ipcc, nca.ecology.ipcc;
 
 //TODO: Adjust/Add landcover-to-landuse lines if the landcover product is changed
