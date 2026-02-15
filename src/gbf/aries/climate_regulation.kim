@@ -1,0 +1,25 @@
+private namespace gbf.aries.climate_regulation
+using nca.landuse.ipcc, nca.ecology.ipcc,
+		(IPCC_LANDUSE_TABLE) from gbf.aries.climate_regulation.input_tables,
+		(IPCC_CARBON_STOCK_VEGETATION_TABLE) from gbf.aries.climate_regulation.input_tables;
+
+model type of nca.landuse.ipcc:LandUse
+observing
+	landcover:LandCoverType named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone
+	lookup (landcover, ecological_zone, ?) 
+	into IPCC_LANDUSE_TABLE; 
+
+//TODO:Verify IPCC_CARBON_STOCK_VEGETATION_TABLE columns structure - removed columns not used (all the * in the lookup should be removed)
+@intensive(space)
+@intensive(time)
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
+	observing
+	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
+	landcover:LandCoverType 					named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
+	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
+	type of geography:ContinentalRegion			named continent,
+	nca.landuse.ipcc:ForestType 				named forest_type
+lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, forest_type,*,*,*,*,*, ?)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE;	
