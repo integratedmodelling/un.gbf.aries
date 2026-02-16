@@ -59,7 +59,7 @@ for year in (2020) (
 					
 				) 
 				for sec_urn in secondary_urns(
-					submit("presence of conservation:ProtectedArea"): (
+					submit("ography:Elevation"): (
 						WAITING     -> ()
 						STARTED     -> ()
 						ABORTED     -> warning("Aborted")
@@ -68,7 +68,7 @@ for year in (2020) (
 							alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
 						)
 						observation -> (
-							observation.export([output_folder_directory + "/" + "Reference_layers" + "/cacca.tiff"])
+							observation.export([output_folder_directory + "/" + "Reference_layers" + "/elevation.tiff"])
 						)
 				)
 				)
