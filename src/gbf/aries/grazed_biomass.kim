@@ -57,8 +57,8 @@ over space(shape="EPSG:4326 POLYGON ((34.5221204785619 1.3183493778487332, 34.49
 model 
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
-	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
-//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
 	as type of Grassland classified into
 		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
@@ -187,17 +187,17 @@ model count of biology:Individual agriculture:BeefCattle
 //	set to [ cattle_count > 0 ? cattle_count*cattle_type_proportion : nodata];
 
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1'
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1'
  	as count of biology:Individual agriculture:Sheep
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1'
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1'
  	as count of biology:Individual agriculture:Goat
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1' /// horses not available?
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1' /// horses not available?
  	as count of biology:Individual agriculture:Horse
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
