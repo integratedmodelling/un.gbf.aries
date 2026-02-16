@@ -29,8 +29,6 @@ model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:Overnight
  * over the entire country region, using the categories with accessible and medium and high opportunities 
  * for recreation (i.e., classes 5,6,8,9) of the official Recreation Opportunity Spectrum (ROS) 
  * map for EU (EUROSTAT 2024) --> in our RECREATION_OPPORTUNITY_TABLE these are the classes (4,5,7,8).
- * We cut class 5 to make it more restrictive (only easily accessible with medium provision): 
- * decision taken after testing in Uganda, Indonesia, Colombia and South Africa.
  */ 
 
 // use ROS to select the NB tourism area
@@ -39,7 +37,7 @@ model presence of earth:Region with im:Realized value of behavior:Outdoor behavi
 		im:Potential value of behavior:Outdoor behavior:Recreation named recreation_opportunity_spectrum
 	set to [
 		    recreation_opportunity_spectrum == 4 ||    // 'medium provision, easily accessible',
-//		    recreation_opportunity_spectrum == 5 ||    // 'medium provision, accessible'    // uncomment to enable this class                              
+		    recreation_opportunity_spectrum == 5 ||    // 'medium provision, accessible'                                 
 		    recreation_opportunity_spectrum == 7 ||    // 'high provision, easily accessible'
 		    recreation_opportunity_spectrum == 8 	]; // 'high provision, accessible' 	    
 
@@ -67,7 +65,8 @@ model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:
  * percentage of overnights stays attributed to an ecosystem is equal to the attractiveness metric (one component of the ROS)
  * of the ecosystem divided by the sum of all attractiveness metrics within the country region. 
  * While INCA uses 3 classes of weights low = 0, medium = 0,5 and high = 1 here we use the 
- * NB tourism revised im:Theoretical value of behavior:Outdoor behavior:Recreation, but rescaled where NB toursim is realized 
+ * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB toursim is realized 
+ * i.e. in "presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation". 
  */
 
 model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 // update using behavior:Tourism
@@ -79,12 +78,19 @@ model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 t
 		    return (realized_outdoor_value_area ? rescaled : unknown)
 	];
 
-@extensive(space) // make it intensive
+@extensive(space) // it's number of tourists in each gridcell 
 model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
 	 observing 
 		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, 
 		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region   named nature_based_country_visitors
 	 set to [visitors_indicator_weight * nature_based_country_visitors / visitors_indicator_weight.getCurrentSum(context)]; 	
+
+//optional to get aprox. results per sq. km
+@intensive(space)  
+model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+	observing  
+	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
+	set to [ vistors_per_gridcell * (1000000 / space.area)];
 
 
 /*4. Tabular reporting by ecosystem type or land cover type */
