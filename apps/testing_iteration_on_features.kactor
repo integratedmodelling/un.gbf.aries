@@ -32,7 +32,7 @@ set observables_urns (
 	{distance to conservation:ProtectedArea in m}
 )
 set secondary_urns (
-	{presence of conservation:ProtectedArea}
+	{geography:Elevation}
 )
 
  	
@@ -57,9 +57,9 @@ for year in (2020) (
 						state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + "_" + country.gid +".tiff"])
 					)
 					
-				) 
+				)
 				for sec_urn in secondary_urns(
-					submit("ography:Elevation"): (
+					submit([sec_urn]): (
 						WAITING     -> ()
 						STARTED     -> ()
 						ABORTED     -> warning("Aborted")
@@ -68,9 +68,9 @@ for year in (2020) (
 							alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
 						)
 						observation -> (
-							observation.export([output_folder_directory + "/" + "Reference_layers" + "/elevation.tiff"])
+							observation.export([output_folder_directory + "/" + "Reference_layers" + "/" + sec_urn.name + ".tiff"])
 						)
-				)
+					)
 				)
 			)
 		)
