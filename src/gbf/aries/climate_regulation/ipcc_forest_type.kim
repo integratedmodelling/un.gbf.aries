@@ -128,8 +128,8 @@ number local:megan.critchley:im.data.global:im-data-global-ecology.global_forest
  set to [self*0.001];
 
 number local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-	as intact_forest
-	over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
+	as intact_forest;
+//	over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
 
 number 'local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001'
 	as tropical_primary_forest 
@@ -156,6 +156,11 @@ model 'local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forest
 	
 //Primary Forest
 
+observe earth:Region named test_semantic_primary_forest_north_colombia_forest
+over space(shape='EPSG:4326 POLYGON ((-72.81428012081768 9.319326461106442, -72.82096193020851 9.252373938939925, -72.84075058019336 9.187982341549372, -72.87288560405088 9.12862833708337, -72.91613207083574 9.07659598842821, -72.96882804308235 9.033888501069669, -73.02894844412948 9.0021506956828, -73.09418288068079 8.982605265279943, -73.16202442992352 8.976005342944887, -73.22986597916626 8.982605265279943, -73.29510041571758 9.0021506956828, -73.3552208167647 9.033888501069669, -73.40791678901131 9.07659598842821, -73.45116325579619 9.12862833708337, -73.48329827965371 9.187982341549372, -73.50308692963854 9.252373938939925, -73.50976873902937 9.319326461106442, -73.50308692963854 9.386266146864273, -73.48329827965371 9.45062118933511, -73.45116325579619 9.509920485717672, -73.40791678901131 9.561888302127599, -73.3552208167647 9.604531257607988, -73.29510041571758 9.63621435579769, -73.22986597916626 9.65572323216712, -73.16202442992352 9.66231031846057, -73.09418288068079 9.65572323216712, -73.02894844412948 9.63621435579769, -72.96882804308235 9.604531257607988, -72.91613207083574 9.561888302127599, -72.87288560405088 9.509920485717672, -72.84075058019336 9.45062118933511, -72.82096193020851 9.386266146864273, -72.81428012081768 9.319326461106442))',
+		   grid="300 m"),
+		time(start=2020, end=2022, step=1.year);
+
 /* MODELLING - PRIMARY FORESTS  */
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000'
 	as im:Reference im:Height of ecology:Forest earth:Region in m;
@@ -163,8 +168,13 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
 	as im:Height of ecology:Forest earth:Region in m;
 
-model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-	as im:Reference presence of conservation:Intact ecology:Forest earth:Region
+model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000,
+	  local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
+	as im:Reference presence of conservation:Intact ecology:Forest earth:Region;
+//	over space(shape="EPSG:4326 POLYGON((-180 180, -90 180, -90 90, -180 90, -180 180))");
+
+number local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
+	as intact_forest_2000
 	over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
 
 model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019'
@@ -173,32 +183,36 @@ model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest
   as Integrity of conservation:Pristine ecology:Forest earth:Region
   set to [self * 0.001];
   
-model 
+model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024
+	as presence of ecology:TropicalWet conservation:Pristine ecology:Forest earth:Region
+  	set to [self==10];
+  
+model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
+	as presence of earth:Tropical conservation:Intact ecology:Forest earth:Region
+	set to [self==1];  
   	
 model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region
 	observing
-		    forest_integrity,
-		    intact_forest,
-		    tropical_primary_forest,
-		    tropical_forest_transition,
-		    forest_height_2000,
-		    forest_height_2020
-
+		    Integrity of conservation:Pristine ecology:Forest earth:Region named forest_integrity,
+//		    intact_forest_2000,
+//		    im:Reference presence of conservation:Intact ecology:Forest earth:Region named intact_forest_2000,
+		    ecology:TropicalWet conservation:Pristine ecology:Forest earth:Region named wet_tropical_primary_forest,
+		    presence of earth:Tropical conservation:Intact ecology:Forest earth:Region named undisturbed_tropical_forest,
+		    im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
+		    im:Height of ecology:Forest earth:Region in m named forest_height
 		set to [
 		    (
-		         (forest_integrity > 9.8 && forest_integrity != nodata ) ||
-		         (intact_forest == 1 && intact_forest != nodata ) ||
-		         (tropical_forest_transition== 10 && tropical_forest_transition != nodata ) ||
-		         (tropical_primary_forest == 1 && tropical_primary_forest != nodata)
+		         forest_integrity > 9.8 
+//		         ||
+//		         intact_forest_2000 == 1 ||
+//		         wet_tropical_primary_forest== 10 ||
+//		         undisturbed_tropical_forest == 1
 		    ) 
-		    &&
-		    (   
-		    	(forest_height_2000 > 5 && forest_height_2000 != nodata &&
-		         forest_height_2020 > 5 && forest_height_2020 != nodata)
-		    )
-		];
+		    	&&
+		       (forest_height_2000 > 5 && forest_height > 5 )
+		    		];
 
-		
+
 observe earth:Region named planted_data
 over space(shape='EPSG:4326 POLYGON ((-74.20847724197174 0.9419207655163007, -74.21090273979534 0.9297285910017763, -74.21780997320974 0.9193925315366442, -74.22814737854179 0.9124861807043487, -74.24034117953853 0.9100609896517255, -74.25253498053524 0.9124861807043487, -74.26287238586731 0.9193925315366442, -74.2697796192817 0.9297285910017763, -74.27220511710533 0.9419207655163007, -74.2697796192817 0.954112897375893, -74.26287238586731 0.9644488538629759, -74.25253498053524 0.9713551017172222, -74.24034117953853 0.9737802501149417, -74.22814737854179 0.9713551017172222, -74.21780997320974 0.9644488538629759, -74.21090273979534 0.954112897375893, -74.20847724197174 0.9419207655163007))',
 		   grid="300 m"),
