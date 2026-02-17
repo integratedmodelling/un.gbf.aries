@@ -1,4 +1,4 @@
-project private namespace gbf.aries.coastal_protection_hazard;
+project private namespace gbf.aries.coastal.protection.hazard;
 
 abstract attribute ProtectiveHabitat
 	has children
@@ -11,6 +11,7 @@ abstract attribute ProtectiveHabitat
 
 quality ProtectiveHabitatType is type of ProtectiveHabitat;
 
+
 /*
  * **********************************
  * ************   DATA   ************
@@ -19,7 +20,7 @@ quality ProtectiveHabitatType is type of ProtectiveHabitat;
 number	'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2020_mosaic',
 		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2021_mosaic',
 		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2022_mosaic'
-	as landcover;
+	as coastal_protective_habitat_type;
 
 number 'local:samjinoj:im.data.global:im-data-global-marine:coral_systems_4326'
 	as coral_systems;
@@ -27,18 +28,86 @@ number 'local:samjinoj:im.data.global:im-data-global-marine:coral_systems_4326'
 model ProtectiveHabitatType
  // coral first
  	observing 
-		landcover, 
+		coastal_protective_habitat_type, 
 		coral_systems
 	set to [
 	(coral_systems == 1 ? aries.global.coastalprotection.newsemantics:CoralReef : 
 		(coral_systems == 6 ? aries.global.coastalprotection.newsemantics:SeaGrass : 
-			(landcover == 185 ? aries.global.coastalprotection.newsemantics:Mangrove :
-				(landcover == 183 ? aries.global.coastalprotection.newsemantics:SaltMarsh : 
-					(landcover == 255 ? aries.global.coastalprotection.newsemantics:WaterBody : unknown)							
+			(coastal_protective_habitat_type == 185 ? aries.global.coastalprotection.newsemantics:Mangrove :
+				(coastal_protective_habitat_type == 183 ? aries.global.coastalprotection.newsemantics:SaltMarsh : 
+					(coastal_protective_habitat_type == 255 ? aries.global.coastalprotection.newsemantics:WaterBody : unknown)							
 				)
 			)
 		)
 	)];
+		
+model ProtectiveHabitatType
+ // coral first
+ 	observing 
+		coastal_protective_habitat_type, 
+		coral_systems
+	set to [
+	(coral_systems == 1 ? gbf.aries.coastal.protection.hazard:CoralReef : 
+		(coral_systems == 6 ? gbf.aries.coastal.protection.hazard:SeaGrass : 
+			(coastal_protective_habitat_type == 185 ? gbf.aries.coastal.protection.hazard:Mangrove :
+				(coastal_protective_habitat_type == 183 ? gbf.aries.coastal.protection.hazard:SaltMarsh : 
+					(coastal_protective_habitat_type == 255 ? gbf.aries.coastal.protection.hazard:WaterBody : unknown)							
+				)
+			)
+		)
+	)];
+
+
+/*
+ * ----------------------------------------------------------------------------------
+ * Attempt to write a semantic model but classification should be defined separately 
+ * ----------------------------------------------------------------------------------
+ */
+//abstract attribute ProtectiveHabitat
+//	has children
+//		WaterBody,
+//		Mangrove,
+//		SaltMarsh,
+////		(BenthicHabitat
+////			has children
+//			CoralReef,
+//			SeaGrass,
+//		All;
+//		
+//
+//quality ProtectiveHabitatType is type of ProtectiveHabitat;
+////quality BenthicHabitatType is type of BenthicHabitat;
+
+//number 'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2020_mosaic',
+//		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2021_mosaic',
+//		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2022_mosaic'
+//	as coastal_protective_habitat_type;
+////	as ProtectiveHabitatType classified into
+//		Mangrove if 185,  
+//		SaltMarsh if 183,
+//		WaterBody if 255;
+	
+//number 'local:samjinoj:im.data.global:im-data-global-marine:coral_systems_4326'
+//	as benthic_habitat_type; 
+//	as BenthicHabitatType classified into
+//		CoralReef if 1,
+//		SeaGrass if 6;
+
+//define PROTECTIVE_HABITAT as {{
+//	ct | bt | protective_habitat
+//	---------------------------
+//	#  | 1  | gbf.aries.coastal_protection_hazard:CoralReef,
+//	#  | 6  | gbf.aries.coastal_protection_hazard:SeaGrass 
+//	
+//}};	
+
+////model type of ProtectiveHabitat
+//number ProtectiveHabitatType
+//observing
+//	coastal_protective_habitat_type named ct,
+//	benthic_habitat_type named bt
+//	lookup (ct,bt,?) 
+//	into PROTECTIVE_HABITAT;
 
 model 
 	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2020',
@@ -129,22 +198,22 @@ model value of WaterBody
 model value of Mangrove
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == aries.global.coastalprotection.newsemantics:Mangrove ? 1.8 : (habitat ? 5 : 1)];
+	set to [habitat == gbf.aries.coastal_protection_hazard:Mangrove ? 1.8 : (habitat ? 5 : 1)];
 
 model value of SaltMarsh
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == aries.global.coastalprotection.newsemantics:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
+	set to [habitat == gbf.aries.coastal_protection_hazard:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
 
 model value of CoralReef
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == aries.global.coastalprotection.newsemantics:CoralReef ? 1.8 : (habitat ? 5 : 1)];
+	set to [habitat == gbf.aries.coastal_protection_hazard:CoralReef ? 1.8 : (habitat ? 5 : 1)];
 	
 model value of SeaGrass
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == aries.global.coastalprotection.newsemantics:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
+	set to [habitat == gbf.aries.coastal_protection_hazard:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
 	  		
 model im:Potential value of risk:ExposureMetric physical:Wave
 	observing 
@@ -312,7 +381,7 @@ model im:Predicted value of risk:Hazard earth:Coast with Mangrove
 	im:Potential value of im:Maximal im:Level im:Short im:Duration risk:ExposureMetric of earth:Sea named surge_index,
 	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of gbf.aries.coastal_protection:Mangrove named mangrove_only,
+	value of gbf.aries.coastal.protection.hazard:Mangrove named mangrove_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m named coast
 	set to [
@@ -414,13 +483,13 @@ model 	'local:justus.muhando:im.data.global:im-data-global-demography.global_wor
 }, continuous=true)		
 number delta_hazard_mangrove
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:Mangrove named hazard_with_mangrove,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:Mangrove named hazard_with_mangrove,
 		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_mangrove];
 
 number delta_all
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:All named hazard_with_all,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:All named hazard_with_all,
 		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_all];
 
@@ -431,7 +500,7 @@ number delta_all
 }, continuous=true)		
 number delta_hazard_saltmarsh
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:SaltMarsh named hazard_with_saltmarsh,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:SaltMarsh named hazard_with_saltmarsh,
 		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_saltmarsh];
 
@@ -442,7 +511,7 @@ number delta_hazard_saltmarsh
 }, continuous=true)		
 number delta_hazard_coral_reef
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:CoralReef named hazard_with_coral_reef,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection_hazard:CoralReef named hazard_with_coral_reef,
 		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_coral_reef];
 
@@ -453,7 +522,7 @@ number delta_hazard_coral_reef
 }, continuous=true)		
 number delta_hazard_seagrass
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection:SeaGrass named hazard_with_seagrass,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection_hazard:SeaGrass named hazard_with_seagrass,
 		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_seagrass];	
 
