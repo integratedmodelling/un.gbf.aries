@@ -6,7 +6,8 @@ using nca.landuse.ipcc, nca.ecology.ipcc,
 model type of nca.landuse.ipcc:LandUse
 observing
 	landcover:LandCoverType named landcover,
-	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone
+	type of ecology:EcoFloristicRegion  named ecological_zone
+//	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone No need ti use layer inim.nca since we eventually kept
 	lookup (landcover, ecological_zone, ?) 
 	into IPCC_LANDUSE_TABLE; 
 
