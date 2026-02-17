@@ -59,6 +59,8 @@ model
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2021,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
 	as type of Grassland classified into
 		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
