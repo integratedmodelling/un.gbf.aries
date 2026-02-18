@@ -4,7 +4,7 @@ action main:
 
 coastal_protection_spatial_boundaries = 
 //'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_4326'
-'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_2km_buffer_4326'
+'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326'
 
 output_folder_directory = "UN_GBF/Coastal_Protection"
 
@@ -16,11 +16,11 @@ output_folder_directory = "UN_GBF/Coastal_Protection"
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_coral
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_seagrass
 //		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply		
-//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_mangrove
-//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_saltmarsh
-//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_coral_reef
-//		aries.global.coastalprotection.exposurevulnerability.stratified.delta_hazard_seagrass
-//		aries.global.coastalprotection.exposurevulnerability.stratified.combined_delta		
+//		gbf.aries.coastal_protection_hazard.delta_hazard_mangrove
+//		gbf.aries.coastal_protection_hazard.delta_hazard_saltmarsh
+//		gbf.aries.coastal_protection_hazard.delta_hazard_coral_reef
+//		gbf.aries.coastal_protection_hazard.delta_hazard_seagrass
+//		gbf.aries.coastal_protection_hazard.combined_delta		
 
 )
 /*
@@ -33,11 +33,12 @@ output_folder_directory = "UN_GBF/Coastal_Protection"
 	)
  	
 	resolution = 300.m
-	for year in (2020 2021 2022) (
+	field_iteration = tile_index_1d
+	for year in (2020) (
 		for feature in coastal_protection_spatial_boundaries (
-//			if [feature.id == 'GMB'](
-// 			'34476' || '34116' || '33396'
-			if [feature.tile_index == '5345' || feature.tile_index == '5465' ](
+//			if [feature.tile_index_1d == '11992' || '11993' ](
+			if [feature.tile_index_1d  == 11992 || feature.tile_index_1d  == 11993 ](
+//			if [feature.gid== '1' || feature.gid == '2' ](		
 			for urn in observables_urns(
 		    	context(feature,resolution,Time(year=year),urn): state -> (
 				set urn_name ""
@@ -50,7 +51,8 @@ output_folder_directory = "UN_GBF/Coastal_Protection"
 				if [state.toString().contains("[nothing")] (
 					warning(["Observation " + urn_name + " return nothing"])
 				) else ( 
-					state.export([output_folder_directory + "/" + year + "/" + "maps" + "/" + urn_name + _ + feature.tile_index +".tiff"])
+					state.export([output_folder_directory + "/" + year + "/" + "maps" + "/" + urn_name + "_" + feature.tile_index_1d + ".tiff"])
+//					state.export([output_folder_directory + "/" + year + "/" + "maps" + "/" + urn_name + _ + gid +".tiff"])
 				)
 			)
 		)					
