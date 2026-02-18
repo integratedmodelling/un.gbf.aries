@@ -173,8 +173,7 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 	as im:Height of ecology:Forest earth:Region in m;
 
 model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-	as im:Reference presence of conservation:Intact ecology:Forest earth:Region
-	over space(shape="EPSG:4326 POLYGON((-180 180, -90 180, -90 90, -180 90, -180 180))");
+	as im:Reference presence of conservation:Intact ecology:Forest earth:Region;
 
 model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019'
   as Integrity of ecology:Forest earth:Region
