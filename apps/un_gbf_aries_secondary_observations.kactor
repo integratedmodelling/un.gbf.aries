@@ -1,4 +1,4 @@
-app un.gbf.aries.secondary_observations
+script un.gbf.aries.secondary_observations
 
 action main:
 
@@ -7,13 +7,25 @@ action main:
 //		   grid="300 m"),
 //		time(start=2020, end=2022, step=1.year);
 
+output_folder_directory = "UN_GBF"
+
 set observables_urns (
-	{im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region}
+//	{im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region}
+	gbf.aries.climate_regulation.ipcc_forest_type.primary_forest
 //	{type of nca.landuse.ipcc:LandUse}
 )
 set secondary_urns (
-	{im:Height of ecology:Forest earth:Region in m}
-	{presence of earth:Tropical conservation:Intact ecology:Forest earth:Region}
+	[gbf.aries.climate_regulation.ipcc_forest_type.forest_integrity]
+	[{im:Height of ecology:Forest earth:Region in m}]
+	[{presence of earth:Tropical conservation:Intact ecology:Forest earth:Region}]
+
+//when not using "[", "]" got error: org.integratedmodelling.klab.components.runtime.observations.ObservationGroup.export([Ljava.lang.Object;)
+//k.Actors: cannot find a 'export' method to invoke on object of class org.integratedmodelling.klab.components.runtime.observations.ObservationGroup
+
+//when using "[", "]" got error:Exception thrown in k.Actors interpreter: Cannot invoke "Object.toString()" because "object" is null
+//	[{im:Height of ecology:Forest earth:Region in m}]
+//	[{presence of earth:Tropical conservation:Intact ecology:Forest earth:Region}]
+
 //	{landcover:LandCoverType}
 //	{type of ecology:EcoFloristicRegion}
 	
@@ -40,12 +52,13 @@ for year in (2020) (
 					if [state.toString().contains("[nothing")] (
 						warning(["Observation " + urn_name + " return nothing"])
 					) else ( 
-						state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + "_" + country.gid +".tiff"])
+						state.export([output_folder_directory + "/" + "Test_secondary_observation_export" + "/" + urn_name +".tiff"])
+//						state.export([output_folder_directory + "/" + "Test_secondary_observation_export" + "/" + urn_name + "_" + country.gid +".tiff"])
 					)
 					
 				)
-				for sec_urn in secondary_urns(
-					submit([sec_urn]): (
+				for secondary_urn in secondary_urns(
+					submit([secondary_urn]): (
 						WAITING     -> ()
 						STARTED     -> ()
 						ABORTED     -> warning("Aborted")
@@ -54,7 +67,7 @@ for year in (2020) (
 							alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
 						)
 						observation -> (
-							observation.export([output_folder_directory + "/" + "Reference_layers" + "/" + sec_urn.name + ".tiff"])
+							observation.export([output_folder_directory + "/" + "Test_secondary_observation_export" + "/" + secondary_urn.name + ".tiff"])
 						)
 					)
 				)
