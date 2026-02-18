@@ -31,7 +31,7 @@ model ProtectiveHabitatType
 		coastal_protective_habitat_type, 
 		coral_systems
 	set to [
-	(coral_systems == 1 ? gbf.aries.coastal.protection.hazardCoralReef : 
+	(coral_systems == 1 ? gbf.aries.coastal.protection.hazard:CoralReef : 
 		(coral_systems == 6 ?gbf.aries.coastal.protection.hazard:SeaGrass : 
 			(coastal_protective_habitat_type == 185 ? gbf.aries.coastal.protection.hazard:Mangrove :
 				(coastal_protective_habitat_type == 183 ? gbf.aries.coastal.protection.hazard:SaltMarsh : 
@@ -181,22 +181,22 @@ model value of WaterBody
 model value of Mangrove
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection_hazard:Mangrove ? 1.8 : (habitat ? 5 : 1)];
+	set to [habitat == gbf.aries.coastal.protection.hazard:Mangrove ? 1.8 : (habitat ? 5 : 1)];
 
 model value of SaltMarsh
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection_hazard:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
+	set to [habitat == gbf.aries.coastal.protection.hazard:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
 
 model value of CoralReef
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection_hazard:CoralReef ? 1.8 : (habitat ? 5 : 1)];
+	set to [habitat == gbf.aries.coastal.protection.hazard:CoralReef ? 1.8 : (habitat ? 5 : 1)];
 	
 model value of SeaGrass
 	observing
 		ProtectiveHabitatType named habitat
-	set to [habitat == gbf.aries.coastal_protection_hazard:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
+	set to [habitat == gbf.aries.coastal.protection.hazard:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
 	  		
 model im:Potential value of risk:ExposureMetric physical:Wave
 	observing 
@@ -494,7 +494,7 @@ number delta_hazard_saltmarsh
 }, continuous=true)		
 number delta_hazard_coral_reef
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection_hazard:CoralReef named hazard_with_coral_reef,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:CoralReef named hazard_with_coral_reef,
 		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_coral_reef];
 
@@ -505,7 +505,7 @@ number delta_hazard_coral_reef
 }, continuous=true)		
 number delta_hazard_seagrass
 	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal_protection_hazard:SeaGrass named hazard_with_seagrass,
+		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:SeaGrass named hazard_with_seagrass,
 		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
 	set to [hazard_without_hab - hazard_with_seagrass];	
 
