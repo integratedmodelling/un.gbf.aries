@@ -1,0 +1,19 @@
+worldview im;
+
+@test(
+    name = "gbf.aries.coastal_protection_tiles",
+    description  = "",
+    // add to the list any concepts to be observed in the context below
+    observations = (""),
+    // add assertions to check the observations after execution
+    assertions = ()
+)
+// change the concept to the one you want; use a URN optionally (in a separate test project including the resource)
+observe /* a:urn:to:use#objectid as */ earth:Region named gbf_aries_coastal_protection_tiles
+    // add any space and/or time extents: for example
+     over space(urn='local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326#tile_index_1d=11993',
+    	 grid="1 km"),
+    	 time(year=2020)
+;
+
+// add any models here
