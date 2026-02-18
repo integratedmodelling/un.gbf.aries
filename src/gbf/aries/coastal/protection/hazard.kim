@@ -40,23 +40,6 @@ model ProtectiveHabitatType
 			)
 		)
 	)];
-		
-model ProtectiveHabitatType
- // coral first
- 	observing 
-		coastal_protective_habitat_type, 
-		coral_systems
-	set to [
-	(coral_systems == 1 ? gbf.aries.coastal.protection.hazard:CoralReef : 
-		(coral_systems == 6 ? gbf.aries.coastal.protection.hazard:SeaGrass : 
-			(coastal_protective_habitat_type == 185 ? gbf.aries.coastal.protection.hazard:Mangrove :
-				(coastal_protective_habitat_type == 183 ? gbf.aries.coastal.protection.hazard:SaltMarsh : 
-					(coastal_protective_habitat_type == 255 ? gbf.aries.coastal.protection.hazard:WaterBody : unknown)							
-				)
-			)
-		)
-	)];
-
 
 /*
  * ----------------------------------------------------------------------------------
