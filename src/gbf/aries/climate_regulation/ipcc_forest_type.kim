@@ -176,7 +176,7 @@ model local:rubencc:im.data.global:im-data-global-conservation.global_intact_for
 	as im:Reference presence of conservation:Intact ecology:Forest earth:Region;
 
 model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019'
-  as Integrity of ecology:Forest earth:Region
+  as Integrity of ecology:Forest earth:Region named forest_integrity
   set to [self * 0.001];
 		 
 number local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
@@ -191,7 +191,7 @@ model presence of earth:Tropical conservation:Intact ecology:Forest earth:Region
  	tropical_humid_primary_forest
  	set to [ (tropical_primary_moist_forest == 10 || tropical_humid_primary_forest == 1 ) ? true : false];
  
-model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region
+model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named primary_forest
 	observing			
 		    im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		    im:Height of ecology:Forest earth:Region in m named forest_height,
