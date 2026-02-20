@@ -167,13 +167,13 @@ over space(shape='EPSG:4326 POLYGON ((-72.81428012081768 9.319326461106442, -72.
 
 /* MODELLING - PRIMARY FORESTS  */
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000'
-	as im:Reference im:Height of ecology:Forest earth:Region in m;
+	as im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000;
 	
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
-	as im:Height of ecology:Forest earth:Region in m;
+	as im:Height of ecology:Forest earth:Region in m named forest_height;
 
 model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-	as im:Reference presence of conservation:Intact ecology:Forest earth:Region;
+	as im:Reference presence of conservation:Intact ecology:Forest earth:Region named intact_forest_in_2000;
 
 model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019'
   as Integrity of ecology:Forest earth:Region named forest_integrity
@@ -185,7 +185,7 @@ number local:rubencc:im.data.global:im-data-global-conservation.global_tropical_
 number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
 	as tropical_humid_primary_forest; 	
 
-model presence of earth:Tropical conservation:Intact ecology:Forest earth:Region
+model presence of earth:Tropical conservation:Intact ecology:Forest earth:Region named tropical_primary_forest
  observing
  	tropical_primary_moist_forest,
  	tropical_humid_primary_forest
