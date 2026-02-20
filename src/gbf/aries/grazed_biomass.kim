@@ -65,7 +65,7 @@ model
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2021,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
-	as type of Grassland classified into
+	as type of Grassland named grassland_type classified into
 		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
 		gbf.aries.grazed_biomass:NaturalSeminaturalGrassland if 2,
 		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
