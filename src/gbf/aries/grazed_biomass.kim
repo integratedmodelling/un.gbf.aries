@@ -69,7 +69,7 @@ model
 		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
 		gbf.aries.grazed_biomass:NaturalSeminaturalGrassland if 2,
 		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
- over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
+// over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
  
 number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020 as gpw_grassland;
 
