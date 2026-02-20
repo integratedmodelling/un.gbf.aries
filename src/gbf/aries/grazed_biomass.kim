@@ -138,7 +138,9 @@ model im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProduct
 
 // Livestock grazing distribution (GPW) number of heads of livestock per 1km grid cell (FAO stat adjusted) 
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1'
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1',
+	  'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2021_v1',
+	  'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2022_v1'
  	as count of biology:Individual agriculture:Cattle
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
