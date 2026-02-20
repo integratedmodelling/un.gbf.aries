@@ -35,7 +35,7 @@ for year in (2020) (
 		    context(spatial_boundaries,resolution,Time(year=year))
 		    // loop over urns
 		    for urn in observables_urns (
-		    	// clean the urn name
+		    	// submit the observation
 				submit(urn): (
 					WAITING     -> ()
 					STARTED     -> ()
@@ -54,12 +54,11 @@ for year in (2020) (
 						) else (
 							set urn_name urn
 						)
-						// submit the observation
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							info(["Exporting unr " + urn_name])
 							observation.export([output_folder_directory + "/test_secondary_observation_export/" + urn_name + ".tiff"])
+							info(["Exporting urn " + urn_name])
 						)
 					)
 				)	
