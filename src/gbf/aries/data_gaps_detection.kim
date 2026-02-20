@@ -1,0 +1,6 @@
+private namespace gbf.aries.data_gaps_detection;
+
+@colormap(colors = ((255,255,255) (0,0,0)))
+number 'local:justus.muhando:im.data.global:im-data-global-ecology.global_jrc_ipcc_climate_zones_epsg4326_10km_2010'
+as ipcc_climate_zone_data_gap
+set to [self == nodata];
