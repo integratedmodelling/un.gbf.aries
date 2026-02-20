@@ -1,0 +1,39 @@
+worldview im;
+
+@test(
+    name = "test_stac_resource_type_of_grassland",
+    description  = "the type of grassland cannot be observed using the STAC resource (a wrning appears) ",
+    // add to the list any concepts to be observed in the context below
+    observations = (
+    "gbf.aries.grazed_biomass.type-of-grassland-resolver"
+    "im|un.gbf.aries/tests/test_stac_resource_type_of_grassland.test_stac_grassland_type"
+    ),
+    // add assertions to check the observations after execution
+    assertions = ()
+)
+// change the concept to the one you want; use a URN optionally (in a separate test project including the resource)
+observe /* a:urn:to:use#objectid as */ earth:Region named test_stac_resource_type_of_grassland
+over space(shape="EPSG:4326 POLYGON ((33.29116583527641 0.9945560693862632, 33.28479185746255 0.9298491156017263, 33.26591487241379 0.867627694177969, 33.23526031207921 0.8102831959545398, 33.194006214021215 0.7600196533848163, 33.14373795009258 0.7187689913073285, 33.08638730148534 0.6881167416578506, 33.024158221462834 0.6692410809780966, 32.959442138671875 0.6628675338425296, 32.89472605588092 0.6692410809780966, 32.832496975858426 0.6881167416578506, 32.77514632725118 0.7187689913073285, 32.72487806332255 0.7600196533848163, 32.68362396526455 0.8102831959545398, 32.652969404929976 0.867627694177969, 32.63409241988121 0.9298491156017263, 32.627718442067355 0.9945560693862632, 32.63409241988121 1.0592617545816694, 32.652969404929976 1.1214795633766812, 32.68362396526455 1.1788186549395334, 32.72487806332255 1.2290758199497418, 32.77514632725118 1.270320104501792, 32.832496975858426 1.3009669475729453, 32.89472605588092 1.3198389957062346, 32.959442138671875 1.3262112742867487, 33.024158221462834 1.3198389957062346, 33.08638730148534 1.3009669475729453, 33.14373795009258 1.270320104501792, 33.194006214021215 1.2290758199497418, 33.23526031207921 1.1788186549395334, 33.26591487241379 1.1214795633766812, 33.28479185746255 1.0592617545816694, 33.29116583527641 0.9945560693862632))",
+	 grid="300 m"),
+	 time(year=2020); 
+
+//// add any models here
+//@colormap(values = {
+//	gbf.aries.grazed_biomass:CultivatedGrassland: (255, 205, 115)
+//	gbf.aries.grazed_biomass:NaturalSeminaturalGrassland: (255, 153, 22)
+//	gbf.aries.grazed_biomass:OpenShrubland: (168, 139, 75)
+//})
+//model 
+////	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
+////	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
+////	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2021,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022,
+//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
+//	as type of Grassland classified into
+//		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
+//		gbf.aries.grazed_biomass:NaturalSeminaturalGrassland if 2,
+//		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
+
+number local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020 as test_stac_grassland_type;
