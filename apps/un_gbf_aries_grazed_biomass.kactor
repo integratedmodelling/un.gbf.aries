@@ -4,7 +4,7 @@ action main:
 
 multiple_tiles_spatial_boundaries ='klab:grid:tiles:square.1#select=32250,31890'
 
-output_folder_directory = "UN_GBF/Grazed_Biomass(extensive not adjusted)/Uganda"
+output_folder_directory = "UN_GBF/Grazed_Biomass(testing_sctipt)"
 
 set observables_urns (
 		gbf.aries.grazed_biomass.grassland_type
@@ -18,7 +18,7 @@ set observables_urns (
 	for year in (2020) (
 		for tile in multiple_tiles_spatial_boundaries (
 			for urn in observables_urns(
-		    context(spatial_boundaries,resolution,Time(year=year))
+		    context(tile, resolution,Time(year=year))
 		    // loop over urns
 		    for urn in observables_urns (
 		    	// submit the observation
