@@ -11,6 +11,44 @@ observing
 	lookup (landcover, ecological_zone, ?) 
 	into IPCC_LANDUSE_TABLE; 
 
+model 'local:alessio.bulckaen:im.data.global:im-data-global-ecology_gez_2010_wgs840#gez_code'
+	as type of nca.ecology.ipcc:EcologicalRegion classified into
+	nca.ecology.ipcc:BorealConiferousForest if 41,
+	nca.ecology.ipcc:BorealMountainSystem if 43,
+	nca.ecology.ipcc:BorealTundraWoodland if 42,
+	nca.ecology.ipcc:Polar if 50,
+	nca.ecology.ipcc:SubTropicalDesert if 24,
+	nca.ecology.ipcc:SubTropicalDryForest if 22,
+	nca.ecology.ipcc:SubTropicalHumidForest if 21,
+	nca.ecology.ipcc:SubTropicalMountainSystem if 25,
+	nca.ecology.ipcc:SubTropicalSteppe if 23,
+	nca.ecology.ipcc:TemperateContinentalForest if 32,
+	nca.ecology.ipcc:TemperateDesert if 34,
+	nca.ecology.ipcc:TemperateMountainSystem if 35,
+	nca.ecology.ipcc:TemperateOceanicForest if 31,
+	nca.ecology.ipcc:TemperateSteppe if 33,
+	nca.ecology.ipcc:TropicalDesert if 15,
+	nca.ecology.ipcc:TropicalDryForest if 13,
+	nca.ecology.ipcc:TropicalMoistForest if 12,
+	nca.ecology.ipcc:TropicalMountainSystem if 16,
+	nca.ecology.ipcc:TropicalRainForest if 11,
+	nca.ecology.ipcc:TropicalShrubland if 14;
+
+model local:justus.muhando:im.data.global:im-data-global-ecology.global_jrc_ipcc_climate_zones_epsg4326_10km_2010
+	as type of nca.ecology.ipcc:ClimaticZone named ipcc_climatic_region classified into
+	nca.ecology.ipcc:WarmTemperateWet if 1,
+	nca.ecology.ipcc:WarmTemperateDry if 2,
+	nca.ecology.ipcc:ColdTemperateWet if 3,
+	nca.ecology.ipcc:ColdTemperateDry if 4,
+ 	nca.ecology.ipcc:PolarMoist if 5,
+ 	nca.ecology.ipcc:PolarDry if 6,	
+	nca.ecology.ipcc:BorealWet if 7,
+	nca.ecology.ipcc:BorealDry if 8,
+	nca.ecology.ipcc:TropicalMontane if 9,
+	nca.ecology.ipcc:TropicalWet if 10,
+	nca.ecology.ipcc:TropicalMoist if 11,
+	nca.ecology.ipcc:TropicalDry if 12;
+
 //TODO:Verify IPCC_CARBON_STOCK_VEGETATION_TABLE columns structure - removed columns not used (all the * in the lookup should be removed)
 @intensive(space)
 @intensive(time)
