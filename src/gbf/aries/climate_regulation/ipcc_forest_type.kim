@@ -191,7 +191,7 @@ model presence of earth:Tropical conservation:Intact ecology:Forest earth:Region
  	tropical_humid_primary_forest
  	set to [ (tropical_primary_moist_forest == 10 || tropical_humid_primary_forest == 1 ) ? true : false];
  
-model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named primary_forest
+model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named potential_presence_of_primary_forest
 	observing			
 		    im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		    im:Height of ecology:Forest earth:Region in m named forest_height,
@@ -208,15 +208,39 @@ model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named 
 observe earth:Region named test_semantic_plantation_model
 over space(shape='EPSG:4326 POLYGON ((-76.72439575195312 7.985911007561455, -76.58203122206031 7.986817641519593, -76.58203122206031 7.855786263722578, -76.72210692660883 7.850798103288284, -76.72439575195312 7.985911007561455))',
 		   grid="30 m"),
-		time(year=2020);
+		time(start=2020, end=2022, step=1.year);
 
+
+model 'local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_treeplantationyears_forestry_epsg4326_30m_2020_mosaic'
+	as Year of agriculture:Planted ecology:Forest earth:Region
+	set to [(self != 32767 && self > 1982) ? self : unknown ];
+
+//number planted_forest_age
+//	observing
+//			year_of_tree_plantation
+//	set to [ 
+//		def age= scale.time.start.year - year_of_tree_plantation
+//		age >= 0 ? age : null
+//	];
+
+model im:Age of agriculture:Planted ecology:Forest earth:Region
+observing
+	Year of agriculture:Planted ecology:Forest earth:Region named plantation_year
+	set to [
+		def age= scale.time.start.year - year_of_tree_plantation
+		age >= 0 ? age : null
+	];
+	
+model change in im:Age of ecology:Forest earth:Region
+	observing
+		im:Age of ecology:Forest earth:Region named forest_age
+//		add GFW_forest_presence
+	set to [ forest_age + 1 ];
 /* DATA PREPROCESSING - PLANTATION FORESTS */		
 
 
 //number local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_treeplantationyears_forestry_epsg4326_30m_2020_mosaic
-model 'local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_treeplantationyears_forestry_epsg4326_30m_2020_mosaic'
-	as Year of agriculture:Planted ecology:Forest earth:Region
-	set to [(self != 32767 && self > 1982) ? self : unknown ];
+
 
 number	local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_forest_management_100m_2015_v3_2 as test_management;
 number	local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_forest_management_100m_2015_v3_2
