@@ -2,10 +2,10 @@ script un.gbf.aries.grazed_biomass
 
 action main:
 
-//multiple_tiles_spatial_boundaries ='klab:grid:tiles:square.1#select=32250,31890'
+multiple_tiles_spatial_boundaries ='klab:grid:tiles:square.1#select=32250,31890'
 spatial_boundaries = Space(shape='EPSG:4326 POLYGON ((-72.81428012081768 9.319326461106442, -72.82096193020851 9.252373938939925, -72.84075058019336 9.187982341549372, -72.87288560405088 9.12862833708337, -72.91613207083574 9.07659598842821, -72.96882804308235 9.033888501069669, -73.02894844412948 9.0021506956828, -73.09418288068079 8.982605265279943, -73.16202442992352 8.976005342944887, -73.22986597916626 8.982605265279943, -73.29510041571758 9.0021506956828, -73.3552208167647 9.033888501069669, -73.40791678901131 9.07659598842821, -73.45116325579619 9.12862833708337, -73.48329827965371 9.187982341549372, -73.50308692963854 9.252373938939925, -73.50976873902937 9.319326461106442, -73.50308692963854 9.386266146864273, -73.48329827965371 9.45062118933511, -73.45116325579619 9.509920485717672, -73.40791678901131 9.561888302127599, -73.3552208167647 9.604531257607988, -73.29510041571758 9.63621435579769, -73.22986597916626 9.65572323216712, -73.16202442992352 9.66231031846057, -73.09418288068079 9.65572323216712, -73.02894844412948 9.63621435579769, -72.96882804308235 9.604531257607988, -72.91613207083574 9.561888302127599, -72.87288560405088 9.509920485717672, -72.84075058019336 9.45062118933511, -72.82096193020851 9.386266146864273, -72.81428012081768 9.319326461106442))') 
  
- output_folder_directory = "UN_GBF/Grazed_Biomass(testing_sctipt)"
+ output_folder_directory = "UN_GBF/Grazed_Biomass"
 
 set observables_urns (
 	// before the dependencies
@@ -17,10 +17,9 @@ set observables_urns (
 
 resolution = 300.m
 for year in (2020) (
-//	for country in nature_based_tourism_spatial_boundaries (
-//		if [country.gid == 'SEN'] (
+	for tile in multiple_tiles_spatial_boundaries (
 			// set context for all the observations
-		    context(spatial_boundaries,resolution,Time(year=year))
+		    context(tile,resolution,Time(year=year))
 		    // loop over urns
 		    for urn in observables_urns (
 		    	// submit the observation
@@ -45,14 +44,13 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory + "/test_secondary_observation_export/" + urn_name + ".tiff"])
+							observation.export([output_folder_directory + year + "maps" + urn_name + "_" + tile.name + "_" + resolution + "_" + year ".tiff"])
 							info(["Exporting urn " + urn_name])
 						)
 					)
 				)	
 			)
-//		)
-//	)
-)
+		)
+	)
 	
 
