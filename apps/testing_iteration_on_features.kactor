@@ -2,7 +2,7 @@ script un.gbf.aries.reference_layer.nature_based_tourism
 
 action main:
 
-nature_based_tourism_spatial_boundaries = "local:ferdinando.villa:im.data.global:admin.countries.un"
+nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
 
 output_folder_directory = "UN_GBF/Nature_Based_Tourism"
 
