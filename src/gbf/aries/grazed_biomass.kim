@@ -45,8 +45,11 @@ observe earth:Region named area_of_testing_grazing_biomass_uganda
 over space(shape="EPSG:4326 POLYGON ((34.5221204785619 1.3183493778487332, 34.497289468275554 1.0662906901491738, 34.42375067921644 0.823898951667303, 34.30433016580706 0.6004962870331667, 34.143617191405944 0.4046745903333573, 33.94778786549046 0.243964243282349, 33.72436779923318 0.1245443689916499, 33.48194290048496 0.0510056712746945, 33.22982942215124 0.0261746668147964, 32.97771594381752 0.0510056712746945, 32.735291045069296 0.1245443689916499, 32.51187097881202 0.243964243282349, 32.31604165289653 0.4046745903333573, 32.155328678495415 0.6004962870331667, 32.035908165086035 0.823898951667303, 31.962369376026924 1.0662906901491738, 31.937538365740572 1.3183493778487332, 31.962369376026924 1.5703825490789285, 32.035908165086035 1.812701625058068, 32.155328678495415 2.035995548804948, 32.31604165289653 2.231688986488024, 32.51187097881202 2.392271084918022, 32.735291045069296 2.5115822434190136, 32.97771594381752 2.5850483037307583, 33.22982942215124 2.609853802117044, 33.48194290048496 2.5850483037307583, 33.72436779923318 2.5115822434190136, 33.94778786549046 2.392271084918022, 34.143617191405944 2.231688986488024, 34.30433016580706 2.035995548804948, 34.42375067921644 1.812701625058068, 34.497289468275554 1.5703825490789285, 34.5221204785619 1.3183493778487332))",
 	 grid="30 m"),
 	 time(year=2020); 
+observe earth:Region named small_area_of_testing_grazing_biomass_uganda
+over space(shape="EPSG:4326 POLYGON ((33.29116583527641 0.9945560693862632, 33.28479185746255 0.9298491156017263, 33.26591487241379 0.867627694177969, 33.23526031207921 0.8102831959545398, 33.194006214021215 0.7600196533848163, 33.14373795009258 0.7187689913073285, 33.08638730148534 0.6881167416578506, 33.024158221462834 0.6692410809780966, 32.959442138671875 0.6628675338425296, 32.89472605588092 0.6692410809780966, 32.832496975858426 0.6881167416578506, 32.77514632725118 0.7187689913073285, 32.72487806332255 0.7600196533848163, 32.68362396526455 0.8102831959545398, 32.652969404929976 0.867627694177969, 32.63409241988121 0.9298491156017263, 32.627718442067355 0.9945560693862632, 32.63409241988121 1.0592617545816694, 32.652969404929976 1.1214795633766812, 32.68362396526455 1.1788186549395334, 32.72487806332255 1.2290758199497418, 32.77514632725118 1.270320104501792, 32.832496975858426 1.3009669475729453, 32.89472605588092 1.3198389957062346, 32.959442138671875 1.3262112742867487, 33.024158221462834 1.3198389957062346, 33.08638730148534 1.3009669475729453, 33.14373795009258 1.270320104501792, 33.194006214021215 1.2290758199497418, 33.23526031207921 1.1788186549395334, 33.26591487241379 1.1214795633766812, 33.28479185746255 1.0592617545816694, 33.29116583527641 0.9945560693862632))",
+	 grid="300 m"),
+	 time(year=2020); 
 
- 
 /* Add data resources  */
 
 @colormap(values = {
@@ -57,14 +60,17 @@ over space(shape="EPSG:4326 POLYGON ((34.5221204785619 1.3183493778487332, 34.49
 model 
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
-	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
-//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2021,
+	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
-	as type of Grassland classified into
+	as type of Grassland named grassland_type classified into
 		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
 		gbf.aries.grazed_biomass:NaturalSeminaturalGrassland if 2,
 		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
-
+// over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
+ 
 number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020 as gpw_grassland;
 
 private model
@@ -136,7 +142,9 @@ model im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProduct
 
 // Livestock grazing distribution (GPW) number of heads of livestock per 1km grid cell (FAO stat adjusted) 
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1'
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1',
+	  'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2021_v1',
+	  'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2022_v1'
  	as count of biology:Individual agriculture:Cattle
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
@@ -187,17 +195,17 @@ model count of biology:Individual agriculture:BeefCattle
 //	set to [ cattle_count > 0 ? cattle_count*cattle_type_proportion : nodata];
 
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1'
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1'
  	as count of biology:Individual agriculture:Sheep
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1'
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1'
  	as count of biology:Individual agriculture:Goat
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 @extensive(space)
-model 'local:justus.muhando:im.aries.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1' /// horses not available?
+model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1' /// horses not available?
  	as count of biology:Individual agriculture:Horse
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle

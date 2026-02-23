@@ -1,0 +1,33 @@
+script un.gbf.aries.data_gaps_detection
+
+action main:
+
+global_national_boundaries = 
+"local:ferdinando.villa:im.data.global:admin.countries.un"
+output_folder_directory = "UN_GBF/Climate Regulation/Data gaps"
+
+	set observables_urns (
+	gbf.aries.data_gaps_detection.ipcc_climate_zone_data_gap	
+
+)
+	resolution = 5000.m
+	for year in (2020) (
+		for feature in coastal_protection_spatial_boundaries (
+			for urn in observables_urns(
+		    	context(feature,resolution,Time(year=year),urn): state -> (
+				set urn_name ""
+				if [urn.toString().startsWith("[")] (
+					set urn_name [urn.name]
+				)
+				else (
+					set urn_name urn
+				)	
+				if [state.toString().contains("[nothing")] (
+					warning(["Observation " + urn_name + " return nothing"])
+				) else ( 
+					state.export([output_folder_directory + "/" + urn_name + "_" + feature.GID + ".tiff"])
+					)
+				)
+			)					
+		)
+	)

@@ -1,0 +1,57 @@
+script un.gbf.aries.grazed_biomass
+
+action main:
+
+multiple_tiles_spatial_boundaries ='klab:grid:tiles:square.1#select=32250,31890'
+ 
+output_folder_directory = "UN_GBF/Grazed_Biomass"
+
+set observables_urns (
+	// before the dependencies
+		gbf.aries.grazed_biomass.grassland_type
+		gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing
+		gbf.aries.grazed_biomass.total_livestock_demand
+		gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass	
+		)
+
+resolution = 100.m
+for year in (2020) (
+	for tile in multiple_tiles_spatial_boundaries (
+			// set context for all the observations
+		    context(tile,resolution,Time(year=year))
+		    // loop over urns
+		    for tile in multiple_tiles_spatial_boundaries (
+		    for urn in observables_urns (
+		    	// submit the observation
+				submit(urn): (
+					WAITING     -> ()
+					STARTED     -> ()
+					ABORTED     -> warning("Aborted")
+					INTERRUPTED -> warning("Interrupted")
+					empty -> (
+						// popup on application
+						alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
+						// error with detail in k.LAB console
+						error(["Empty observation: " + urn_name])
+					)
+					observation -> (
+						set urn_name ""
+						if [urn.toString().startsWith("[")] (
+							set urn_name [urn.name]
+						) else (
+							set urn_name urn
+						)
+						if [observation.isEmpty()] (
+							warning(["Observation " + urn_name + " is empty"])
+						) else (
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" + urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])
+						
+							info(["Exporting urn " + urn_name])
+						)
+					)
+				)	
+			)
+		)
+	)
+)	
+
