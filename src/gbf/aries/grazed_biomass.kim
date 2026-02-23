@@ -71,10 +71,10 @@ model
 		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
 // over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
  
-number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020 as gpw_grassland;
-
-private model
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic
+model
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic,
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic,
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic
 	as landcover:LandCoverType classified according to im:glc-fcs30-enconding;
 
 //// GPW annual GPP dataset (unit gC/m2/year)
