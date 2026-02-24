@@ -1,170 +1,27 @@
 private namespace gbf.aries.climate_regulation.ipcc_forest_type
-using nca.landuse.ipcc, nca.ecology.ipcc;
-//	(FOREST_CARBON_VEGETATION_REDUCED_TABLE )from aries.global.carbon.tables;
-//	(IPCC_FOREST_INPUT) from gbf.aries.climate_regulation.input_tables;
+	using 
+		nca.landuse.ipcc, 
+		nca.ecology.ipcc,
+		aries.global.carbon.forest_type.ipcc;
 
 quantity Integrity;
 quantity Year;
 
-//observe earth:Region named test_primary_forest_north_colombia_forest
-//over space(shape='EPSG:4326 POLYGON ((-74.43535216382925 10.422696050854867, -75.09006865552847 10.422696050854867, -75.09006865552847 10.741280420857393, -74.43535216382925 10.741280420857393, -74.43535216382925 10.422696050854867))',
-//		   grid="300 m"),
-//		time(start=2020, end=2022, step=1.year);
-//
-///* DATA PRECPROCESSING - GENERAL */
-//
-////Forest height
-//private number 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000'
-//	as forest_height_2000
-//	set to [self > 5 ? self : 0];
-//	
-//private number 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
-//	as forest_height_2020
-//	set to [self > 5 ? self : 0];
-//	
-////// FOREST LOSS and GAIN (HANSEN GFC DATASET)
-//number local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
-//	as year_of_deforestation
-//	set to [self + 2000];
-//
-//number forest_regrowth
-//	observing
-//			reference_year, //observed_year
-//			year_of_deforestation
-//	set to [reference_year - year_of_deforestation];
-//	
-///// MC: I dont think this can give use the age at which forest is lost, and also I dont think we need it, delete?
-//number local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
-//	as forest_lost_age
-//	set to [ ((scale.time.start.year - self - 2000) > 0 ) ? (scale.time.start.year - self - 2000) : null ];
-//
-/////Note MC: Not sure why we need the age they were removed? can we not just work with the loss year?
-////model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
-////	as im:Age ecology:Forest im:Removed // small note: 'removed' implies all this loss is from human harvest, but it also includes fires, disease, wind etc. 
-//////	set to [scale.time.start.year - self - 2000 ];
-//////	set to [ ((scale.time.start.year - self - 2000) > 0 ) ? (scale.time.start.year - self - 2000) : null ];
-////	set to [
-////    def age = scale.time.start.year - self - 2000
-////    age > 0 ? age : null
-////];		
-//
-//// Note MC: the URNs of these are a bit confusing as they are from the same dataset but here appear very different 	
-//model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forestgain_forestry_epsg4326_30m_2020_mosaic
-//as presence of im:Added ecology:Forest earth:Region
-//set to [ nodata(self) ? false : (self == 1 ? true : false) ];
-//
-///// Tropical moist forest transitions JRC 
-//
-//number 'local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024'
-//	as tropical_forest_transition; 
-//	//as presence of ecology:Tropical im:Primary ecology:Forest earth:Region
-//	//set to [];
-//
-////// Boreal forest stand ages 
-//
-////TODO: confirm this is age and not a type of forest (there is values 50 when max should be 36)
-//model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
-//as presence of ecology:Boreal im:Primary ecology:Forest earth:Region
-//	set to [self >= 0];
-//
-//
-//number local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
-//	as boreal_forest_age
-//	set to [self >= 0];
-//	
-//number 2020 as reference_year;
-///// Note MC: Im not sure this makes sense? Is this age of regrown forest? Also not sure its needed?
-////model im:Age of im:Removed ecology:Forest earth:Region in year
-////	observing
-////			reference_year,
-////			year_of_deforestation
-////	set to [reference_year - year_of_deforestation];
-//
-//model geography:Elevation 
-// set to [(scale.time.end.year - scale.time.start.year)];
-//
-//
-//model local:rubencc:im.data.global:im-data-global-agriculture.center_america_plantations_plant_year_30m_1982_2020
-// as value of im:Year of agriculture:Planted ecology:Forest earth:Region
-// set to [(self != 32767 && self > 1982) ? self : unknown ];
-//
-//model change in im:Age of agriculture:Planted ecology:Forest earth:Region	
-// 	observing
-//			im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
-//			im:Height of ecology:Forest earth:Region in m named forest_height
-//	set to [ forest_height < 5 ? 0 : (planted_forest_age + 1)];
-//
-//model change in im:Age of ecology:Forest earth:Region
-//	observing
-//			im:Age of ecology:Forest earth:Region named forest_age,
-//			im:Height of ecology:Forest earth:Region in m named forest_height,
-//			value of im:Year of agriculture:Planted ecology:Forest earth:Region
-//	set to [ forest_height < 5 ? 0 : (forest_age + 1)];
-//	
-////plantation is true ? 0 : (forest_age + 1) &&
-//
-////number planted_forest_age
-////	observing
-////			year_of_tree_plantation
-////	set to [ 
-////		def age= scale.time.start.year - year_of_tree_plantation
-////		age >= 0 ? age : null
-////	];
-//
-//
-////			def additional_years_observed = scale.time.end.year - scale.time.start.year
-////			def age_observed = age + 1 
-////			age_observed <= def final_year = scale.time.end.year + 1 
-////			final_year <= scale.time.end.year additional <= years_observed 		
-//
-//
-///* DATA PRE-PROCESSING - PRIMARY FORESTS */
-//
-///*Primary Forest inputs */
-///// forest landscape intactness index for primary forest identification	
-// 
-//number local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019
-// as forest_integrity
-// set to [self*0.001];
-//
-//model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2013
-//	as presence of im:Reference conservation:Intact ecology:Forest earth:Region;
-////	over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
-//
-//number local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-//	as intact_forest;
-////	over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
-//
-//number 'local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001'
-//	as tropical_primary_forest 
-//	set to [self == 1 ? 1 : 99] 
-//	over space(shape='POLYGON((-180 -23.5, 180 -23.5, 180 23.5, -180 23.5, -180 -23.5))');
-//
-//private number 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000'
-//	as forest_height_2000
-//	set to [self > 5 ? self : 0];
-//	
-//private number 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
-//	as forest_height_2020
-//	set to [self > 5 ? self : 0];
-//
-//private number local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
-//	as europe_primary_forests;
-//	
-//model 'local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018'
-// as presence of ecology:Forest earth:Region
-// set to [ (self > 0 ) ? true : false];
-//	
-//	// below needed?
-////	over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
-	
-//Primary Forest
 
 observe earth:Region named test_semantic_primary_forest_north_colombia_forest
 	over space(shape='EPSG:4326 POLYGON ((-72.81428012081768 9.319326461106442, -72.82096193020851 9.252373938939925, -72.84075058019336 9.187982341549372, -72.87288560405088 9.12862833708337, -72.91613207083574 9.07659598842821, -72.96882804308235 9.033888501069669, -73.02894844412948 9.0021506956828, -73.09418288068079 8.982605265279943, -73.16202442992352 8.976005342944887, -73.22986597916626 8.982605265279943, -73.29510041571758 9.0021506956828, -73.3552208167647 9.033888501069669, -73.40791678901131 9.07659598842821, -73.45116325579619 9.12862833708337, -73.48329827965371 9.187982341549372, -73.50308692963854 9.252373938939925, -73.50976873902937 9.319326461106442, -73.50308692963854 9.386266146864273, -73.48329827965371 9.45062118933511, -73.45116325579619 9.509920485717672, -73.40791678901131 9.561888302127599, -73.3552208167647 9.604531257607988, -73.29510041571758 9.63621435579769, -73.22986597916626 9.65572323216712, -73.16202442992352 9.66231031846057, -73.09418288068079 9.65572323216712, -73.02894844412948 9.63621435579769, -72.96882804308235 9.604531257607988, -72.91613207083574 9.561888302127599, -72.87288560405088 9.509920485717672, -72.84075058019336 9.45062118933511, -72.82096193020851 9.386266146864273, -72.81428012081768 9.319326461106442))',
 		   grid="300 m"),
 		time(start=2020, end=2022, step=1.year);
+		
+observe earth:Region named test_semantic_plantation_model
+	over space(shape='EPSG:4326 POLYGON ((-76.72439575195312 7.985911007561455, -76.58203122206031 7.986817641519593, -76.58203122206031 7.855786263722578, -76.72210692660883 7.850798103288284, -76.72439575195312 7.985911007561455))',
+		   grid="30 m"),
+		time(start=2020, end=2022, step=1.year);
+		
 
+/*
+ * # 1) Primary Forest. -------------------------------------------------------------------------------------------------------------------------------
+ */
 /* MODELLING - PRIMARY FORESTS  */
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000'
 	as im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000;
@@ -173,50 +30,61 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 	as im:Height of ecology:Forest earth:Region in m named forest_height_2020;
 
 model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-	as im:Reference presence of conservation:Intact ecology:Forest earth:Region named intact_forest_in_2000;
+	as presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest_presence_2000
+	set to [self == 1 ? true : false];
 
 model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019'
 	as Integrity of ecology:Forest earth:Region named forest_integrity
 	set to [self * 0.001];
 		 
-number local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
-	as tropical_primary_moist_forest;
+model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
+	as type of ecology:Tropical ecology:Forest named tropical_forest_type
+	classified into
+		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
+		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
+ 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
+ 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
+ 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
+ 	  	
+model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
+	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
+	set to [self == 1 ? true : false]; 	// binary result: 1 or 0
 	
-number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
-	as tropical_humid_primary_forest; 	
+model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
+	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence;
 
-model presence of earth:Tropical conservation:Intact ecology:Forest earth:Region named tropical_primary_forest
-	observing
- 		tropical_primary_moist_forest,
- 		tropical_humid_primary_forest
- 	set to [((tropical_primary_moist_forest == 10) || (tropical_humid_primary_forest == 1)) ? true : false];
+//// FOREST LOSS and GAIN (HANSEN GFC DATASET)
+model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
+	as Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+	set to [self + 2000];
  
-model im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named potential_presence_of_primary_forest
+model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
+		Integrity of ecology:Forest earth:Region named forest_integrity,
+		presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest_presence_2000,
+		type of ecology:Tropical ecology:Forest named tropical_forest_type,
+		presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence,
+		presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence,
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		Integrity of ecology:Forest earth:Region named forest_integrity,
-		im:Reference presence of conservation:Intact ecology:Forest earth:Region named intact_forest_in_2000,
-		presence of earth:Tropical conservation:Intact ecology:Forest earth:Region named tropical_primary_forest
-	set to [((forest_integrity > 9.8) || tropical_primary_forest || intact_forest_in_2000) && ((forest_height_2000 > 5) && (forest_height_2020 > 5))];
+		Year of im:Removed ecology:Forest earth:Region named year_of_deforestation			
+	set to [
+		(((forest_integrity >= 9.8) || intact_forest_presence_2000 || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:PrimaryForest) || tropical_humid_primary_forest_presence || europe_primary_forest_presence) 
+			&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
+			&& (year_of_deforestation > 2020)
+		) ? true : false
+	];
 
-observe earth:Region named test_semantic_plantation_model
-	over space(shape='EPSG:4326 POLYGON ((-76.72439575195312 7.985911007561455, -76.58203122206031 7.986817641519593, -76.58203122206031 7.855786263722578, -76.72210692660883 7.850798103288284, -76.72439575195312 7.985911007561455))',
-		   grid="30 m"),
-		time(start=2020, end=2022, step=1.year);
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
+
+/*
+ * # 2) Old Plantation Forest. -------------------------------------------------------------------------------------------------------------------------------
+ */
 model 'local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_treeplantationyears_forestry_epsg4326_30m_2020_mosaic'
 	as Year of agriculture:Planted ecology:Forest earth:Region named plantation_year
-	set to [(self != 32767 && self > 1982) ? self : unknown];
-
-//number planted_forest_age
-//	observing
-//			year_of_tree_plantation
-//	set to [ 
-//		def age= scale.time.start.year - year_of_tree_plantation
-//		age >= 0 ? age : null
-//	];
+	set to [((self != 32767) && (self >= 1982)) ? self : unknown];
 
 model im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age
 	observing
@@ -227,19 +95,8 @@ model im:Age of agriculture:Planted ecology:Forest earth:Region named planted_fo
 		return ret
 	];
 	
-//number	local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_forest_management_100m_2015_v3_2 as test_management;
-//number	local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_forest_management_100m_2015_v3_2
-//	as forest_managment_plantation 
-//	set to [(self == 31 || self == 32 || self == 40 
-//	// 		|| self == 53
-//	 	) ? 1 : null
-//	 ];
-
 model local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_forest_management_100m_2015_v3_2
-	as presence of ecology:Forest earth:Region named forest_presence
-//	observing 
-//		forest_managment_plantation
-//	set to [ forest_managment_plantation != nodata ];
+	as presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence
 	set to [((self == 31) || (self == 32) || (self == 40)) ? true : false];
 
 model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
@@ -247,119 +104,128 @@ model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
 		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
 //		add GFW_forest_presence,
 		presence of ecology:Forest earth:Region named forest_presence
-	set to [forest_presence ? planted_forest_age + 1 : 0];
+	set to [forest_presence ? planted_forest_age + 1 : unknown];
 /* DATA PREPROCESSING - PLANTATION FORESTS */
-	
-
-
-//number local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_treeplantationyears_forestry_epsg4326_30m_2020_mosaic
-
-
 
 /* MODELLING - PLANTATIONS OLD FORESTS  */
-model im:Possible presence of nca.landuse.ipcc:OldPlantedForest earth:Region
+model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence
 	observing
 		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
-	    tropical_forest_transition,
-		forest_managment_plantation ,	
+	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
+		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
-	    im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-	    forest_lost_age
+		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
+		Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
 	set to [
-	    ( 
-	        (planted_forest_age > 20 && planted_forest_age != nodata ) ||
-	        (tropical_forest_transition == 81 && tropical_forest_transition != nodata ) ||
-	        (forest_managment_plantation == 1 && forest_managment_plantation != nodata) 
-	    &&
-	        (forest_height_2000 > 5 && forest_height_2000 != nodata &&
-	         forest_height_2020 > 5 && forest_height_2020 != nodata
-	         )
-	    &&
-	        (forest_lost_age == nodata || forest_lost_age > 20) 
-	    )    
+	    (((planted_forest_age > 20) || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:OldPlantedForest) || planted_forest_presence) 
+	    	&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
+	    	&& (year_of_deforestation > 2020)
+	    ) ? true : false
 	];
 
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+
+/*
+ * # 3) Young Plantation Forest. -------------------------------------------------------------------------------------------------------------------------------
+ */
 /* MODELLING - PLANTATIONS YOUNG FORESTS  */
-model im:Possible presence of nca.landuse.ipcc:YoungPlantedForest earth:Region
+model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_forest_presence
 	observing 
 		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
-	    tropical_forest_transition,
-		forest_managment_plantation,	
+	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
+		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
-	    im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-	    forest_lost_age
+		Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
 	set to [
-	        (planted_forest_age <= 20 ||
-	        (tropical_forest_transition > 81 && tropical_forest_transition < 87) ||
-	//          || tropical_forest_transition == 83 || tropical_forest_transition == 84 || tropical_forest_transition == 85 || tropical_forest_transition == 86 // tropical_forest_transition == in range(82 to 86) ||	
-	         forest_managment_plantation == 1) 
-	    &&
-	        (forest_height_2000 < 5 ||
-	         forest_lost_age <= 20)
+	    (((planted_forest_age <= 20) || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:YoungPlantedForest) || planted_forest_presence) 
+	    	&& ((forest_height_2000 < 5) || (year_of_deforestation <= 2020))
+	    ) ? true : false
 	];	
 
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-	
+
+
+/*
+ * # 4) Young Secondary Forest. -------------------------------------------------------------------------------------------------------------------------------
+ */	
+// Boreal forest stand ages 
+model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
+	as im:Age of ecology:Boreal ecology:Forest earth:Region;
+
 /* MODELLING - SECONDARY YOUNG FORESTS  */
-model im:Possible presence of nca.landuse.ipcc:YoungSecondaryForest earth:Region
+model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence
 	observing 
-		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000, //no-forest condition is forest height <5m, including nodata
+		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-        tropical_forest_transition,
-		forest_lost_age,
-	    boreal_forest_age
+		Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		type of ecology:Tropical ecology:Forest named tropical_forest_type,
+		im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age
 	set to [		        
-		        (forest_height_2000 < 5 || forest_height_2000 == nodata) && 
-		        (forest_height_2020 > 5 && forest_height_2020 != nodata) ||
-		        (tropical_forest_transition == 32 || tropical_forest_transition == 33 || tropical_forest_transition == 92 || tropical_forest_transition == 93 || tropical_forest_transition == 94) ||
-		        forest_lost_age <= 20 ||
-		 		boreal_forest_age <= 20    
-		];	 
+		(((forest_height_2000 < 5) && (forest_height_2020 >= 5)) 
+			|| ((forest_height_2000 >= 5) && (forest_height_2020 >= 5) && (year_of_deforestation <= 2020)) 
+			|| (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest) 
+			|| (boreal_forest_age <= 20)
+		) ? true : false
+	];	
+		
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+ 
 
 /* MODELLING SECONDARY OLD FORESTS  */
 
 /// Anything which isnt identified as other forest types 
 
+
+/*
+ * # 5) Final Forest Type Estimation. -------------------------------------------------------------------------------------------------------------------------------
+ */
 /* FOREST TYPES  */
 
-// MC : I dont think the forest height is needed as its included in the above models, also young can be <5m
+// TODO: Need to confirm with Alessio about the combinations below.
 define FOREST_TYPE_TABLE as {{	 
-     primary    | old_planted	| young_planted	|  young_secondary 	| old_secondary | forest_height_2020| 		     forest_type
-  -----------------------------------------------------------------------------------------------------------------------------------------------
-  	  true		|	  false		|	  false		|	    false		| 	  	#		|	  	 >5			| nca.landuse.ipcc:PrimaryForest		,
-	  false		|	  true		|		#		|		  #			|     	#		|	  	 >5			| nca.landuse.ipcc:OldPlantedForest		,
-	  false		|	  false		|	  true		|		  #			| 	 	#		|	  	 >0			| nca.landuse.ipcc:YoungPlantedForest	,
-	  false		|     false		|  	  false		|	    true		| 	  	#		|	  	 >0			| nca.landuse.ipcc:YoungSecondaryForest	,
-	  false		|     false		|  	  false		|	  	false		| 	  	#		|	  	 >5			| nca.landuse.ipcc:OldSecondaryForest	
+     primary_forest | old_planted_forest	| young_planted_forest	|  young_secondary_forest 	| old_secondary_forest  | 	  forest_type
+  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+	  	  true		|	  false				|	  false				|	    false				| 	  	#				| nca.landuse.ipcc:PrimaryForest		,
+		  false		|	  true				|		#				|		  #					|     	#				| nca.landuse.ipcc:OldPlantedForest		,
+		  false		|	  false				|	  true				|		  #					| 	 	#				| nca.landuse.ipcc:YoungPlantedForest	,
+		  false		|     false				|  	  false				|	    true				| 	  	#				| nca.landuse.ipcc:YoungSecondaryForest	,
+		  false		|     false				|  	  false				|	  	false				| 	  	#				| nca.landuse.ipcc:OldSecondaryForest	
 }};
 
 		
 model nca.landuse.ipcc:ForestType
 	observing
-		forest_height_2020, /// remove
-		im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named primary,
-		im:Possible presence of nca.landuse.ipcc:OldPlantedForest earth:Region named old_planted,
-		im:Possible presence of nca.landuse.ipcc:YoungPlantedForest earth:Region named young_planted,
-		im:Possible presence of nca.landuse.ipcc:YoungSecondaryForest earth:Region named young_secondary
-	lookup (primary, old_planted, young_planted, young_secondary,*,forest_height_2020,?) 
+		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
+		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
+		presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence,
+		presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence
+	lookup (estimated_primary_forest_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, ?) 
 			into FOREST_TYPE_TABLE;			
 
-private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
-	as landcover:LandCoverType named copernicus_landcover_2020 
-	classified into // according to im:copernicus-gdlc-encoding;// im:copernicus-encoding;
-		landcover:Forest if 10,
-		landcover:Shrubland if 20,
-		landcover:Grassland if 30,
-		landcover:AgriculturalVegetation if 40,
-		landcover:ArtificialSurface if 50,
-		landcover:SparseVegetation if 60,
-		landcover:GlacierPerpetualSnow if 70,
-		landcover:WaterBody if 80,
-		landcover:AquaticVegetationOverWaterBody if 90, //Should be HerbaceusWetland, so including both InlandMarsh&SaltMarsh, but that's inconsistent with our current structure
-		landcover:Mangrove if 95,
-		landcover:LichenMoss if 100;
+//private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
+//	as landcover:LandCoverType named copernicus_landcover_2020 
+//	classified into // according to im:copernicus-gdlc-encoding;// im:copernicus-encoding;
+//		landcover:Forest if 10,
+//		landcover:Shrubland if 20,
+//		landcover:Grassland if 30,
+//		landcover:AgriculturalVegetation if 40,
+//		landcover:ArtificialSurface if 50,
+//		landcover:SparseVegetation if 60,
+//		landcover:GlacierPerpetualSnow if 70,
+//		landcover:WaterBody if 80,
+//		landcover:AquaticVegetationOverWaterBody if 90, //Should be HerbaceusWetland, so including both InlandMarsh&SaltMarsh, but that's inconsistent with our current structure
+//		landcover:Mangrove if 95,
+//		landcover:LichenMoss if 100;
 
-							
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+ 
+ 
+ 
+ 
+ 							
 //---------------------------------------------------------------------------------------------------------------------------------------//			
 /*
  * COMPARISON AGAINST OTHER DATASET
@@ -504,24 +370,26 @@ define table forest_extent_result_by_forest_type_nasa as {
 	
 	
 	
-	
+/*
+ * To Be Further Modelled ------------------------------------------------------------------------------------------------------------------------------------------------------
+ */	
 			
 /* ASSIGNING AGB TO FOREST TYPES BY ECOLOGICAL ZONE AND CONTINENT */
 /// MC: Move all this to the carbon tier 1 script 
-@intensive(space)
-model ecology:AboveGroundBiomass in t/ha named above_ground_biomass
-	observing
-//	type of nca.landuse.ipcc:LandUse named ipcc_landuse,
-//	landcover:LandCoverType named landcover,
-//	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone,
-//	nca.ecology.ipcc:EcologicalRegion named ecological_zone,
-//	named continent,
-//	type of nca.ecology.ipcc:ForestManagement named forest_management
-	nca.landuse.ipcc:ForestType named forest_type
-//	lookup (*, forest_type, *, ?)
-//	into FOREST_CARBON_VEGETATION_REDUCED_TABLE; 
-	lookup (*, *, *, *, forest_type, *,*, *,?, *, *, *, *)
-		into IPCC_FOREST_INPUT; 
+//@intensive(space)
+//model ecology:AboveGroundBiomass in t/ha named above_ground_biomass
+//	observing
+////	type of nca.landuse.ipcc:LandUse named ipcc_landuse,
+////	landcover:LandCoverType named landcover,
+////	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone,
+////	nca.ecology.ipcc:EcologicalRegion named ecological_zone,
+////	named continent,
+////	type of nca.ecology.ipcc:ForestManagement named forest_management
+//	nca.landuse.ipcc:ForestType named forest_type
+////	lookup (*, forest_type, *, ?)
+////	into FOREST_CARBON_VEGETATION_REDUCED_TABLE; 
+//	lookup (*, *, *, *, forest_type, *,*, *,?, *, *, *, *)
+//		into IPCC_FOREST_INPUT; 
 
 //model nca.landuse.ipcc:ForestType named groovy_results
 //    observing
