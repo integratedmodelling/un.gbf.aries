@@ -205,20 +205,20 @@ model nca.landuse.ipcc:ForestType
 	lookup (estimated_primary_forest_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, ?) 
 			into FOREST_TYPE_TABLE;			
 
-private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
-	as landcover:LandCoverType named copernicus_landcover_2020 
-	classified into // according to im:copernicus-gdlc-encoding;// im:copernicus-encoding;
-		landcover:Forest if 10,
-		landcover:Shrubland if 20,
-		landcover:Grassland if 30,
-		landcover:AgriculturalVegetation if 40,
-		landcover:ArtificialSurface if 50,
-		landcover:SparseVegetation if 60,
-		landcover:GlacierPerpetualSnow if 70,
-		landcover:WaterBody if 80,
-		landcover:AquaticVegetationOverWaterBody if 90, //Should be HerbaceusWetland, so including both InlandMarsh&SaltMarsh, but that's inconsistent with our current structure
-		landcover:Mangrove if 95,
-		landcover:LichenMoss if 100;
+//private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
+//	as landcover:LandCoverType named copernicus_landcover_2020 
+//	classified into // according to im:copernicus-gdlc-encoding;// im:copernicus-encoding;
+//		landcover:Forest if 10,
+//		landcover:Shrubland if 20,
+//		landcover:Grassland if 30,
+//		landcover:AgriculturalVegetation if 40,
+//		landcover:ArtificialSurface if 50,
+//		landcover:SparseVegetation if 60,
+//		landcover:GlacierPerpetualSnow if 70,
+//		landcover:WaterBody if 80,
+//		landcover:AquaticVegetationOverWaterBody if 90, //Should be HerbaceusWetland, so including both InlandMarsh&SaltMarsh, but that's inconsistent with our current structure
+//		landcover:Mangrove if 95,
+//		landcover:LichenMoss if 100;
 
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
  
@@ -368,186 +368,4 @@ define table forest_extent_result_by_forest_type_nasa as {
 
 	
 	
-	
-/*
- * To Be Further Modelled ------------------------------------------------------------------------------------------------------------------------------------------------------
- */	
-			
-/* ASSIGNING AGB TO FOREST TYPES BY ECOLOGICAL ZONE AND CONTINENT */
-/// MC: Move all this to the carbon tier 1 script 
-//@intensive(space)
-//model ecology:AboveGroundBiomass in t/ha named above_ground_biomass
-//	observing
-////	type of nca.landuse.ipcc:LandUse named ipcc_landuse,
-////	landcover:LandCoverType named landcover,
-////	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone,
-////	nca.ecology.ipcc:EcologicalRegion named ecological_zone,
-////	named continent,
-////	type of nca.ecology.ipcc:ForestManagement named forest_management
-//	nca.landuse.ipcc:ForestType named forest_type
-////	lookup (*, forest_type, *, ?)
-////	into FOREST_CARBON_VEGETATION_REDUCED_TABLE; 
-//	lookup (*, *, *, *, forest_type, *,*, *,?, *, *, *, *)
-//		into IPCC_FOREST_INPUT; 
-
-//model nca.landuse.ipcc:ForestType named groovy_results
-//    observing
-//        forest_height_2020,
-//        im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named primary_forest,
-//        im:Possible presence of nca.landuse.ipcc:OldPlantedForest earth:Region named old_planted_forest,
-//        im:Possible presence of nca.landuse.ipcc:YoungPlantedForest earth:Region named young_planted_forest,
-//        im:Possible presence of nca.landuse.ipcc:YoungSecondaryForest earth:Region named young_secondary_forest
-//
-//set to [
-//    // no forest if height ≤ 5 or nodata
-//    if (forest_height_2020 == nodata || forest_height_2020 <= 5) {
-//        return nodata
-//    }
-//
-//    // primary forest
-//    if (primary_forest != nodata && primary_forest) {
-//        return nca.landuse.ipcc:PrimaryForest
-//    }
-//
-//    // old planted
-//    if (old_planted_forest != nodata && old_planted_forest) {
-//        return nca.landuse.ipcc:OldPlantedForest
-//    }
-//
-//    // young planted
-//    if (young_planted_forest != nodata && young_planted_forest) {
-//        return nca.landuse.ipcc:YoungPlantedForest
-//    }
-//
-//    // young secondary
-//    if (young_secondary_forest != nodata && young_secondary_forest) {
-//        return nca.landuse.ipcc:YoungSecondaryForest
-//    }
-//
-//    // anything else (still forest, since height > 5)
-//    return nca.landuse.ipcc:OldSecondaryForest
-//];
-	
-	 
-define PRIMARY_FOREST_TABLE as {{	 
-  forest_integrity| intact_forest	| forest_growth	|planted_forest_age | tree_height| 			forest_type
-  ---------------------------------------------------------------------------------------------------------------------------
-//  	  true		|	     #			|	  	#		|		  #			| 	  #		|nca.landuse.ipcc:PrimaryForest			,
-	  false		|	     *			|		#		|		 >=20		|     #		|nca.landuse.ipcc:OldPlantedForest		,
-	  false		|	     *			|		#		|		 <20 		| 	  #		|nca.landuse.ipcc:YoungPlantedForest	,
-  	  true		|	     #			|	  	#		|		  #			| 	  #		|nca.landuse.ipcc:PrimaryForest			,
-	  false		|      0 to 20		|  	  true		|	  	  #			| 	  #		|nca.landuse.ipcc:YoungSecondaryForest	,
-	  false		|      0 to 20		|  	  	#		|	  	  #			| 	  #		|nca.landuse.ipcc:YoungSecondaryForest	,
-	  false		|        #			|  	  	#		|	  	  #			| 	 true	|nca.landuse.ipcc:OldSecondaryForest
-}};	 
-
-
-//// NOTE MC: I think all the below is old code and old tests, delete?	 
-//
-//    set to [
-//    	return (nodata (planted_forest_age) && 
-//    		   nodata (forest_regrowth) &&
-//    		   forest_growth == false &&
-//    		   tree_height == true &&
-//    		   primary_forest == true) ?
-//    		   true : false
-//    		   forest_integrity >4.9 ];
-
-//@reliability(60)
-//model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
-//	as presence of im:Critical (conservation:Pristine ecology:Forest earth:Region)
-//over space(shape="EPSG:4326 POLYGON((-180.00714025821628 179.98875974178253, -90.00128932561628 179.98875974178253, -90.00128932561628 90.0008106743831, -180.00714025821628 90.0008106743831, -180.00714025821628 179.98875974178253))");
-//
-//@reliability(90)
-//model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
-////	as presence of im:Critical (conservation:Pristine ecology:Forest earth:Region)
-//	as presence of im:Critical (conservation:Pristine earth:Tropical ecology:Forest earth:Region)
-//	set to [self == 1 ? true : false]
-//	over space(shape='POLYGON((-180 -23.5, 180 -23.5, 180 23.5, -180 23.5, -180 -23.5))');
-//
-//observe earth:Region named test_primary_forest_north_colombia
-//over space(shape='EPSG:4326 POLYGON ((-74.43535216382925 10.422696050854867, -75.09006865552847 10.422696050854867, -75.09006865552847 10.741280420857393, -74.43535216382925 10.741280420857393, -74.43535216382925 10.422696050854867))',
-//		   grid="300 m"),
-//		time(year=2020);
-//		
-//observe earth:Region named  test_primary_forest_north_colombia_tile_1degree
-//    over space(urn='klab:grid:tiles:square.1#select=36106',
-//    	       grid="300 m"),
-//    	 time(year=2020);
-//
-///*This model doesn't work outisde the tropical area because the tropical data cannot be observed and dataflow is not built */
-//model presence of im:Reference im:Critical (conservation:Pristine ecology:Forest earth:Region)
-// observing 
-// 		presence of im:Critical (conservation:Pristine earth:Tropical ecology:Forest earth:Region) named pristine_tropical_forest,
-// 		presence of im:Critical (conservation:Pristine ecology:Forest earth:Region) named pristine_forest
-// 	set to [nodata(pristine_tropical_forest)  ? pristine_forest : pristine_tropical_forest]
-// 	over space(shape='POLYGON((-180 -23.5, 180 -23.5, 180 23.5, -180 23.5, -180 -23.5))');
-//
-///*This model overcome the problem described above, observing the concept everywhere */
-//model presence of im:Reference im:Critical (conservation:Pristine ecology:Forest earth:Region)
-//	observing
-//		presence of im:Critical (conservation:Pristine ecology:Forest earth:Region) named critical_pristine_forest	
-//		set to [critical_pristine_forest == true ? true : false];
-//
-//model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forestgain_forestry_epsg4326_30m_2020_mosaic
-//	as presence of im:Added ecology:Forest earth:Region named forest_gained
-//	set to [self==1 ? true : false];
-//
-////TODO: Use forest height instead, and model both 2000 and 2020 and model forest regrowth
-//model local:rubencc:im.data.global:im-data-global-conservation.global_forest_watch_tree_cover_30m_2000
-////	  local:rubencc:im.data.global:im-data-global-conservation.global_forest_watch_tree_cover_30m_2020
-//	as presence of im:Reference ecology:Forest earth:Region
-//	"Areas with a tree-cover of at least 30% in the year 2000 are considered as reference forested area to estimate primary forest"
-//	set to [self >= 30];
-////model local:rubencc:im.data.global:im-data-global-conservation.global_forest_watch_tree_cover_30m_2000
-////	  local:rubencc:im.data.global:im-data-global-conservation.global_forest_watch_tree_cover_30m_2010
-//	as presence of im:Reference ecology:Forest earth:Region
-//	"Areas with a tree-cover of at least 30% in the year 2000 are considered as reference forested area to estimate primary forest"
-//	set to [self >= 30];
-
-
-//define FOREST_TYPE_IPCC_TABLE as {{	 
-//   forest_growth|  forest_regrowth	|primary_forest	|planted_forest_age | tree_cover| 			forest_type
-//   --------------------------------------------------------------------------------------------------------------------------
-//	  false		|	  unknown		|	   true		|		unknown		| 	true		|nca.landuse.ipcc:PrimaryForest			
-////	  false		|	    <1 			|	   true		|		<1			| 	true		|nca.landuse.ipcc:PrimaryForest	
-////tried to substitute unknown with <1, null and nodata but nothing works - the condition to discard nodata values is ignored
-//}};
-
-//model nca.landuse.ipcc:ForestType
-//observing
-//	planted_forest_age,
-//	forest_regrowth,
-//	presence of im:Added ecology:Forest earth:Region named forest_growth,
-//	presence of im:Reference im:Critical (conservation:Pristine ecology:Forest earth:Region) named primary_forest,
-//	presence of im:Reference ecology:Forest earth:Region named tree_cover	
-// lookup (forest_growth,forest_regrowth, primary_forest, planted_forest_age, tree_cover, ?) into FOREST_TYPE_IPCC_TABLE;
-
-model presence of conservation:Intact nca.landuse.ipcc:PrimaryForest earth:Region
-	observing
-		planted_forest_age,
-		presence of im:Removed ecology:Forest earth:Region named forest_loss, //forest_loss	
-		presence of im:Added ecology:Forest earth:Region named forest_growth, //forest_gained
-		presence of im:Reference im:Critical (conservation:Pristine ecology:Forest earth:Region) named primary_forest,
-		presence of im:Reference ecology:Forest earth:Region named tree_cover	
-    set to [
-    	return (nodata (planted_forest_age) && 
-    		   nodata (forest_regrowth) &&
-    		   forest_growth == false &&
-    		   tree_height == true &&
-    		   primary_forest == true) ?
-    		   true : false];
-/*Geographic restriction no longer as presence of im:Reference im:Critical (conservation:Pristine ecology:Forest earth:Region) now <llows observation also outside tropical areas */
-//    over space(shape="EPSG:4326 POLYGON ((180 -23.43, 180 -23.43, 180 23.43, -180 23.43, -180 -23.43))");
-
-define FOREST_TYPE_IPCC_TABLE as {{	 
-  primary_forest|  forest_regrowth	| forest_growth	|planted_forest_age | tree_height| 			forest_type
-  ---------------------------------------------------------------------------------------------------------------------------
-  	  true		|	     #			|	  	#		|		  #			| 	  #		|nca.landuse.ipcc:PrimaryForest			,
-	  false		|	     *			|		#		|		 >=20		|     #		|nca.landuse.ipcc:OldPlantedForest		,
-	  false		|	     *			|		#		|		 <20 		| 	  #		|nca.landuse.ipcc:YoungPlantedForest	,
-	  false		|      0 to 20		|  	  true		|	  	  #			| 	  #		|nca.landuse.ipcc:YoungSecondaryForest	,
-	  false		|      0 to 20		|  	  	#		|	  	  #			| 	  #		|nca.landuse.ipcc:YoungSecondaryForest	,
-	  false		|        #			|  	  	#		|	  	  #			| 	 true	|nca.landuse.ipcc:OldSecondaryForest
-}};
 
