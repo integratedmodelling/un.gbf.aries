@@ -3,65 +3,51 @@ script un.gbf.aries.coastal_protection
 action main:
 
 coastal_protection_spatial_boundaries = 
-//'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_4326'
 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326'
 
 output_folder_directory = "UN_GBF/Coastal_Protection"
 
-	set observables_urns (
-		{landcover:LandCoverType}
-//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_demand
-//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_mangrove
-//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_saltmarsh
-//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_coral
-//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_seagrass
-//		aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply		
-//		gbf.aries.coastal_protection_hazard.delta_hazard_mangrove
-//		gbf.aries.coastal_protection_hazard.delta_hazard_saltmarsh
-//		gbf.aries.coastal_protection_hazard.delta_hazard_coral_reef
-//		gbf.aries.coastal_protection_hazard.delta_hazard_seagrass
-//		gbf.aries.coastal_protection_hazard.combined_delta		
-
-)
-/*
- * Set the tables to summarise statistics or generate indicator for an observation (as .xls files) 
- */
- 	set table_urns (
-//    	aries.global.coastalprotection.exposurevulnerability.stratified.cp_demand_table
-//    	aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_table
-//    	aries.global.coastalprotection.exposurevulnerability.stratified.cp_supply_hazard_reduction_table  
-	)
- 	
-	resolution = 300.m
-	field_iteration = tile_index_1d
-	for year in (2020) (
-		for feature in coastal_protection_spatial_boundaries (
-//			if [feature.tile_index_1d == '11992' || '11993' ](
-			if [feature.tile_index_1d  == 11992 || feature.tile_index_1d  == 11993 ](
-//			if [feature.gid== '1' || feature.gid == '2' ](		
-			for urn in observables_urns(
-		    	context(feature,resolution,Time(year=year),urn): state -> (
-				set urn_name ""
-				if [urn.toString().startsWith("[")] (
-					set urn_name [urn.name]
-				)
-				else (
-					set urn_name urn
-				)	
-				if [state.toString().contains("[nothing")] (
-					warning(["Observation " + urn_name + " return nothing"])
-				) else ( 
-					state.export([output_folder_directory + "/" + year + "/" + "maps" + "/" + urn_name + "_" + feature.tile_index_1d + ".tiff"])
-//					state.export([output_folder_directory + "/" + year + "/" + "maps" + "/" + urn_name + _ + gid +".tiff"])
-				)
-			)
-		)					
-//				(for table_urn in table_urns(
-//					context(country,resolution,Time(year=year), table_urn)
-//					pack(:tables): url -> download(url, filename=[output_folder_directory + "/" + year + "/" + "tables" + "/" + table_urn + ".xlsx"])
-
-//				)
-//			)
+set observables_urns (
+	// before the dependencies
+	gbf.aries.coastal.protection.hazard.combined_delta
 		)
-	  )
+
+resolution = 100.m
+for year in (2020 2021 2022) (
+	for tile in coastal_protection_spatial_boundaries (
+			// set context for all the observations
+		    context(tile,resolution,Time(year=year))
+		    // loop over urns
+		    for urn in observables_urns (
+		    	// submit the observation
+				submit(urn): (
+					WAITING     -> ()
+					STARTED     -> ()
+					ABORTED     -> warning("Aborted")
+					INTERRUPTED -> warning("Interrupted")
+					empty -> (
+						// popup on application
+						alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
+						// error with detail in k.LAB console
+						error(["Empty observation: " + urn_name])
+					)
+					observation -> (
+						set urn_name ""
+						if [urn.toString().startsWith("[")] (
+							set urn_name [urn.name]
+						) else (
+							set urn_name urn
+						)
+						if [observation.isEmpty()] (
+							warning(["Observation " + urn_name + " is empty"])
+						) else (
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])
+						
+							info(["Exporting urn " + urn_name])
+						)
+					)
+				)	
+			)
+		)
 	)
+	
