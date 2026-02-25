@@ -9,12 +9,17 @@ output_folder_directory = "UN_GBF/Coastal_Protection"
 
 set observables_urns (
 	// before the dependencies
-	gbf.aries.coastal.protection.hazard.combined_delta
+	gbf.aries.coastal.protection.exposurevulnerability.combined_delta
+	gbf.aries.coastal.protection.exposurevulnerability.cp_demand
+	gbf.aries.coastal.protection.exposurevulnerability.cp_supply
+	gbf.aries.coastal.protection.exposurevulnerability.cp_total_new
 		)
 
 resolution = 100.m
-for year in (2020 2021 2022) (
-	for tile in coastal_protection_spatial_boundaries (
+for year in (2020) (
+		for tile in coastal_protection_spatial_boundaries (
+			if [tile.tile_index_1d == 42649](
+		
 			// set context for all the observations
 		    context(tile,resolution,Time(year=year))
 		    // loop over urns
@@ -41,13 +46,13 @@ for year in (2020 2021 2022) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/"+ "tile_index_1d_" +  tile.tile_index_1d + "/" + urn_name + "_tile_index_1d_"  + tile.tile_index_1d + "_" + resolution + "_" + year + ".tiff"])
 						
 							info(["Exporting urn " + urn_name])
 						)
 					)
 				)	
 			)
-		)
+		))
 	)
 	
