@@ -1,7 +1,7 @@
-namespace gbf.aries.concept;
+private namespace gbf.aries.concept;
 
-quantity Integrity
-	describes im:Wholeness physical:Status;
-	
-quantity Year
-	describes value of im:Year;
+//quantity Integrity
+//	describes im:Wholeness physical:Status;
+//	
+//quantity Year
+//	describes value of im:Year;
