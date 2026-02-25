@@ -69,12 +69,15 @@ model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primar
 	set to [self == 1 ? true : false]; 	// binary result: 1 or 0
 	
 // TODO: For Justus to test. ###################
-model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
-	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
-	set to [self >= 0 ? true : false];
+//@reliability(40)
+model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
+	set to [false];
+//
+//model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
+//	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
+//	set to [self >= 0 ? true : false];
+//	over space(urn = 'local:srwohl:im.data.global:im-data-global-landcover_corine_extent');
 // #############################################
-//model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
-//	set to [false];
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
