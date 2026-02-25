@@ -35,13 +35,14 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 	as im:Height of ecology:Forest earth:Region in m named forest_height_2020;
 
 model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
-	as type of ecology:Tropical ecology:Forest named tropical_forest_type
-	classified into
-		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
-		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
- 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
- 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
- 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
+//	as type of ecology:Tropical ecology:Forest named tropical_forest_type
+//	classified into
+//		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
+//		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
+// 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
+// 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
+// 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
+ 	as value of ecology:Tropical ecology:Forest named tropical_forest_type;
  		
  //// FOREST LOSS (HANSEN GFC DATASET)
 model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
@@ -67,22 +68,32 @@ model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primar
 	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
 	set to [self == 1 ? true : false]; 	// binary result: 1 or 0
 	
-model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
-	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
-	set to [self >= 0 ? true : false];
+// TODO: Not working in Colombia.
+//model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
+//	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
+//	set to [self >= 0 ? true : false];
+model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
+	set to [false];
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
 		gbf.aries.climate_regulation.ipcc_forest_type:Integrity of ecology:Forest earth:Region named forest_integrity,
 		presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest_presence_2000,
-		type of ecology:Tropical ecology:Forest named tropical_forest_type,
+//		type of ecology:Tropical ecology:Forest named tropical_forest_type,
+		value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence,
 		presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence,
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation			
+//	set to [
+//		(((forest_integrity >= 9.8) || intact_forest_presence_2000 || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:PrimaryForest) || tropical_humid_primary_forest_presence || europe_primary_forest_presence) 
+//			&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
+//			&& (year_of_deforestation > 2020)
+//		) ? true : false
+//	];
 	set to [
-		(((forest_integrity >= 9.8) || intact_forest_presence_2000 || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:PrimaryForest) || tropical_humid_primary_forest_presence || europe_primary_forest_presence) 
+		(((forest_integrity >= 9.8) || intact_forest_presence_2000 || (tropical_forest_type == 10) || tropical_humid_primary_forest_presence || europe_primary_forest_presence) 
 			&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
 			&& (year_of_deforestation > 2020)
 		) ? true : false
@@ -124,13 +135,20 @@ model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
 model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence
 	observing
 		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
-	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
+//	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
+	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+//	set to [
+//	    (((planted_forest_age > 20) || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:OldPlantedForest) || planted_forest_presence) 
+//	    	&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
+//	    	&& (year_of_deforestation > 2020)
+//	    ) ? true : false
+//	];
 	set to [
-	    (((planted_forest_age > 20) || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:OldPlantedForest) || planted_forest_presence) 
+	    (((planted_forest_age > 20) || (tropical_forest_type ==81) || planted_forest_presence) 
 	    	&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
 	    	&& (year_of_deforestation > 2020)
 	    ) ? true : false
@@ -147,12 +165,18 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_forest_presence
 	observing 
 		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
-	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
+//	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
+	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+//	set to [
+//	    (((planted_forest_age <= 20) || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:YoungPlantedForest) || planted_forest_presence) 
+//	    	&& ((forest_height_2000 < 5) || (year_of_deforestation <= 2020))
+//	    ) ? true : false
+//	];
 	set to [
-	    (((planted_forest_age <= 20) || (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:YoungPlantedForest) || planted_forest_presence) 
+	    (((planted_forest_age <= 20) || ((tropical_forest_type == 82) || (tropical_forest_type == 83) || (tropical_forest_type == 84) || (tropical_forest_type == 85) || (tropical_forest_type == 86)) || planted_forest_presence) 
 	    	&& ((forest_height_2000 < 5) || (year_of_deforestation <= 2020))
 	    ) ? true : false
 	];	
@@ -165,8 +189,11 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
  * # 4) Young Secondary Forest. -------------------------------------------------------------------------------------------------------------------------------
  */	
 // Boreal forest stand ages 
-model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
-	as im:Age of ecology:Boreal ecology:Forest earth:Region;
+// TODO: Not working in Colombia.
+//model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
+//	as im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age;
+model im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age
+	set to [0];
 
 /* MODELLING - SECONDARY YOUNG FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence
@@ -174,12 +201,20 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
-		type of ecology:Tropical ecology:Forest named tropical_forest_type,
+//		type of ecology:Tropical ecology:Forest named tropical_forest_type,
+		value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age
+//	set to [		        
+//		(((forest_height_2000 < 5) && (forest_height_2020 >= 5)) 
+//			|| ((forest_height_2000 >= 5) && (forest_height_2020 >= 5) && (year_of_deforestation <= 2020)) 
+//			|| (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest) 
+//			|| (boreal_forest_age <= 20)
+//		) ? true : false
+//	];
 	set to [		        
 		(((forest_height_2000 < 5) && (forest_height_2020 >= 5)) 
 			|| ((forest_height_2000 >= 5) && (forest_height_2020 >= 5) && (year_of_deforestation <= 2020)) 
-			|| (tropical_forest_type is ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest) 
+			|| ((tropical_forest_type == 32) || (tropical_forest_type == 33) || (tropical_forest_type == 92) || (tropical_forest_type == 93) || (tropical_forest_type == 94)) 
 			|| (boreal_forest_age <= 20)
 		) ? true : false
 	];	
