@@ -13,17 +13,35 @@ observe earth:Region named test_semantic_plantation_model
 	over space(shape='EPSG:4326 POLYGON ((-76.72439575195312 7.985911007561455, -76.58203122206031 7.986817641519593, -76.58203122206031 7.855786263722578, -76.72210692660883 7.850798103288284, -76.72439575195312 7.985911007561455))',
 		   grid="30 m"),
 		time(start=2020, end=2022, step=1.year);
-		
 
 /*
- * # 1) Primary Forest. -------------------------------------------------------------------------------------------------------------------------------
- */
-/* MODELLING - PRIMARY FORESTS  */
+ * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
+ */		
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000'
 	as im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000;
 	
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
 	as im:Height of ecology:Forest earth:Region in m named forest_height_2020;
+
+model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
+	as type of ecology:Tropical ecology:Forest named tropical_forest_type
+	classified into
+		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
+		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
+ 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
+ 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
+ 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
+ 		
+ //// FOREST LOSS (HANSEN GFC DATASET)
+model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
+	as gbf.aries.concept:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+	set to [self + 2000];
+ 
+ 
+/*
+ * # 1) Primary Forest. -------------------------------------------------------------------------------------------------------------------------------
+ */
+/* MODELLING - PRIMARY FORESTS  */
 
 model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
 	as presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest_presence_2000
@@ -33,15 +51,7 @@ model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest
 	as gbf.aries.concept:Integrity of ecology:Forest earth:Region named forest_integrity
 	set to [self * 0.001];
 		 
-model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
-	as type of ecology:Tropical ecology:Forest named tropical_forest_type
-	classified into
-		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
-		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
- 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
- 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
- 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
- 	  	
+	  	
 model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
 	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
 	set to [self == 1 ? true : false]; 	// binary result: 1 or 0
@@ -49,10 +59,6 @@ model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primar
 model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
 	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence;
 
-//// FOREST LOSS and GAIN (HANSEN GFC DATASET)
-model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
-	as gbf.aries.concept:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
-	set to [self + 2000];
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
