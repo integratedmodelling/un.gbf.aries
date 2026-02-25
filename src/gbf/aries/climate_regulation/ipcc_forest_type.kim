@@ -292,11 +292,6 @@ abstract identity MapProvider
 		EuropeanSpaceAgency,
 		NASAAmericanSpaceAgency,
 		ARIESModelled;
-
-observe earth:Region named test_primary_forest_north_colombia_forest_jrc
-	over space(shape='EPSG:4326 POLYGON ((-74.43535216382925 10.422696050854867, -75.09006865552847 10.422696050854867, -75.09006865552847 10.741280420857393, -74.43535216382925 10.741280420857393, -74.43535216382925 10.422696050854867))',
-			   grid="300 m"),
-			time(year=2020);
 		
 ////TODO:Removed ARIESModelled after comparison script is run
 //model ARIESModelled nca.landuse.ipcc:ForestType named forest_type_modelled
