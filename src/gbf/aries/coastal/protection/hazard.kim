@@ -441,114 +441,114 @@ model im:Predicted value of risk:Hazard earth:Coast with SeaGrass
 	return ( coast < 20000 ? hazard_index : null );
 	];		
 	
-// *********************************************************
-
-/*
- * DATA
- */ 
-number 'local:caterina.gilli:im.data.global:im-data-global-demography.global_nasa_grdiv1_sociodemographic_epsg4326_1km_2010_2020_v1'
-	as grdi
-	set to [nodata(self) ? 500 : self]; 
-//model 'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_r2025a_epsg4326_100m_2020_v1'
-////	as worldpop_r2025a_v1_2020;
-//	as count of demography:HumanIndividual;
-
-//UPDATED RESOURCES FOR WORLDPOP 2020-2022. Change the resource above for global coverage for the year 2020 
-model 	'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2020_r2025a_v1',
-		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2021_r2025a_v1',
-		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2022_r2025a_v1' 
-	as count of demography:HumanIndividual;
-
-@colormap(values = {
-	0: (0,204,0),
-	1: (204, 0, 0),
-	2: (204, 0, 204)
-}, continuous=true)		
-number delta_hazard_mangrove
-	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:Mangrove named hazard_with_mangrove,
-		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
-	set to [hazard_without_hab - hazard_with_mangrove];
-
-number delta_all
-	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:All named hazard_with_all,
-		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
-	set to [hazard_without_hab - hazard_with_all];
-
-@colormap(values = {
-	0: (0,204,0),
-	1: (204, 0, 0),
-	2: (204, 0, 204)
-}, continuous=true)		
-number delta_hazard_saltmarsh
-	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:SaltMarsh named hazard_with_saltmarsh,
-		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
-	set to [hazard_without_hab - hazard_with_saltmarsh];
-
-@colormap(values = {
-	0: (0,204,0),
-	1: (204, 0, 0),
-	2: (204, 0, 204)
-}, continuous=true)		
-number delta_hazard_coral_reef
-	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:CoralReef named hazard_with_coral_reef,
-		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
-	set to [hazard_without_hab - hazard_with_coral_reef];
-
-@colormap(values = {
-	0: (0,204,0),
-	1: (204, 0, 0),
-	2: (204, 0, 204)
-}, continuous=true)		
-number delta_hazard_seagrass
-	observing
-		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:SeaGrass named hazard_with_seagrass,
-		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
-	set to [hazard_without_hab - hazard_with_seagrass];	
-
-@colormap(values = {
-	0: (0,204,0),
-	1: (204, 0, 0),
-	2: (204, 0, 204)
-}, continuous=true)		
-number combined_delta
-	observing
-		delta_hazard_mangrove,
-		delta_hazard_saltmarsh,
-		delta_hazard_coral_reef,
-		delta_hazard_seagrass
-	set to [
-		def variables = [delta_hazard_mangrove, delta_hazard_saltmarsh, delta_hazard_coral_reef, delta_hazard_seagrass\]
-		return variables.max()
-	];
-	
-//abstract attribute FakeProtectiveHabitat
-//	has children
-//		WaterBody,
-//		Mangrove,
-//		SaltMarsh,
-//		CoralReef,
-//		SeaGrass;
+//// *********************************************************
 //
-//quality FakeProtectiveHabitatType is type of FakeProtectiveHabitat;	
-//model FakeProtectiveHabitatType
+///*
+// * DATA
+// */ 
+//number 'local:caterina.gilli:im.data.global:im-data-global-demography.global_nasa_grdiv1_sociodemographic_epsg4326_1km_2010_2020_v1'
+//	as grdi
+//	set to [nodata(self) ? 500 : self]; 
+////model 'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_r2025a_epsg4326_100m_2020_v1'
+//////	as worldpop_r2025a_v1_2020;
+////	as count of demography:HumanIndividual;
+//
+////UPDATED RESOURCES FOR WORLDPOP 2020-2022. Change the resource above for global coverage for the year 2020 
+//model 	'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2020_r2025a_v1',
+//		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2021_r2025a_v1',
+//		'local:justus.muhando:im.data.global:im-data-global-demography.global_worldpop_population_counts_epsg4326_100m_2022_r2025a_v1' 
+//	as count of demography:HumanIndividual;
+//
+//@colormap(values = {
+//	0: (0,204,0),
+//	1: (204, 0, 0),
+//	2: (204, 0, 204)
+//}, continuous=true)		
+//number delta_hazard_mangrove
+//	observing
+//		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:Mangrove named hazard_with_mangrove,
+//		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
+//	set to [hazard_without_hab - hazard_with_mangrove];
+//
+//number delta_all
+//	observing
+//		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:All named hazard_with_all,
+//		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
+//	set to [hazard_without_hab - hazard_with_all];
+//
+//@colormap(values = {
+//	0: (0,204,0),
+//	1: (204, 0, 0),
+//	2: (204, 0, 204)
+//}, continuous=true)		
+//number delta_hazard_saltmarsh
+//	observing
+//		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:SaltMarsh named hazard_with_saltmarsh,
+//		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
+//	set to [hazard_without_hab - hazard_with_saltmarsh];
+//
+//@colormap(values = {
+//	0: (0,204,0),
+//	1: (204, 0, 0),
+//	2: (204, 0, 204)
+//}, continuous=true)		
+//number delta_hazard_coral_reef
+//	observing
+//		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:CoralReef named hazard_with_coral_reef,
+//		im:Predicted value of risk:Hazard earth:Coast  named hazard_without_hab
+//	set to [hazard_without_hab - hazard_with_coral_reef];
+//
+//@colormap(values = {
+//	0: (0,204,0),
+//	1: (204, 0, 0),
+//	2: (204, 0, 204)
+//}, continuous=true)		
+//number delta_hazard_seagrass
+//	observing
+//		im:Predicted value of risk:Hazard earth:Coast with gbf.aries.coastal.protection.hazard:SeaGrass named hazard_with_seagrass,
+//		im:Predicted value of risk:Hazard earth:Coast named hazard_without_hab
+//	set to [hazard_without_hab - hazard_with_seagrass];	
+//
+//@colormap(values = {
+//	0: (0,204,0),
+//	1: (204, 0, 0),
+//	2: (204, 0, 204)
+//}, continuous=true)		
+//number combined_delta
 //	observing
 //		delta_hazard_mangrove,
 //		delta_hazard_saltmarsh,
 //		delta_hazard_coral_reef,
 //		delta_hazard_seagrass
 //	set to [
-//		delta_hazard_mangrove>0 ? aries.global.coastalprotection.exposurevulnerability.stratified:Mangrove :
-//			(delta_hazard_saltmarsh > 0 ? aries.global.coastalprotection.exposurevulnerability.stratified:SaltMarsh :
-//				(delta_hazard_coral_reef>0 ? aries.global.coastalprotection.exposurevulnerability.stratifiedCoralReef :
-//					(delta_hazard_seagrass>0 ? aries.global.coastalprotection.exposurevulnerability.stratified:SeaGrass : unknown)
-//				)
-//			)
-//	];	
-//		
+//		def variables = [delta_hazard_mangrove, delta_hazard_saltmarsh, delta_hazard_coral_reef, delta_hazard_seagrass\]
+//		return variables.max()
+//	];
+//	
+////abstract attribute FakeProtectiveHabitat
+////	has children
+////		WaterBody,
+////		Mangrove,
+////		SaltMarsh,
+////		CoralReef,
+////		SeaGrass;
+////
+////quality FakeProtectiveHabitatType is type of FakeProtectiveHabitat;	
+////model FakeProtectiveHabitatType
+////	observing
+////		delta_hazard_mangrove,
+////		delta_hazard_saltmarsh,
+////		delta_hazard_coral_reef,
+////		delta_hazard_seagrass
+////	set to [
+////		delta_hazard_mangrove>0 ? aries.global.coastalprotection.exposurevulnerability.stratified:Mangrove :
+////			(delta_hazard_saltmarsh > 0 ? aries.global.coastalprotection.exposurevulnerability.stratified:SaltMarsh :
+////				(delta_hazard_coral_reef>0 ? aries.global.coastalprotection.exposurevulnerability.stratifiedCoralReef :
+////					(delta_hazard_seagrass>0 ? aries.global.coastalprotection.exposurevulnerability.stratified:SeaGrass : unknown)
+////				)
+////			)
+////	];	
+////		
 /*
  * ---------------------------------------------
  * CONTEXT
@@ -581,3 +581,12 @@ observe earth:Region named one_tile_with_mangroves
     	 time(
     	 	year = 2020
     	 );
+    	 
+observe earth:Region named one_coastline_chunk
+     over space(
+			urn = 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326#tile_index_1d=42649',
+    		grid = "1000 m",
+    		projection = "EPSG:4326"),
+    	 time(
+    	 	year = 2020
+    	 ); 
