@@ -1,4 +1,4 @@
-private namespace gbf.aries.concept;
+namespace gbf.aries.concept;
 
 quantity Integrity
 	describes im:Wholeness physical:Status;
