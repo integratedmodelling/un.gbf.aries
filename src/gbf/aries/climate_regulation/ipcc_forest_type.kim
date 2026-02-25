@@ -34,6 +34,7 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
 	as im:Height of ecology:Forest earth:Region in m named forest_height_2020;
 
+// TODO: Not working in areas within Europe.
 model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
 //	as type of ecology:Tropical ecology:Forest named tropical_forest_type
 //	classified into
@@ -63,20 +64,19 @@ model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest
 	as gbf.aries.climate_regulation.ipcc_forest_type:Integrity of ecology:Forest earth:Region named forest_integrity
 	set to [self * 0.001];
 		 
-	  	
+// TODO: Not working in areas within Europe.	  	
 model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
 	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
 	set to [self == 1 ? true : false]; 	// binary result: 1 or 0
 	
-// TODO: For Justus to test. ###################
-//@reliability(40)
-model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
-	set to [false];
-//
+// TODO: Not working in area outside of Europe. For Justus to test. ###################
 //model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
 //	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
 //	set to [self >= 0 ? true : false];
 //	over space(urn = 'local:srwohl:im.data.global:im-data-global-landcover_corine_extent');
+//@reliability(40)
+model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
+	set to [false];
 // #############################################
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
@@ -193,7 +193,7 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
  * # 4) Young Secondary Forest. -------------------------------------------------------------------------------------------------------------------------------
  */	
 // Boreal forest stand ages 
-// TODO: Not working in Colombia.
+// TODO: Not working in area outside of Europe.
 //model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
 //	as im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age;
 model im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age
@@ -236,9 +236,9 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
  */
 /* FOREST TYPES  */
 
-// TODO: Need to confirm with Alessio about the combinations below.
-// TODO: Need to confirm how to handle remaining forest pixels which do not have a forest height above 5m in 2000 and/or 2020 (e.g. are not secondary old)
-// TODO: add forest height back in to find remaining older growth forest (i.e. secondary old) and cells that are likely tree crop/shrubs
+// Need to confirm with Alessio about the combinations below.
+// Need to confirm how to handle remaining forest pixels which do not have a forest height above 5m in 2000 and/or 2020 (e.g. are not secondary old)
+// Add forest height back in to find remaining older growth forest (i.e. secondary old) and cells that are likely tree crop/shrubs
 define FOREST_TYPE_TABLE as {{	 
      primary_forest | old_planted_forest	| young_planted_forest	|  young_secondary_forest 	|forest_height_2020	| 	  forest_type
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -262,7 +262,6 @@ model nca.landuse.ipcc:ForestType
 			into FOREST_TYPE_TABLE;		
 			
 // TODO: check that tropical shrubs are being picked up properly (e.g. are being classed as tropical shrubland forest when over 5m, and non-forest shrubland when below)	
-
 //private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
 //	as landcover:LandCoverType named copernicus_landcover_2020 
 //	classified into // according to im:copernicus-gdlc-encoding;// im:copernicus-encoding;
@@ -299,7 +298,7 @@ abstract identity MapProvider
 		NASAAmericanSpaceAgency,
 		ARIESModelled;
 		
-////TODO:Removed ARIESModelled after comparison script is run
+//TODO:Removed ARIESModelled after comparison script is run
 //model ARIESModelled nca.landuse.ipcc:ForestType named forest_type_modelled
 //	observing
 //			im:Possible presence of nca.landuse.ipcc:PrimaryForest earth:Region named primary,
