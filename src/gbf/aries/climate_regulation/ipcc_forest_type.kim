@@ -187,6 +187,8 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 /* FOREST TYPES  */
 
 // TODO: Need to confirm with Alessio about the combinations below.
+// TODO: Need to confirm how to handle remaining forest pixels which do not have a forest height above 5m in 2000 and/or 2020 (e.g. are not secondary old)
+// TODO: add forest height back in to find remaining older growth forest (i.e. secondary old) and cells that are likely tree crop/shrubs
 define FOREST_TYPE_TABLE as {{	 
      primary_forest | old_planted_forest	| young_planted_forest	|  young_secondary_forest 	| 	  forest_type
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -205,7 +207,9 @@ model nca.landuse.ipcc:ForestType
 		presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence
 	lookup (estimated_primary_forest_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, ?) 
-			into FOREST_TYPE_TABLE;			
+			into FOREST_TYPE_TABLE;		
+			
+// TODO: check that tropical shrubs are being picked up properly (e.g. are being classed as tropical shrubland forest when over 5m, and non-forest shrubland when below)	
 
 //private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
 //	as landcover:LandCoverType named copernicus_landcover_2020 
