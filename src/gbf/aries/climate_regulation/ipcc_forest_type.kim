@@ -270,7 +270,7 @@ define FOREST_TYPE_TABLE as {{
 }};
 
 		
-model nca.landuse.ipcc:ForestType
+model nca.landuse.ipcc:ForestType named ipcc_forest_type
 	observing
 		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
