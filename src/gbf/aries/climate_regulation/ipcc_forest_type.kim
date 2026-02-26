@@ -30,7 +30,11 @@ observe earth:Region named test_primary_forest_north_europe
 	over space(shape='EPSG:4326 POLYGON ((19.746220789761033 61.14867097111514, 9.199345789761034 61.14867097111514, 9.199345789761034 63.4923424889096, 19.746220789761033 63.4923424889096, 19.746220789761033 61.14867097111514))',
 			   grid="600 m"),
 			time(year=2020);
-			
+
+observe earth:Region named test_tile_forest_type_testing
+	over space(urn='klab:grid:tiles:square.1#select=34310',
+			   grid="300 m"),
+			time(year=2020);			
 
 /*
  * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
