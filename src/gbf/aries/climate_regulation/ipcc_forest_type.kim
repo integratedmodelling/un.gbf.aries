@@ -172,7 +172,7 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 //	    ) ? true : false
 //	];
 	set to [
-	    (((planted_forest_age > 20) || (tropical_forest_type ==81) || planted_forest_presence) 
+	    (((planted_forest_age > 20) || (tropical_forest_type == 81) || planted_forest_presence) 
 	    	&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
 	    	&& (year_of_deforestation > 2020)
 	    ) ? true : false
