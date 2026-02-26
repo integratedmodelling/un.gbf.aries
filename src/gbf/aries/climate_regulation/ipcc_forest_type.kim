@@ -147,14 +147,9 @@ model local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_fo
 	as presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence
 	set to [((self == 31) || (self == 32) || (self == 40)) ? true : false];
 
-model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
-	observing
-		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
-//		add GFW_forest_presence,
-		presence of ecology:Forest earth:Region named forest_presence
-	set to [forest_presence ? planted_forest_age + 1 : unknown];
-/* DATA PREPROCESSING - PLANTATION FORESTS */
 
+	
+	
 /* MODELLING - PLANTATIONS OLD FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence
 	observing
@@ -286,6 +281,38 @@ model nca.landuse.ipcc:ForestType
 	lookup (estimated_primary_forest_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, forest_height_2020, landuse, ?) 
 			into FOREST_TYPE_TABLE;		
 			
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+/*
+ * # 6) Model the change in forest age. -----------------------------------------------------------------------------------------------------------------------------
+ */
+model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
+	observing
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
+//		add GFW_forest_presence,
+		presence of ecology:Forest earth:Region named forest_presence
+	set to [forest_presence ? planted_forest_age + 1 : unknown];
+/* DATA PREPROCESSING - PLANTATION FORESTS */
+
+model change in (im:Age of ecology:Forest earth:Region)
+	observing
+		im:Age of ecology:Forest earth:Region in year named forest_age,
+//		add GFW_forest_presence,
+		presence of ecology:Forest earth:Region named forest_presence
+	set to [forest_presence ? forest_age + 1 : unknown];
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
 // TODO: check that tropical shrubs are being picked up properly (e.g. are being classed as tropical shrubland forest when over 5m, and non-forest shrubland when below)	
 //private model local:rubencc:im.data.global:im-data-global-landcover.copernicus_landcover_10m_2020 
 //	as landcover:LandCoverType named copernicus_landcover_2020 
