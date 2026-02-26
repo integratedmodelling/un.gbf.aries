@@ -24,6 +24,12 @@ observe earth:Region named test_primary_forest_north_colombia_forest_jrc
 	over space(shape='EPSG:4326 POLYGON ((-74.43535216382925 10.422696050854867, -75.09006865552847 10.422696050854867, -75.09006865552847 10.741280420857393, -74.43535216382925 10.741280420857393, -74.43535216382925 10.422696050854867))',
 			   grid="300 m"),
 			time(year=2020);
+			
+observe earth:Region named test_primary_forest_north_europe
+	over space(shape='EPSG:4326 POLYGON ((19.746220789761033 61.14867097111514, 9.199345789761034 61.14867097111514, 9.199345789761034 63.4923424889096, 19.746220789761033 63.4923424889096, 19.746220789761033 61.14867097111514))',
+			   grid="600 m"),
+			time(year=2020);
+			
 
 /*
  * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +40,7 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
 	as im:Height of ecology:Forest earth:Region in m named forest_height_2020;
 
-// TODO: Not working in areas within Europe.
+
 model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
 //	as type of ecology:Tropical ecology:Forest named tropical_forest_type
 //	classified into
@@ -43,7 +49,13 @@ model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_m
 // 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
 // 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
 // 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
- 	as value of ecology:Tropical ecology:Forest named tropical_forest_type;
+ 	as value of ecology:Tropical ecology:Forest named tropical_forest_type
+ 	over space(shape='EPSG:4326 POLYGON ((-80.0002761110197 180.0000148869775 -40.10780114231157 30.094729827873326))');
+	
+@reliability(80)
+model value of ecology:Tropical ecology:Forest named tropical_forest_type
+	set to [0];
+
  		
  //// FOREST LOSS (HANSEN GFC DATASET)
 model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
@@ -64,20 +76,27 @@ model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest
 	as gbf.aries.climate_regulation.ipcc_forest_type:Integrity of ecology:Forest earth:Region named forest_integrity
 	set to [self * 0.001];
 		 
-// TODO: Not working in areas within Europe.	  	
+	  	
 model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
 	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
-	set to [self == 1 ? true : false]; 	// binary result: 1 or 0
+	set to [self == 1 ? true : false] 	// binary result: 1 or 0
+	over space(shape='EPSG:4326 POLYGON ((-161.0 180.0 -36.0 33.0))');
 	
-// TODO: Not working in area outside of Europe. For Justus to test. ###################
-//model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
-//	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
-//	set to [self >= 0 ? true : false];
-//	over space(urn = 'local:srwohl:im.data.global:im-data-global-landcover_corine_extent');
-//@reliability(40)
+@reliability(80)
+model presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
+	set to [false];
+
+	
+
+model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
+	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
+	set to [self >= 0 ? true : false]
+	over space(shape='EPSG:4326 POLYGON ((-17.307840579130822 62.393386373805484 28.10559029424747 75.19797243364515))');
+	
+@reliability(80)
 model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
 	set to [false];
-// #############################################
+
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
@@ -114,7 +133,7 @@ model 'local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_
 	as gbf.aries.climate_regulation.ipcc_forest_type:Year of agriculture:Planted ecology:Forest earth:Region named plantation_year
 	set to [((self != 32767) && (self >= 1982)) ? self : unknown];
 
-model im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age
+model im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age
 	observing
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of agriculture:Planted ecology:Forest earth:Region named plantation_year
 	set to [
@@ -129,7 +148,7 @@ model local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_fo
 
 model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
 	observing
-		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
 //		add GFW_forest_presence,
 		presence of ecology:Forest earth:Region named forest_presence
 	set to [forest_presence ? planted_forest_age + 1 : unknown];
@@ -138,7 +157,7 @@ model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
 /* MODELLING - PLANTATIONS OLD FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence
 	observing
-		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
 //	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
 	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence,	
@@ -168,7 +187,7 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 /* MODELLING - PLANTATIONS YOUNG FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_forest_presence
 	observing 
-		im:Age of agriculture:Planted ecology:Forest earth:Region named planted_forest_age,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
 //	    type of ecology:Tropical ecology:Forest named tropical_forest_type,
 	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence,	
@@ -193,11 +212,14 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
  * # 4) Young Secondary Forest. -------------------------------------------------------------------------------------------------------------------------------
  */	
 // Boreal forest stand ages 
-// TODO: Not working in area outside of Europe.
-//model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
-//	as im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age;
-model im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age
+model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
+	as im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
+	over space(shape='EPSG:4326 POLYGON ((-165.0 180.0 45.0 72.5))');
+	
+@reliability(80)
+model im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
 	set to [0];
+
 
 /* MODELLING - SECONDARY YOUNG FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence
@@ -207,7 +229,7 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 //		type of ecology:Tropical ecology:Forest named tropical_forest_type,
 		value of ecology:Tropical ecology:Forest named tropical_forest_type,
-		im:Age of ecology:Boreal ecology:Forest earth:Region named boreal_forest_age
+		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
 //	set to [		        
 //		(((forest_height_2000 < 5) && (forest_height_2020 >= 5)) 
 //			|| ((forest_height_2000 >= 5) && (forest_height_2020 >= 5) && (year_of_deforestation <= 2020)) 
