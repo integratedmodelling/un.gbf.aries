@@ -214,7 +214,7 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
 // Boreal forest stand ages 
 model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
 	as im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
-	over space(shape='EPSG:4326 POLYGON ((-165.0 180.0 45.0 72.5))');
+	over space(shape='EPSG:4326 POLYGON ((-165 45, 180 45, 180 72.5, -165 72.5, -165 45))');
 	
 @reliability(80)
 model im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
