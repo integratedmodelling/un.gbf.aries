@@ -96,7 +96,7 @@ model presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region n
 model local:rubencc:im.data.global:im-data-global-ecology.europe_primary_forests_100m_4326_2018
 	as presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
 	set to [self >= 0 ? true : false]
-	over space(shape='EPSG:4326 POLYGON ((-17.307840579130822 62.393386373805484 28.10559029424747 75.19797243364515))');
+	over space(shape='EPSG:4326 POLYGON ((-17.30784057913082208 28.10559029424747024, 62.39338637380548391 28.10559029424747024, 62.39338637380548391 75.19797243364514827, -17.30784057913082208 75.19797243364514827, -17.30784057913082208 28.10559029424747024))');
 	
 @reliability(80)
 model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence
