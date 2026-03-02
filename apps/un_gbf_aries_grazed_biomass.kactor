@@ -18,7 +18,7 @@ set observables_urns (
 resolution = 300.m
 for year in (2020) (
 	for tile in multiple_tiles_spatial_boundaries (
-		if [tile.tile_index == 12033 || tile.tile_index == 12033](
+		if [tile.tile_index == 12033 || tile.tile_index == 29649](
 			// set context for all the observations
 		    context(tile,resolution,Time(year=year))
 		    // loop over urns
@@ -46,7 +46,7 @@ for year in (2020) (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
 							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile_index + "_" + resolution + "_" + year + ".tiff"])
-						
+						  //observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])						
 							info(["Exporting urn " + urn_name])
 						)
 					)
