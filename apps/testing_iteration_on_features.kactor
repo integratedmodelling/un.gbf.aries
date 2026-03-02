@@ -2,7 +2,7 @@ script un.gbf.aries.reference_layer.nature_based_tourism
 
 action main:
 
-nature_based_tourism_spatial_boundaries = "local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1"
+nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
 
 //gid->local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#cid
 //local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un
@@ -10,14 +10,14 @@ nature_based_tourism_spatial_boundaries = "local:rubencc:im.data.global:im-data-
 output_folder_directory = "UN_GBF/Nature_Based_Tourism"
 
 set observables_urns (
-	 //gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m}
-     {geography:Elevation in m}
+	  gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m} //
+     //{geography:Elevation in m}
 )
  	
 resolution = 1000.m
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.cid == 'UGA'] // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		if [country.gid == 'UGA'] // country.gid == 'RUS'|| country.gid == 'CAN' || 
 		 (
 			for urn in observables_urns(
 		    	context(country,resolution,Time(year=year),urn): state -> (
@@ -32,7 +32,7 @@ for year in (2020) (
 					if [state.toString().contains("[nothing")] (
 						warning(["Observation " + urn_name + " return nothing"])
 					) else ( 
-						state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + "_" + country.cid +".tiff"])
+						state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + "_" + country.gid +".tiff"])
 					)
 					
 				)
