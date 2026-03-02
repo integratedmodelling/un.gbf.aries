@@ -55,7 +55,7 @@ model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_m
 // 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
 // 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86);
  	as value of ecology:Tropical ecology:Forest named tropical_forest_type
- 	over space(shape='EPSG:4326 POLYGON ((-80.0002761110197 180.0000148869775 -40.10780114231157 30.094729827873326))');
+ 	over space(shape='EPSG:4326 POLYGON ((-110.00014384489000463 -40.10780114231157256, 179.99999999999997158 -40.10780114231157256, 179.99999999999997158 30.0947298278733264, -110.00014384489000463 30.0947298278733264, -110.00014384489000463 -40.10780114231157256))');
 	
 @reliability(80)
 model value of ecology:Tropical ecology:Forest named tropical_forest_type
@@ -85,7 +85,7 @@ model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest
 model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
 	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
 	set to [self == 1 ? true : false] 	// binary result: 1 or 0
-	over space(shape='EPSG:4326 POLYGON ((-161.0 180.0 -36.0 33.0))');
+	over space(shape='EPSG:4326 POLYGON ((-161 -36, 180 -36, 180 33, -161 33, -161 -36))');
 	
 @reliability(80)
 model presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
@@ -214,7 +214,7 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
 // Boreal forest stand ages 
 model local:rubencc:im.data.global:im-data-global-ecology.boreal_canopy_cover_stand_age_30m_2020
 	as im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
-	over space(shape='EPSG:4326 POLYGON ((-165.0 180.0 45.0 72.5))');
+	over space(shape='EPSG:4326 POLYGON ((-165 45, 180 45, 180 72.5, -165 72.5, -165 45))');
 	
 @reliability(80)
 model im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
