@@ -95,7 +95,7 @@ model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior
 
 /*4. Tabular reporting by ecosystem type or land cover type */
 
-@var(timespan=(init end))
+@var(timespan=(init end)) 
 define table tourism_biophysical_supply_dynamic as {
 	name: "tourism_biophysical"
 	title: "Tourism Physical Supply (Visitors)",
