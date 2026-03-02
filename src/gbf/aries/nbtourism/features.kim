@@ -1,4 +1,5 @@
-project private namespace un.gbf.aries.recreation_features;
+project private namespace gbf.aries.nbtourism.features;
+
 
 quantity Distance;
 /*
