@@ -10,14 +10,14 @@ nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global
 output_folder_directory = "UN_GBF/Nature_Based_Tourism"
 
 set observables_urns (
-	 gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m}
-     {geography:Elevation in m}
+	  gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m} //
+     //{geography:Elevation in m}
 )
  	
 resolution = 1000.m
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.gid == 'RUS'] // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		if [country.gid == 'UGA'] // country.gid == 'RUS'|| country.gid == 'CAN' || 
 		 (
 			for urn in observables_urns(
 		    	context(country,resolution,Time(year=year),urn): state -> (
