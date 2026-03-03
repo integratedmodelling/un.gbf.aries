@@ -1,0 +1,58 @@
+project private namespace gbf.aries.nbtourism.tables;
+
+define HEMEROBY_TABLE as {{
+	
+	          landcover                             |  hemeroby
+	-----------------------------------------------------------------
+	landcover:ArtificialSurface                     |  7,
+	landcover:Vineyard                              |  4,
+	landcover:FruitAndBerryPlantation               |  5, 
+	landcover:OliveGrove                            |  4,
+	landcover:RiceField                             |  4.5,
+    landcover:AgriculturalLandWithNaturalVegetation |  4.5,
+	landcover:AgroforestryLand                      |  4,
+	landcover:AnnualCroplandAssociatedWithPermanentCrop |  6,
+	landcover:ComplexCultivationPatternedLand       |  4.5,
+	landcover:Pastureland                           |  5,
+	landcover:NonIrrigatedArableLand                |  6, 
+	landcover:PermanentlyIrrigatedArableLand        |  6.5, 
+	landcover:PermanentCropland                     |  6.5,
+    landcover:ArableLand                            |  6,
+	landcover:MixedForest                           |  3,
+	landcover:BroadleafForest                       |  3.5,
+	landcover:ConiferousForest                      |  4,
+	landcover:BeachDuneSand                      	|  1,
+	landcover:BareArea                              |  2, 
+	landcover:BareRock                              |  1,
+	landcover:LichenMoss                            |  1,
+	landcover:SparseVegetation                      |  5,// includes nature-based recreation component
+	landcover:TransitionalWoodlandScrub             |  3,
+	landcover:Shrubland                      		|  4,
+	landcover:Grassland                     		|  3.5,
+	landcover:BurnedLand                            |  7,
+	landcover:GlacierPerpetualSnow               	|  1,
+	landcover:Mangrove                              |  1,
+	landcover:InlandMarsh                           |  1.5,
+	landcover:PeatBog                               |  2,
+	landcover:SaltMarsh                             |  1.5,
+	landcover:Saline                                |  2,
+	landcover:IntertidalFlat                        |  2,
+	landcover:Wetland                               |  1.5,
+	landcover:WaterBody                             |  7 //to avoid  	
+}}; 
+
+@documented(recreation.tables.opportunity)
+define RECREATION_OPPORTUNITY_TABLE as {{
+	
+	remoteness | recreation_potential | score |  description 
+   ---------------------------------------------------------------------------------------
+       <= 0.25 |	<0.65             |   1   | 'low provision, easily accessible',
+   0.25 to 0.5 |	<0.65             |	  2   | 'low provision, accessible',
+          >0.5 |	<0.66             |	  3   | 'low provision, not easily accessible',
+       <= 0.25 |	0.65 to 0.85      |	  4   | 'medium provision, easily accessible',
+   0.25 to 0.5 |	0.65 to 0.85      |	  5   | 'medium provision, accessible',
+          >0.5 |	0.65 to 0.85      |	  6   | 'medium provision, not easily accessible',
+       <= 0.25 |	>0.85             |	  7   | 'high provision, easily accessible',
+   0.25 to 0.5 |    >0.85             |	  8   | 'high provision, accessible',
+          >0.5 |    >0.85             |	  9   | 'high provision, not easily accessible'
+}};

@@ -1,4 +1,5 @@
-private namespace un.gbf.aries.recreation_features;
+project private namespace gbf.aries.nbtourism.features;
+
 
 quantity Distance;
 /*
@@ -10,23 +11,21 @@ model each earth:MountainPeak
 	observing geography:Elevation > 0 in m named elevation
 	using im.geomorphology.findmaxima(surface = elevation, threshold = [max * 0.65], radius = 8000);
 
-model Distance of earth:MountainPeak named distance_to_mountain
+number distance_to_mountain
 	observing
-		distance to earth:MountainPeak in m named distance_to_mountain;
+		distance to earth:MountainPeak in m named distance_to_mountain
+		set to [distance_to_mountain] ;
 		 
 /*ROS EU */
 //esa_people:ros2_new_2018_uint8 in aux 
 
 
- 
-@color(red)
 model each behavior.incubation:ViewPoint
 	using gis.osm.query(
 		feature-type="point", 
 		equal=("tourism", "viewpoint"));
 
 		
-@color(blue)
 model each behavior.incubation:Campsite
 	using gis.osm.query(
 		feature-type="point", 

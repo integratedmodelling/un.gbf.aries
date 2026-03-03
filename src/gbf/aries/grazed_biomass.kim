@@ -237,7 +237,7 @@ observing
 model im:Yearly agriculture:BeefCattle biology:Nutrient biology:Biomass in t
 observing
 	im:Mean agriculture:BeefCattle im:Weight in kg named average_beef_cattle_weight,
-	count of biology:Individual agriculture:DairyCattle named beef_cattle_units
+	count of biology:Individual agriculture:BeefCattle named beef_cattle_units
 	set to [ average_beef_cattle_weight * beef_cattle_units *0.025*365*0.001];
 	
 // Sheep 

@@ -1,0 +1,13 @@
+script stefano_tests
+
+//merge script 
+
+action main:
+	set map Raster('world', "1 km") // this is not accepted
+	for region in "local:ferdinando.villa:im.data.global:admin.countries.un.split#gid=UGA" (
+		context(region, 1.km, {geography:Elevation in m} /* {im:Reference value of `behavior:Outdoor `behavior:Recreation}*/ ): (
+			state -> map.merge(state)
+			error -> error(["Model failed in " + region.id])
+		)
+	)
+	map.export('recreation_refvalue.tiff') 
