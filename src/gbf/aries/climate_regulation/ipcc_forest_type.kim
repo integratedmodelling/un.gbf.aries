@@ -32,7 +32,11 @@ observe earth:Region named test_primary_forest_north_europe
 			time(year=2020);
 
 observe earth:Region named test_tile_forest_type_testing
-	over space(urn='klab:grid:tiles:square.1#select=34310',
+	over space(urn='klab:grid:tiles:square.1#select=35110',
+			   grid="300 m"),
+			time(year=2020);
+observe earth:Region named test_tile_gadm_lev0
+	over space(urn='local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index#tile_index=35110',
 			   grid="300 m"),
 			time(year=2020);			
 
@@ -274,7 +278,7 @@ define FOREST_TYPE_TABLE as {{
 }};
 
 		
-model nca.landuse.ipcc:ForestType named ipcc_forest_type
+model nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 	observing
 		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
@@ -286,7 +290,7 @@ model nca.landuse.ipcc:ForestType named ipcc_forest_type
 			into FOREST_TYPE_TABLE;		
 			
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
-
+// model forest age 2020 
 
 
 

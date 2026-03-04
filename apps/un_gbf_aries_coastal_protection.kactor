@@ -46,7 +46,7 @@ for year in (2020 2021 2022) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + "tile_index_1d_" +  tile.tile_index_1d + "_" + resolution + "_" + year + ".tiff"])						
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "/" + urn_name + "_" + "tile_index_1d_" +  tile.tile_index_1d + "_" + resolution + "_" + year + ".tiff"])						
 							info(["Exporting urn " + urn_name])
 						)
 					)
