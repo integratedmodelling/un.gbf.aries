@@ -157,19 +157,11 @@ model im:Age of agriculture:Planted ecology:Forest earth:Region in year named pl
 model local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_forest_management_100m_2015_v3_2
 	as presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence
 	set to [((self == 31) || (self == 32) || (self == 40)) ? true : false];
-
 /*
  * 40	Oil palm plantations
  * 32	Short rotation plantations for timber
  * 31	Planted forest
  */
-
-//There is a mismatch between the two datasets (we don't have information on the year in which the planted_forest_presence took place, we can only assume in 2015 it was planted, but would be a stretch to assume they are all OldPlantedForest)
-number planted_forest_presence_overlap_forest_age
-observing 
-	plantation_year,
-	planted_forest_presence
-	set to [plantation_year && planted_forest_presence];
 	
 	
 /* MODELLING - PLANTATIONS OLD FORESTS  */
@@ -189,14 +181,6 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 //	    	&& (year_of_deforestation > 2020)
 //	    ) ? true : false
 //	];
-//	set to [
-//	    ((landuse is nca.landuse.ipcc:ForestLand) &&
-//	    	((planted_forest_age > 20) || (tropical_forest_type == 81) || planted_forest_presence) 
-//	    	&& ((forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
-//	    	&& (year_of_deforestation > 2020)
-//	    ) ? true : false
-//	];
-//Adjust overestimation of planted forest excluding planted forest as a whole, leave only those overlapping with planted_forest_age > 20
 	set to [
 	    ((landuse is nca.landuse.ipcc:ForestLand) &&
 	    	((!nodata(planted_forest_age) && (planted_forest_age > 20)) || (tropical_forest_type == 81) || planted_forest_presence) 
