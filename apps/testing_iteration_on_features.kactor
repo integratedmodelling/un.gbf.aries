@@ -14,12 +14,14 @@ set observables_urns (
      //{geography:Elevation in m}
 )
  	
-resolution = 1000.m
+ 	//add table_urns
+ 	
+resolution = 10000.m
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.gid == 'UGA'] // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		if [country.gid == 'RUS'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
 		 (
-			for urn in observables_urns(
+			for urn in observables_urns( //and in table_urns
 		    	context(country,resolution,Time(year=year),urn): state -> (
 					set urn_name ""
 					if [urn.toString().startsWith("[")] (
@@ -33,6 +35,7 @@ for year in (2020) (
 						warning(["Observation " + urn_name + " return nothing"])
 					) else ( 
 						state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + "_" + country.gid +".tiff"])
+					//if ... state.export table.urn
 					)
 					
 				)
