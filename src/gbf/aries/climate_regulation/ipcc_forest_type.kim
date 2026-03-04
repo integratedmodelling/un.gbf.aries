@@ -266,37 +266,57 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 // Need to confirm how to handle remaining forest pixels which do not have a forest height above 5m in 2000 and/or 2020 (e.g. are not secondary old)
 // Add forest height back in to find remaining older growth forest (i.e. secondary old) and cells that are likely tree crop/shrubs
 define FOREST_TYPE_TABLE as {{	 
-     primary_forest | old_planted_forest	| young_planted_forest	|  young_secondary_forest 	|forest_height_2020	|	landuse						| 	  forest_type
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	  	 true		|	  	#				|	  	#				|	    	#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:PrimaryForest		,
-		  #			|	  true				|		#				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:OldPlantedForest		,
-		  #			|	  	#				|	  true				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:YoungPlantedForest	,
-		  #			|	  	#				|	  	#				|	    	true			|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:YoungSecondaryForest	,
-		  #			|	  	#				|	  	#				|	  		#				|		>= 5		|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:OldSecondaryForest	,
-		  #			|	  	#				|	  	#				|	  		#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:OtherForest			,
-		  #			|	  	#				|	  	#				|	  		#				|		#			|				#				| nca.landuse.ipcc:OtherLand			
+     primary_forest | old_planted_forest	| young_planted_forest	|  young_secondary_forest 	|forest_height_2020	|	landuse						|	planted_forest_presence	| 	  forest_type
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	  	 true		|	  	#				|	  	#				|	    	#				|		#			|	nca.landuse.ipcc:ForestLand	|			#				| nca.landuse.ipcc:PrimaryForest		,
+		  #			|	  true				|		#				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	|			true			| nca.landuse.ipcc:OldPlantedForest		,
+		  #			|	  	#				|	  true				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	|			true			| nca.landuse.ipcc:YoungPlantedForest	,
+		  #			|	  	#				|	  	#				|	    	true			|		#			|	nca.landuse.ipcc:ForestLand	|			#				| nca.landuse.ipcc:YoungSecondaryForest	,
+		  #			|	  	#				|	  	#				|	  		#				|		>= 5		|	nca.landuse.ipcc:ForestLand	|			#				| nca.landuse.ipcc:OldSecondaryForest	,
+		  #			|	  	#				|	  	#				|	  		#				|		#			|	nca.landuse.ipcc:ForestLand	|			#				| nca.landuse.ipcc:OtherForest			,
+		  #			|	  	#				|	  	#				|	  		#				|		#			|				#				|			#				| nca.landuse.ipcc:OtherLand			
 }};
 
 		
-model nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
+model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 	observing
 		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		type of nca.landuse.ipcc:LandUse named landuse
-	lookup (estimated_primary_forest_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, forest_height_2020, landuse, ?) 
+		type of nca.landuse.ipcc:LandUse named landuse,
+		presence of nca.landuse.ipcc:PlantedForest earth:Region named planted_forest_presence
+	lookup (estimated_primary_forest_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, forest_height_2020, landuse, planted_forest_presence, ?) 
 			into FOREST_TYPE_TABLE;		
 			
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
-// model forest age 2020 
+ 
 
+/*
+ * # 6) Model forest age in 2020. -----------------------------------------------------------------------------------------------------------------------------
+ */
+model im:Age of ecology:Forest earth:Region in year named forest_age
+	observing
+		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
+		value of ecology:Tropical ecology:Forest named tropical_forest_type,
+		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
+	set to [
+		def ret = 0
+		if ((ipcc_forest_type_2020 = nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 = nca.landuse.ipcc:OldPlantedForest) || (ipcc_forest_type_2020 = nca.landuse.ipcc:OldSecondaryForest)) {
+			ret = 30
+		} else if (ipcc_forest_type_2020 = nca.landuse.ipcc:YoungPlantedForest) {
+			ret = 30
+		}
+		return ret
+	];
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
 
 /*
- * # 6) Model the change in forest age. -----------------------------------------------------------------------------------------------------------------------------
+ * # 7) Model the change in forest age. -----------------------------------------------------------------------------------------------------------------------------
  */
 model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
 	observing
