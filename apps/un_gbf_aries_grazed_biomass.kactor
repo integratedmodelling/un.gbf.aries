@@ -15,15 +15,24 @@ set observables_urns (
 //		gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass	
 		)
 
-resolution = 300.m
+resolution = 100.m
+info("Start script un.gbf.aries.grazed_biomass")
 for year in (2020) (
 	for tile in multiple_tiles_spatial_boundaries (
-		if [tile.tile_index == 12033 || tile.tile_index == 29649](
+		//if [tile.tile_index == 35110](
 			// set context for all the observations
 		    context(tile,resolution,Time(year=year))
+		    info(["Set context to tile  " + tile.tile_index])
 		    // loop over urns
 		    for urn in observables_urns (
 		    	// submit the observation
+		    	set urn_name ""
+				if [urn.toString().startsWith("[")] (
+					set urn_name [urn.name]
+				) else (
+					set urn_name urn
+				)
+		    	info(["Submiting  " + urn_name])
 				submit(urn): (
 					WAITING     -> ()
 					STARTED     -> ()
@@ -36,24 +45,17 @@ for year in (2020) (
 						error(["Empty observation: " + urn_name])
 					)
 					observation -> (
-						set urn_name ""
-						if [urn.toString().startsWith("[")] (
-							set urn_name [urn.name]
-						) else (
-							set urn_name urn
-						)
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile_index + "_" + resolution + "_" + year + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
 						  //observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])						
 							info(["Exporting urn " + urn_name])
 						)
 					)
 				)	
 			)
-		)
+		//)
 	)
 )
-	
 
