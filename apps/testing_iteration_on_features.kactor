@@ -19,7 +19,7 @@ set observables_urns (
 resolution = 10000.m
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.gid == 'RUS'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		if [country.gid == 'UGA'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
 		 (
 			for urn in observables_urns( //and in table_urns
 		    	context(country,resolution,Time(year=year),urn): state -> (
