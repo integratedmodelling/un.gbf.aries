@@ -7,19 +7,20 @@ nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global
 //gid->local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#cid
 //local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un
 
-output_folder_directory = "UN_GBF/Nature_Based_Tourism"
+output_folder_directory = "UN_GBF/Nature_Based_Tourism_Test2020_A_Countries"
 
 set observables_urns (
-	  gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m} //
+	 gbf.aries.nbtourism.realized_visitors
+	 // gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m} //
      //{geography:Elevation in m}
 )
  	
  	//add table_urns
  	
-resolution = 10000.m
+resolution = 1000.m
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.gid == 'UGA'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		if [country.gid == 'ALB' || country.gid == 'DZA' || country.gid == 'ASM' || country.gid == 'AND' || country.gid == 'AGO' || country.gid == 'AIA' || country.gid == 'ATG' || country.gid == 'ARM' || country.gid == 'ABW'  || country.gid == 'AUT' || country.gid == 'AZE'] 
 		 (
 			for urn in observables_urns( //and in table_urns
 		    	context(country,resolution,Time(year=year),urn): state -> (

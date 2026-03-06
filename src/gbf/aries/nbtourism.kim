@@ -79,7 +79,7 @@ model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 t
 	];
 
 @extensive(space) // it's number of tourists in each gridcell 
-model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named realized_visitors
 	 observing 
 		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, 
 		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region   named nature_based_country_visitors
