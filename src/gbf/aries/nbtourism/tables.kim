@@ -2,7 +2,7 @@ project private namespace gbf.aries.nbtourism.tables;
 
 define HEMEROBY_TABLE as {{
 	
-	          landcover                             |  hemeroby
+	          land_cover_type                       |  hemeroby
 	-----------------------------------------------------------------
 	landcover:ArtificialSurface                     |  7,
 	landcover:Vineyard                              |  4,
@@ -22,7 +22,7 @@ define HEMEROBY_TABLE as {{
 	landcover:BroadleafForest                       |  3.5,
 	landcover:ConiferousForest                      |  4,
 	landcover:BeachDuneSand                      	|  1,
-	landcover:BareArea                              |  2, 
+	landcover:BareArea                              |  5,// includes nature-based recreation component
 	landcover:BareRock                              |  1,
 	landcover:LichenMoss                            |  1,
 	landcover:SparseVegetation                      |  5,// includes nature-based recreation component

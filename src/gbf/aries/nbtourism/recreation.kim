@@ -1,16 +1,6 @@
 project private namespace gbf.aries.nbtourism.recreation
 using (HEMEROBY_TABLE, RECREATION_OPPORTUNITY_TABLE) from gbf.aries.nbtourism.tables;
 
-/* FORCING glc_fcs30 landcover */
-
-model local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2019_mosaic,
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic,
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic,
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic
-	as landcover:LandCoverType named glc_fcs30 classified according to im:glc-fcs30-enconding; 
-
-
-
 /*SUPPLY*/
 
 /* Restructured in 4 components */
@@ -23,7 +13,7 @@ model local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_
 @documented(recreation.hemeroby)
 model proportion of (not conservation:Pristine) earth:Region caused by demography:HumanPopulation
 	observing
-	glc_fcs30
+	landcover:LandCoverType named land_cover_type
 	lookup (land_cover_type, ?) into HEMEROBY_TABLE
 	set to [self/7.0],
 	klab.data.normalize();
