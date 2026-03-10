@@ -21,12 +21,6 @@ number distance_to_mountain
 		distance to earth:MountainPeak in m named distance_to_mountain
 		set to [distance_to_mountain] ;
 
-model each behavior.incubation:ViewPoint
-	using gis.osm.query(
-		feature-type="point", 
-		equal=("tourism", "viewpoint"));
-
-		
 model each behavior.incubation:Campsite
 	using gis.osm.query(
 		feature-type="point", 
