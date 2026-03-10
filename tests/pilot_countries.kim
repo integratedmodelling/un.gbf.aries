@@ -34,6 +34,14 @@ observe earth:Region named albania
 	),
 		 time(start=2022, end=2023, step = 1.year);  
 
+observe earth:Region named algeria
+	over space 
+(urn = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=DZA',
+                 grid= "2000 m",
+                 projection= "EPSG:4326"
+	),
+		 time(start=2022, end=2023, step = 1.year);  
+		 
 observe earth:Region named colombia_continental_gadm
 	over space(
 			urn='local:rubencc:aries.heco:im-data-global-geography_gadm_lev0_colombia_4326_continental', 
