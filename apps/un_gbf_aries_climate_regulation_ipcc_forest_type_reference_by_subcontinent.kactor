@@ -1,0 +1,53 @@
+script un.gbf.aries.climate_regulation.ipcc_forest_type_reference_by_subcontinent
+action main:
+
+southern_europe_terrestrial_tiles = 'klab:grid:tiles:square.1#select=46640,46641,47000,47001,47002,47360,47361,47720,47721,47702,47718,47719,48077,48078,48079,48080,48436,48437,48438,48439,48440,48796,48797,48798,48799,47716,47717,48076,48434,48435,48794,48795,48800,49158,45535,44844,44845,44846,44847,45204,45205,45206,45207,45208,45562,45563,45564,45565,45566,45567,45568,45569,45570,45921,45922,45923,45924,45925,45926,45927,45928,46281,46282,46283,46284,46285,46286,46287,46642,46643,46644,46645,46646,46647,47003,47004,47005,47006,47007,47362,45193,45551,45552,45553,45555,45556,45913,45914,45915,45916,45917,46269,46270,46273,46274,46275,46276,46277,46278,46629,46630,46636,46637,46638,46639,46989,46990,46993,46994,46995,46996,46997,46998,46999,47352,47353,47354,47355,47356,47357,47358,47711,47712,47713,47714,47715,48069,48071,48072,48073,48074,48429,48430,48431,48432,48433,48791,48792,48793,45195,48081,47722,43364,43365,44083,44084,44444,45515,45532,45533,45875,45892,46232,46233,46251,46252,46589,46592,46593,46611,46612,46972,48082,48441,42282,42283,42284,42285,42642,42643,42644,42645,42646,42647,43007,45534,45536,45537,45538,45539,45893,45894,45895,45896,45897,45898,45899,45900,46253,46254,46255,46256,46257,46258,46259,46260,46261,46262,46613,46614,46615,46616,46617,46618,46619,46620,46621,46622,46623,46624,46625,46973,46974,46975,46976,46977,46978,46979,46980,46981,46984,46985,47332,47333,47334,47335,47336,47337,47338,47339,47340,47341,47342,47343,47344,47691,47692,47693,47694,47695,47696,47697,47698,48051,48052,48053,48054,48055,48056,48057,48058'
+
+spatial_boundaries = southern_europe_terrestrial_tiles 
+
+output_folder_directory = "UN_GBF/Climate_Regulation/Reference_Layer"
+
+set observables_urns (
+	// before the dependencies
+	gbf.aries.climate_regulation.ipcc_forest_type.ipcc_forest_type_2020
+		)
+
+resolution = 100.m
+for year in (2020) (
+	for tile in spatial_boundaries (
+			// set context for all the observations
+		    context(tile,resolution,Time(year=year))
+		    // loop over urns
+		    for urn in observables_urns (
+		    	// submit the observation
+				submit(urn): (
+					WAITING     -> ()
+					STARTED     -> ()
+					ABORTED     -> warning("Aborted")
+					INTERRUPTED -> warning("Interrupted")
+					empty -> (
+						// popup on application
+						alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
+						// error with detail in k.LAB console
+						error(["Empty observation: " + urn_name])
+					)
+					observation -> (
+						set urn_name ""
+						if [urn.toString().startsWith("[")] (
+							set urn_name [urn.name]
+						) else (
+							set urn_name urn
+						)
+						if [observation.isEmpty()] (
+							warning(["Observation " + urn_name + " is empty"])
+						) else (
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])
+						
+							info(["Exporting urn " + urn_name])
+						)
+					)
+				)	
+			)
+		)
+	)
+

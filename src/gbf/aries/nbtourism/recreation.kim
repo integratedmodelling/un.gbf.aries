@@ -12,7 +12,8 @@ using (HEMEROBY_TABLE, RECREATION_OPPORTUNITY_TABLE) from gbf.aries.nbtourism.ta
 //1.
 @documented(recreation.hemeroby)
 model proportion of (not conservation:Pristine) earth:Region caused by demography:HumanPopulation
-	observing landcover:LandCoverType named land_cover_type
+	observing
+	landcover:LandCoverType named land_cover_type
 	lookup (land_cover_type, ?) into HEMEROBY_TABLE
 	set to [self/7.0],
 	klab.data.normalize();

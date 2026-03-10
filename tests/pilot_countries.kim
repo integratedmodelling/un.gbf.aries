@@ -26,9 +26,9 @@ observe earth:Region named uganda_gadm
 	),
 		 time(start=2020, end=2021, step = 1.year);  
 
-observe earth:Region named somalia
+observe earth:Region named albania
 	over space 
-(urn = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=SOM',
+(urn = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=ALB',
                  grid= "1000 m",
                  projection= "EPSG:4326"
 	),
