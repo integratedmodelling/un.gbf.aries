@@ -10,8 +10,6 @@ nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global
 output_folder_directory = "UN_GBF/Nature_Based_Tourism"
 
 set map_urns (
-	  //gbf.aries.nbtourism.features.distance_to_mountain //{distance to earth:Mountain in m} //
-     //{geography:Elevation in m}
      gbf.aries.nbtourism.realized_visitors
 )
  	
@@ -19,7 +17,7 @@ set table_urns (
 	gbf.aries.nbtourism.tourism_biophysical_supply_dynamic
 )
  	
-resolution = 10000.m
+resolution = 2000.m
 warning("Start script un.gbf.aries.reference_layer.nature_based_tourism")
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
@@ -49,14 +47,15 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.gid + "_" + year + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.gid + ".tiff"])
 							info(["Exported urn " + urn_name])
 							
 						)
 					)
 				)
 			)
-			for table_urn in table_urns(
+			/*
+			 * for table_urn in table_urns(
 				info(["Submiting table: "+table_urn])
 				submit(table_urn): (
 					WAITING     -> ()
@@ -71,7 +70,7 @@ for year in (2020) (
 						info(["Exported table " + table_urn])
 					)
 				)
-			)
+			)*/
 		)
 	)
 )
