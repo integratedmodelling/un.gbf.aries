@@ -1,4 +1,4 @@
-script un.gbf.aries.reference_layer.nature_based_tourism
+script testing_iteration_on_features
 
 action main:
 
@@ -20,7 +20,8 @@ set observables_urns (
 resolution = 1000.m
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.gid == 'ALB' || country.gid == 'DZA' || country.gid == 'ASM' || country.gid == 'AND' || country.gid == 'AGO' || country.gid == 'AIA' || country.gid == 'ATG' || country.gid == 'ARM' || country.gid == 'ABW'  || country.gid == 'AUT' || country.gid == 'AZE'] 
+		if [country.gid == 'ALB' || country.gid == 'DZA' || country.gid == 'ASM' || country.gid == 'AND' || country.gid == 'AGO' || country.gid == 'AIA' || country.gid == 'ATG' || country.gid == 'ARM' || country.gid == 'ABW'  || country.gid == 'AUT' || country.gid == 'AZE'
+		] 
 		 (
 			for urn in observables_urns( //and in table_urns
 		    	context(country,resolution,Time(year=year),urn): state -> (
@@ -35,7 +36,7 @@ for year in (2020) (
 					if [state.toString().contains("[nothing")] (
 						warning(["Observation " + urn_name + " return nothing"])
 					) else ( 
-						state.export([output_folder_directory + "/" + "Reference_layers" + "/" + urn_name + "_" + country.gid +".tiff"])
+						state.export([output_folder_directory + "/" + urn_name + "_" + country.gid +".tiff"])
 					//if ... state.export table.urn
 					)
 					

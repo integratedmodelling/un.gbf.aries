@@ -1,0 +1,76 @@
+script un.gbf.aries.reference_layer.nature_based_tourism
+
+action main:
+
+nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
+
+//gid->local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#cid
+//local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un
+
+output_folder_directory = "UN_GBF/Nature_Based_Tourism"
+
+set map_urns (
+     gbf.aries.nbtourism.realized_visitors
+)
+ 	
+set table_urns (
+	gbf.aries.nbtourism.tourism_biophysical_supply_dynamic
+)
+ 	
+resolution = 2000.m
+warning("Start script un.gbf.aries.reference_layer.nature_based_tourism")
+for year in (2020) (
+	for country in nature_based_tourism_spatial_boundaries (
+		if [country.gid == 'UGA'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		(
+			context(country,resolution,Time(start=[year],end=[year+1],step=1.year))
+		    // loop over urns
+		    
+		    for urn in map_urns (
+		    	// submit the observation
+		    	set urn_name ""
+				if [urn.toString().startsWith("[")] (
+					set urn_name [urn.name]
+				) else (
+					set urn_name urn
+				)
+		    	info(["Submiting  " + urn_name])
+				submit(urn): (
+					WAITING     -> ()
+					STARTED     -> ()
+					ABORTED     -> warning("Aborted")
+					INTERRUPTED -> warning("Interrupted")
+					empty -> (
+						error(["Empty observation: " + urn_name])
+					)
+					observation -> (
+						if [observation.isEmpty()] (
+							warning(["Observation " + urn_name + " is empty"])
+						) else (
+							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.gid + ".tiff"])
+							info(["Exported urn " + urn_name])
+							
+						)
+					)
+				)
+			)
+			/*
+			 * for table_urn in table_urns(
+				info(["Submiting table: "+table_urn])
+				submit(table_urn): (
+					WAITING     -> ()
+					STARTED     -> ()
+					ABORTED     -> warning("Aborted")
+					INTERRUPTED -> warning("Interrupted")
+					empty -> (
+						error(["Empty table: " + table_urn])
+					)
+					table -> (
+						pack(:tables, filename=[output_folder_directory +"/"+ year +"/maps/"+ table_urn + "_" + country.gid + "_" + year +".xlsx"])
+						info(["Exported table " + table_urn])
+					)
+				)
+			)*/
+		)
+	)
+)
