@@ -304,12 +304,12 @@ define FOREST_TYPE_TABLE as {{
 model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 	observing
 		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
+		presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennial_cropland_presence,
 		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence,
 		presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		type of nca.landuse.ipcc:LandUse named landuse,
-		presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennial_cropland_presence
+		type of nca.landuse.ipcc:LandUse named landuse		
 	lookup (estimated_primary_forest_presence, perennial_cropland_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, forest_height_2020, landuse, ?) 
 			into FOREST_TYPE_TABLE;		
 			
@@ -319,7 +319,7 @@ model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 /*
  * # 6) Model forest age in 2020. -----------------------------------------------------------------------------------------------------------------------------
  */
-model im:Age of ecology:Forest earth:Region in year named forest_age
+model im:Reference im:Age of ecology:Forest earth:Region in year named forest_age_2020  // forest age in year 2020
 	observing
 		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,
 		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
@@ -327,36 +327,131 @@ model im:Age of ecology:Forest earth:Region in year named forest_age
 		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
 	set to [
 		def ret = 0
-		if ((ipcc_forest_type_2020 = nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 = nca.landuse.ipcc:OldPlantedForest) || (ipcc_forest_type_2020 = nca.landuse.ipcc:OldSecondaryForest)) {
+		if ((ipcc_forest_type_2020 == nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldPlantedForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldSecondaryForest)) {
 			ret = 30
-		} else if (ipcc_forest_type_2020 = nca.landuse.ipcc:YoungPlantedForest) {
-			ret = 30
+		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:YoungPlantedForest) {
+			if (planted_forest_age != null) {
+				ret = planted_forest_age
+			} else if (tropical_forest_type == 82) {
+				ret = 12
+			} else if ((tropical_forest_type == 83) || (tropical_forest_type == 85)) {
+				ret = 3
+			} else if (tropical_forest_type == 84) {
+				ret = 7
+			} else if (tropical_forest_type == 86) {
+				ret = 1
+			} else {
+				ret = 11
+			}
+		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:YoungSecondaryForest) {
+			if (boreal_forest_age != 999) {
+				ret = boreal_forest_age
+			} else if (tropical_forest_type == 32) {
+				ret = 10
+			} else if ((tropical_forest_type == 33) || (tropical_forest_type == 94)) {
+				ret = 3
+			} else if (tropical_forest_type == 92) {
+				ret = 5
+			} else if (tropical_forest_type == 93) {
+				ret = 15
+			} else {
+				ret = 11
+			}			
+		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:OtherForest) {
+			ret = 3
 		}
 		return ret
 	];
+
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
 
 /*
- * # 7) Model the change in forest age. -----------------------------------------------------------------------------------------------------------------------------
+ * # 7) Model dynamic forest age. -----------------------------------------------------------------------------------------------------------------------------
  */
-model change in (im:Age of agriculture:Planted ecology:Forest earth:Region)
+model im:Age of ecology:Forest earth:Region in year named forest_age
 	observing
-		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
-//		add GFW_forest_presence,
-		presence of ecology:Forest earth:Region named forest_presence
-	set to [forest_presence ? planted_forest_age + 1 : unknown];
-/* DATA PREPROCESSING - PLANTATION FORESTS */
-
-model change in (im:Age of ecology:Forest earth:Region)
-	observing
-		im:Age of ecology:Forest earth:Region in year named forest_age,
-//		add GFW_forest_presence,
-		presence of ecology:Forest earth:Region named forest_presence
-	set to [forest_presence ? forest_age + 1 : unknown];
+		im:Reference im:Age of ecology:Forest earth:Region in year named forest_age_2020,
+		landcover:LandCoverType named landcover,
+		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+	set to [
+		def ret = forest_age_2020
+		if (scale.time.start.year != 2020) {
+			if (forest_age_2020 == 0) {
+				if (landcover == landcover:Forest) {
+					ret = 3
+				} else {
+					ret = 0
+				}
+			} else {
+				def accu_year = scale.time.start.year - 2020
+				if (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year)) {
+					ret = forest_age_2020 + accu_year
+				} else {
+					if (landcover == landcover:Forest) {
+						ret = scale.time.start.year - year_of_deforestation
+					} else {
+						ret = 0
+					}
+				}
+			}		
+		}
+		return ret
+	];
 
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+
+/*
+ * # 8) Model dynamic forest type. -----------------------------------------------------------------------------------------------------------------------------
+ */
+model nca.landuse.ipcc:ForestType named forest_type
+	observing
+		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,
+		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		im:Age of ecology:Forest earth:Region in year named forest_age,
+		landcover:LandCoverType named landcover
+	set to [
+		def ret = ipcc_forest_type_2020
+		if (((ipcc_forest_type_2020 == nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldPlantedForest)) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+			ret = ipcc_forest_type_2020			
+		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:YoungPlantedForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+			if (!nodata(forest_age) && (forest_age <= 20)) {
+				ret = ipcc_forest_type_2020
+			} else if (!nodata(forest_age) && (forest_age > 20)) {
+				ret = nca.landuse.ipcc:OldPlantedForest
+			}
+		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:YoungSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+			if (!nodata(forest_age) && (forest_age <= 20)) {
+				ret = ipcc_forest_type_2020
+			} else if (!nodata(forest_age) && (forest_age > 20)) {
+				ret = nca.landuse.ipcc:OldSecondaryForest
+			}
+		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:OldSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+			ret = ipcc_forest_type_2020
+		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:PerennialCropland) {
+			if (landcover == landcover:Forest) {
+				ret = ipcc_forest_type_2020
+			} else {
+				ret = nca.landuse.ipcc:OtherLand
+			}
+		} else {
+			if (landcover == landcover:Forest) {
+				ret = nca.landuse.ipcc:OtherForest
+			} else {
+				ret = nca.landuse.ipcc:OtherLand
+			}
+		}
+		return ret
+	];
+
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
+
 
 
 

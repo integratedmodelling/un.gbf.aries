@@ -32,7 +32,7 @@ observe earth:Region named albania
                  grid= "1000 m",
                  projection= "EPSG:4326"
 	),
-		 time(start=2020, end=2021, step = 1.year);  
+		 time(start=2022, end=2023, step = 1.year);  
 
 observe earth:Region named colombia_continental_gadm
 	over space(
