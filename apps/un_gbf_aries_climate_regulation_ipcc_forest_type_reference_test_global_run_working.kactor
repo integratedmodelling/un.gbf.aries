@@ -1,4 +1,4 @@
-script un.gbf.aries.climate_regulation.ipcc_forest_type_reference_test_global_run_local_version
+script un.gbf.aries.climate_regulation.ipcc_forest_type_reference_test_global_run_working
 
 action main:
 
@@ -44,7 +44,7 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.gid + "_" + resolution + "_" + year + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
 						
 							info(["Exporting urn " + urn_name])
 						)
@@ -53,6 +53,4 @@ for year in (2020) (
 			)
 		)
 	)
-
-
 
