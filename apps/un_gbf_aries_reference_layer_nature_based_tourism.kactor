@@ -2,28 +2,31 @@ script un.gbf.aries.reference_layer.nature_based_tourism
 
 action main:
 
-nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
+nature_based_tourism_spatial_boundaries = "local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1" //10 minutes before starting running
 
-//gid->local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#cid
-//local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un
+/*country layer working fast in scripts */
+//nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
+/*use the above for rapid testing */
 
 output_folder_directory = "UN_GBF/Nature_Based_Tourism"
 
 set map_urns (
-     gbf.aries.nbtourism.realized_visitors
+     gbf.aries.nbtourism.visitors_indicator_weight
+     gbf.aries.nbtourism.realized_visitors //exports only this one 
+     
 )
  	
 set table_urns (
-	gbf.aries.nbtourism.tourism_biophysical_supply_dynamic
+	gbf.aries.nbtourism.visitors_static
 )
  	
-resolution = 2000.m
+resolution = 1000.m
 warning("Start script un.gbf.aries.reference_layer.nature_based_tourism")
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
 		if [country.gid == 'UGA'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
 		(
-			context(country,resolution,Time(start=[year],end=[year+1],step=1.year))
+			context(country,resolution,Time(year=year))
 		    // loop over urns
 		    
 		    for urn in map_urns (
@@ -47,15 +50,14 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.gid + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.gid + "_" + year +".tiff"])
 							info(["Exported urn " + urn_name])
 							
 						)
 					)
 				)
 			)
-			/*
-			 * for table_urn in table_urns(
+			  for table_urn in table_urns(
 				info(["Submiting table: "+table_urn])
 				submit(table_urn): (
 					WAITING     -> ()
@@ -66,11 +68,11 @@ for year in (2020) (
 						error(["Empty table: " + table_urn])
 					)
 					table -> (
-						pack(:tables, filename=[output_folder_directory +"/"+ year +"/maps/"+ table_urn + "_" + country.gid + "_" + year +".xlsx"])
+						pack(:tables, filename=[output_folder_directory +"/"+ year +"/tables/"+ table_urn + "_" + country.gid + "_" + year +".xlsx"])
 						info(["Exported table " + table_urn])
 					)
 				)
-			)*/
+			)
 		)
 	)
 )
