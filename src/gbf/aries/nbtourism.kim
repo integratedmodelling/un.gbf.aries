@@ -113,3 +113,16 @@ define table tourism_biophysical_supply_dynamic as {
 		no-data = ''
 	)
 };
+
+
+// Simplest, basic, static account per landcover type
+define table visitors_static as {
+	title: "Visitors by land cover type in {year}",
+	label: "Visitors by land cover",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
+	columns: ({ title: "{classifier}", target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity, filter: landcover:LandCoverType, aggregation: sum }
+			  { title: "Total", summarize: sum, style: bold
+	}),
+	rows: { title: "Visitors {time}" } 
+};
+
