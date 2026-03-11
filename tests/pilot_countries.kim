@@ -21,7 +21,7 @@ worldview im;
 observe earth:Region named uganda_gadm
 	over space 
 	( urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#CID=UGA', // UGA UGANDA GADM
-                 grid= "1000 m",
+                 grid= "2000 m",
                  projection= "EPSG:4326"
 	),
 		 time(start=2020, end=2021, step = 1.year);  
