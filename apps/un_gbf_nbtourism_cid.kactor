@@ -1,8 +1,10 @@
-script un.gbf.aries.reference_layer.nature_based_tourism
+script un.gbf.nbtourism.cid
 
 action main:
 
-nature_based_tourism_spatial_boundaries = "local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1" //10 minutes before starting running
+
+nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
+//"local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1" //10 minutes before starting running
 
 /*country layer working fast in scripts */
 //nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
@@ -24,10 +26,7 @@ resolution = 1000.m
 warning("Start script un.gbf.aries.reference_layer.nature_based_tourism")
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if //[country.gid == 'DZA' || country.gid == 'AGO' ||   country.gid == 'ARG' || country.gid == 'ARM' || country.gid == 'AUS' || country.gid == 'AUT' || country.gid == 'AZE' ] 	//done //exports only last table	
-             [country.gid == 'ALB' || country.gid == 'AND' || country.gid == 'AIA' || country.gid == 'ATG' || country.gid == 'ABW' || country.gid == 'ASM']
-             //[country.gid == 'BHS' || country.gid == 'BHR' || country.gid == 'BGD' || country.gid == 'BRB' || country.gid == 'BLR' || country.gid == 'BEL' || country.gid == 'BLZ' || country.gid == 'BEN' || country.gid == 'BMU' || country.gid == 'BTN' || country.gid == 'BOL' || country.gid == 'BIH' || country.gid == 'BWA' || country.gid == 'BRA' || country.gid == 'VGB' || country.gid == 'BRN' || country.gid == 'BGR' || country.gid == 'BFA']		
-		
+		if [country.gid == 'AUS'  ] 	//USA, RUS, IND 
 		(
 			context(country,resolution,Time(year=year))
 		    // loop over urns

@@ -117,7 +117,7 @@ model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubati
 
 // Simplest, basic, static account per landcover type
 define table visitors_static as {
-	title: "Visitors by land cover type in {start}",
+	title: "Visitors by land cover type in given year",
 	label: "Visitors by land cover",
 	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
 	columns: ({ title: "{classifier}", target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity, filter: landcover:LandCoverType, aggregation: sum }
