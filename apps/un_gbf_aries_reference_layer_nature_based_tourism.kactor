@@ -24,7 +24,7 @@ resolution = 1000.m
 warning("Start script un.gbf.aries.reference_layer.nature_based_tourism")
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.gid == 'UGA'] //!= 'RUS' && ]  // country.gid == 'RUS'|| country.gid == 'CAN' || 
+		if [country.gid == 'DZA' || country.gid == 'AGO' ||   country.gid == 'ARG' || country.gid == 'ARM' || country.gid == 'AUS' || country.gid == 'AUT' || country.gid == 'AZE' ] 	//exports only last table	
 		(
 			context(country,resolution,Time(year=year))
 		    // loop over urns
@@ -56,7 +56,7 @@ for year in (2020) (
 						)
 					)
 				)
-			)
+			  )
 			  for table_urn in table_urns(
 				info(["Submiting table: "+table_urn])
 				submit(table_urn): (
