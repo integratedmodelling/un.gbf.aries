@@ -3,7 +3,8 @@ script un.gbf.nbtourism.cid
 action main:
 
 
-nature_based_tourism_spatial_boundaries = "local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1" //10 minutes before starting running
+nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
+//"local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1" //10 minutes before starting running
 
 /*country layer working fast in scripts */
 //nature_based_tourism_spatial_boundaries = "local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un"
@@ -25,7 +26,7 @@ resolution = 1000.m
 warning("Start script un.gbf.aries.reference_layer.nature_based_tourism")
 for year in (2020) (
 	for country in nature_based_tourism_spatial_boundaries (
-		if [country.cid == 'AUS'  ] 	
+		if [country.gid == 'AUS'  ] 	
 		(
 			context(country,resolution,Time(year=year))
 		    // loop over urns
@@ -51,7 +52,7 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.cid + "_" + year +".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/maps/"+ urn_name + "_" + country.gid + "_" + year +".tiff"])
 							info(["Exported urn " + urn_name])
 							
 						)
@@ -69,7 +70,7 @@ for year in (2020) (
 						error(["Empty table: " + table_urn])
 					)
 					table -> (
-						pack(:tables, filename=[output_folder_directory +"/"+ year +"/tables/"+ table_urn + "_" + country.cid + "_" + year +".xlsx"])
+						pack(:tables, filename=[output_folder_directory +"/"+ year +"/tables/"+ table_urn + "_" + country.gid + "_" + year +".xlsx"])
 						info(["Exported table " + table_urn])
 					)
 				)
