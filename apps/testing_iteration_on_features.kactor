@@ -48,3 +48,8 @@ for year in (2020) (
 	)
 )
 
+/*A countries  */
+//country.gid == 'ALB' || country.gid == 'DZA' || country.gid == 'AND' || country.gid == 'AGO' || country.gid == 'AIA' || country.gid == 'ATG' || country.gid == 'ARG' || country.gid == 'ARM' || country.gid == 'ABW' || country.gid == 'AUS' || country.gid == 'AUT' || country.gid == 'AZE' || 
+/*Big A Countries */
+//country.gid == 'DZA' || country.gid == 'AGO' ||   country.gid == 'ARG' || country.gid == 'ARM' || country.gid == 'AUS' || country.gid == 'AUT' || country.gid == 'AZE' 
+
