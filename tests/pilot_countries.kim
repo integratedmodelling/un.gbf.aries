@@ -18,22 +18,43 @@ worldview im;
 
 /*Test countries */
 
+observe earth:Region named australia
+	over space 
+	(	urn ='local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=AUS',
+	//urn = 'local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1#GID=AUS1',	 
+	//urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#CID=UGA', // UGA UGANDA GADM
+                 grid= "1000 m",
+                 projection= "EPSG:4326"
+	),
+//		 time(start=2020, end=2021, step = 1.year);  
+         time (year = 2020);
+
 observe earth:Region named uganda_gadm
 	over space 
-	( urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#CID=UGA', // UGA UGANDA GADM
+	(	urn = 'local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1#GID=UGA',	 
+	//urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#CID=UGA', // UGA UGANDA GADM
                  grid= "1000 m",
                  projection= "EPSG:4326"
 	),
-		 time(start=2020, end=2021, step = 1.year);  
-
-observe earth:Region named somalia
+//		 time(start=2020, end=2021, step = 1.year);  
+         time (year = 2020);
+         
+observe earth:Region named albania
 	over space 
-(urn = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=SOM',
+(urn = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=ALB',
                  grid= "1000 m",
                  projection= "EPSG:4326"
 	),
-		 time(start=2020, end=2021, step = 1.year);  
+		 time(start=2022, end=2023, step = 1.year);  
 
+observe earth:Region named algeria
+	over space 
+(urn = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_level_0_un#GID=DZA',
+                 grid= "2000 m",
+                 projection= "EPSG:4326"
+	),
+		 time(start=2022, end=2023, step = 1.year);  
+		 
 observe earth:Region named colombia_continental_gadm
 	over space(
 			urn='local:rubencc:aries.heco:im-data-global-geography_gadm_lev0_colombia_4326_continental', 
