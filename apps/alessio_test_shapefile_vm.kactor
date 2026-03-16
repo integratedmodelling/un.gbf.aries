@@ -1,30 +1,10 @@
-script un.gbf.aries.ecosystem_service.global_run_by_subcontinent
+script alessio_test_shapefile_vm
 
 action main:
 
-global_terrestrial_tiles = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index'
-australian_subregion_tiles = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index_australiaandnewzealand'
-spatial_boundaries = australian_subregion_tiles
-//target_subcontinent = 'Northern Africa'
-//'Northern Europe'
-//'Southern Asia'
-//'Southern Europe'
-//'Northern Africa'
-//'Polynesia'
-//'Sub-Saharan Africa'
-//'Latin America and the Caribbean'
-//'Western Asia'
-//'Australia and New Zealand'
-//'Western Europe'
-//'Eastern Europe'
-//'Northern America'
-//'South-eastern Asia'
-//'Eastern Asia'
-//'Melanesia'
-//'Micronesia'
-//'Central Asia'
+australian_subcontinent = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index_australiaandnewzealand'
 
-
+spatial_boundaries = australian_subcontinent //global_terrestrial_tiles
 
 output_folder_directory = "UN_GBF/Test_results_by_subcontinent"
 
@@ -34,10 +14,15 @@ set observables_urns (
 //	gbf.aries.climate_regulation.ipcc_forest_type.ipcc_forest_type_2020	
 		)
 
+
 resolution = 300.m
 for year in (2020) (
+	set valid_ids (17969 18686)
 	for tile in spatial_boundaries (
-//		if [tile.sub_continent == 'Northern Africa'](
+//if [tile.sub_continent == 'Northern Africa'](		
+//		if [tile_id in valid_ids] ( // for klab grid tiles
+		if [tile.tile_index in valid_ids] ( 
+			info(["Calculating tile "+tile_id])
 			// set context for all the observations
 		    context(tile,resolution,Time(year=year))
 		    // loop over urns
@@ -64,15 +49,17 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
-						
+//							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.name + "_" + resolution + "_" + year + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])						
 							info(["Exporting urn " + urn_name])
 						)
 					)
 				)	
 			)
+		) else (
+			info(["Skipping tile" + tile_id])
 		)
 	)
-//)
-
+	
+)
 
