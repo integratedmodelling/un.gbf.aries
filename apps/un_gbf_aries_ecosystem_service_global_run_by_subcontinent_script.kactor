@@ -4,7 +4,8 @@ action main:
 
 global_terrestrial_tiles = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index'
 australian_subregion_tiles = 'local:alessio.bulckaen:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index_australiaandnewzealand'
-spatial_boundaries = australian_subregion_tiles
+//spatial_boundaries = 'local:liberentaizp:im.data.global:northern_iberian_coastal_tiles_boolean_test'
+spatial_boundaries = 'klab:grid:tiles:square.1#select=48057,47691'
 //target_subcontinent = 'Northern Africa'
 //'Northern Europe'
 //'Southern Asia'
@@ -38,7 +39,9 @@ resolution = 300.m
 for year in (2020) (
 	for tile in spatial_boundaries (
 //		if [tile.sub_continent == 'Northern Africa'](
-			// set context for all the observations
+//		if [tile.name == '48057' || tile.name == '47691']( // klab:grid:tiles:square.1
+//		if [tile.coastal == 'TRUE'](
+		// set context for all the observations
 		    context(tile,resolution,Time(year=year))
 		    // loop over urns
 		    for urn in observables_urns (
@@ -64,7 +67,7 @@ for year in (2020) (
 						if [observation.isEmpty()] (
 							warning(["Observation " + urn_name + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ resolution +"/" + urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
 						
 							info(["Exporting urn " + urn_name])
 						)
