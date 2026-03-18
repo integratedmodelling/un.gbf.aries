@@ -1,4 +1,4 @@
-private namespace gbf.aries.climate_regulation.ipcc_forest_type
+project private namespace gbf.aries.climate_regulation.ipcc_forest_type
 	using 
 		nca.landuse.ipcc,
 		gbf.aries.climate_regulation;
@@ -34,9 +34,9 @@ observe earth:Region named test_tile_forest_type_testing
 			   grid="300 m"),
 			time(year=2020);
 observe earth:Region named test_tile_gadm_lev0
-	over space(urn='local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index#tile_index=35110',
+	over space(urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index#sub_continent=North Africa', //tile_index=35110',
 			   grid="300 m"),
-			time(year=2020);			
+			time(year=2020);		
 
 /*
  * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primar
 	as presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
 	set to [self == 1 ? true : false] 	// binary result: 1 or 0
 	over space(shape='EPSG:4326 POLYGON ((-161 -36, 180 -36, 180 33, -161 33, -161 -36))');
-	
+
 @reliability(80)
 model presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
 	set to [false];

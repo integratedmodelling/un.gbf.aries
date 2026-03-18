@@ -1,0 +1,165 @@
+// Version 1 close the if statement after the context(tile,resolution,Time(year=year))) --> engine is overloaded
+//script alessio_tests_filter_by_shapefile_field
+//
+//
+//action main:
+//
+//global_terrestrial_tiles = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index'
+//
+//spatial_boundaries = global_terrestrial_tiles
+//target_subcontinent = 'Northern Africa'
+////'Northern Europe'
+////'Southern Asia'
+////'Southern Europe'
+////'Northern Africa'
+////'Polynesia'
+////'Sub-Saharan Africa'
+////'Latin America and the Caribbean'
+////'Western Asia'
+////'Australia and New Zealand'
+////'Western Europe'
+////'Eastern Europe'
+////'Northern America'
+////'South-eastern Asia'
+////'Eastern Asia'
+////'Melanesia'
+////'Micronesia'
+////'Central Asia'
+//
+//
+//
+//output_folder_directory = "UN_GBF/Climate_Regulation/Reference_Layer"
+//
+//set observables_urns (
+//	// before the dependencies
+//	{landcover:LandCoverType}
+////	gbf.aries.climate_regulation.ipcc_forest_type.ipcc_forest_type_2020	
+//		)
+//
+//resolution = 500.m
+//for year in (2020) (
+//	for tile in global_terrestrial_tiles (
+//		if [tile.tile_index == 43081](
+////		if [tile.sub_continent == 'Northern Africa'](
+//			// set context for all the observations
+//		    context(tile,resolution,Time(year=year)))
+//		    // loop over urns
+//		    for urn in observables_urns (
+//		    	// submit the observation
+//				submit(urn): (
+//					WAITING     -> ()
+//					STARTED     -> ()
+//					ABORTED     -> warning("Aborted")
+//					INTERRUPTED -> warning("Interrupted")
+//					empty -> (
+//						// popup on application
+//						alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
+//						// error with detail in k.LAB console
+//						error(["Empty observation: " + urn_name])
+//					)
+//					observation -> (
+//						set urn_name ""
+//						if [urn.toString().startsWith("[")] (
+//							set urn_name [urn.name]
+//						) else (
+//							set urn_name urn
+//						)
+//						if [observation.isEmpty()] (
+//							warning(["Observation " + urn_name + " is empty"])
+//						) else (
+//							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
+//						
+//							info(["Exporting urn " + urn_name])
+//						)
+//					)
+//				)	
+//			)
+//		)
+//	)
+////)
+
+
+// Version 2 close the if statement at the end of the code context(tile,resolution,Time(year=year))
+// ...
+// )--> script doens't run
+
+script alessio_tests_filter_by_shapefile_field
+
+
+action main:
+
+global_terrestrial_tiles = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index'
+
+spatial_boundaries = global_terrestrial_tiles
+target_subcontinent = 'Northern Africa'
+//'Northern Europe'
+//'Southern Asia'
+//'Southern Europe'
+//'Northern Africa'
+//'Polynesia'
+//'Sub-Saharan Africa'
+//'Latin America and the Caribbean'
+//'Western Asia'
+//'Australia and New Zealand'
+//'Western Europe'
+//'Eastern Europe'
+//'Northern America'
+//'South-eastern Asia'
+//'Eastern Asia'
+//'Melanesia'
+//'Micronesia'
+//'Central Asia'
+
+
+
+output_folder_directory = "UN_GBF/Climate_Regulation/Reference_Layer"
+
+set observables_urns (
+	// before the dependencies
+	{landcover:LandCoverType}
+//	gbf.aries.climate_regulation.ipcc_forest_type.ipcc_forest_type_2020	
+		)
+
+resolution = 500.m
+for year in (2020) (
+	for tile in global_terrestrial_tiles (
+		if [tile.tile_index == 43081](
+//		if [tile.sub_continent == 'Northern Africa'](
+			// set context for all the observations
+		    context(tile,resolution,Time(year=year))
+		    // loop over urns
+		    for urn in observables_urns (
+		    	// submit the observation
+				submit(urn): (
+					WAITING     -> ()
+					STARTED     -> ()
+					ABORTED     -> warning("Aborted")
+					INTERRUPTED -> warning("Interrupted")
+					empty -> (
+						// popup on application
+						alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
+						// error with detail in k.LAB console
+						error(["Empty observation: " + urn_name])
+					)
+					observation -> (
+						set urn_name ""
+						if [urn.toString().startsWith("[")] (
+							set urn_name [urn.name]
+						) else (
+							set urn_name urn
+						)
+						if [observation.isEmpty()] (
+							warning(["Observation " + urn_name + " is empty"])
+						) else (
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "_" + tile.tile_index + "_" + resolution + "_" + year + ".tiff"])
+						
+							info(["Exporting urn " + urn_name])
+						)
+					)
+				)	
+			)
+		)
+	)
+)
+
+

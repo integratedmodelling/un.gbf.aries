@@ -50,15 +50,35 @@ model local:justus.muhando:im.data.global:im-data-global-ecology.global_jrc_ipcc
 	nca.ecology.ipcc:TropicalDry if 12;
 
 //TODO:Verify IPCC_CARBON_STOCK_VEGETATION_TABLE columns structure - removed columns not used (all the * in the lookup should be removed)
-//@intensive(space)
-//@intensive(time)
-//model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
-//	observing
-//	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
-//	landcover:LandCoverType 					named landcover,
-//	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
-//	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
-//	type of geography:ContinentalRegion			named continent,
-//	nca.landuse.ipcc:ForestType 				named forest_type
-//lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, forest_type,*,*,*,*,*, ?)
-//	into IPCC_CARBON_STOCK_VEGETATION_TABLE;	
+@intensive(space)
+@intensive(time)
+model nca.landuse.ipcc:YoungForest im:Yearly chemistry:Carbon im:Mass in t/ha named young_forest_carbon_stock
+	observing
+	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
+	landcover:LandCoverType 					named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
+	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
+	type of geography:ContinentalRegion			named continent,
+	nca.landuse.ipcc:ForestType 				named forest_type
+lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, forest_type, *, ?)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE;
+
+@intensive(space)
+@intensive(time)
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
+	observing
+	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
+	landcover:LandCoverType 					named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
+	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
+	type of geography:ContinentalRegion			named continent,
+	nca.landuse.ipcc:ForestType 				named forest_type,
+	nca.landuse.ipcc:YoungForest im:Yearly chemistry:Carbon im:Mass in t/ha named young_forest_carbon_stock
+lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, forest_type, ?, *)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE
+	set to [self + young_forest_carbon_stock];
+
+
+	
+
+	
