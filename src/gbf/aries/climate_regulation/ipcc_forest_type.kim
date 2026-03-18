@@ -34,9 +34,9 @@ observe earth:Region named test_tile_forest_type_testing
 			   grid="300 m"),
 			time(year=2020);
 observe earth:Region named test_tile_gadm_lev0
-	over space(urn='local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index#sub_continent=North Africa' //tile_index=35110',
+	over space(urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index#sub_continent=North Africa', //tile_index=35110',
 			   grid="300 m"),
-			time(year=2020);			
+			time(year=2020);		
 
 /*
  * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
