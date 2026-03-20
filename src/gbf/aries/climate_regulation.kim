@@ -6,8 +6,8 @@ using nca.landuse.ipcc, nca.ecology.ipcc,
 model type of nca.landuse.ipcc:LandUse
 observing
 	landcover:LandCoverType named landcover,
-	type of ecology:EcoFloristicRegion  named ecological_zone
-//	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone No need ti use layer inim.nca since we eventually kept
+//	type of ecology:EcoFloristicRegion  named ecological_zone 
+	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone //No need to use layer in im.nca // true but used in next steps, so reintroduced it 
 	lookup (landcover, ecological_zone, ?) 
 	into IPCC_LANDUSE_TABLE; 
 
@@ -80,15 +80,16 @@ model local:justus.muhando:im.data.global:im-data-global-ecology.global_jrc_ipcc
 
 @intensive(space)
 @intensive(time)
-model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock_2020
 	observing
 	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
 	landcover:LandCoverType 					named landcover,
 	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
 	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
 	type of geography:ContinentalRegion			named continent,
-	nca.landuse.ipcc:ForestType 				named forest_type
-lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, forest_type, ?, *)
+	im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
+//	nca.landuse.ipcc:ForestType 				named forest_type
+lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, ipcc_forest_type_2020, ?, *)
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE;
 	
 
