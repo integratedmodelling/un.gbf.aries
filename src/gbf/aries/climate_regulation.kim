@@ -91,6 +91,46 @@ model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbo
 //	nca.landuse.ipcc:ForestType 				named forest_type
 lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, ipcc_forest_type_2020, ?, *)
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE;
-	
+
+
+//300m forest_type_resource
+model local:justus.muhando:im.data.global:im-data-global-ecology.global_jrc_ipcc_climate_zones_epsg4326_10km_2010
+	as im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020_300m;	
+//300m tiles
+@intensive(space)
+@intensive(time)
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock_2020_with_forest_type_300m
+	observing
+	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
+	landcover:LandCoverType 					named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
+	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
+	type of geography:ContinentalRegion			named continent,
+	im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020_300m
+//	nca.landuse.ipcc:ForestType 				named forest_type
+lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, ipcc_forest_type_2020, ?, *)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE;
+
+
+//1000m forest_type_resource
+model 'local:alessio.bulckaen:im.data.global:im-data-global-ecology_gez_2010_wgs840#gez_code'
+	as im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020_1km;
+//1000m tiles
+@intensive(space)
+@intensive(time)
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock_2020_with_forest_type_1_km
+	observing
+	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
+	landcover:LandCoverType 					named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
+	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
+	type of geography:ContinentalRegion			named continent,
+	im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020_1km
+//	nca.landuse.ipcc:ForestType 				named forest_type
+lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, ipcc_forest_type_2020, ?, *)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE;
+		
+
+
 
 	
