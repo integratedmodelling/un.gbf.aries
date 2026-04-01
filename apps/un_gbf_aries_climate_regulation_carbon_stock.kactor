@@ -12,8 +12,8 @@ output_folder_directory = "UN_GBF/Climate_Regulation/Carbon_Stock"
 
 set observables_urns (
 	// before the dependencies
-	gbf.aries.climate_regulation.vegetation_carbon_stock_2020_with_forest_type_300m
-//	gbf.aries.climate_regulation.vegetation_carbon_stock_2020_with_forest_type_1000m
+	gbf.aries.climate_regulation.ipcc_forest_type_reference.ipcc_forest_type_reference
+	gbf.aries.climate_regulation.vegetation_carbon_stock
 		)
 
 resolution = 1000.m
