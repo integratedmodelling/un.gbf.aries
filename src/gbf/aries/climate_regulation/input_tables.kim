@@ -724,6 +724,7 @@ define IPCC_CARBON_STOCK_VEGETATION_TABLE as {{
   nca.landuse.ipcc:Wetland    | landcover:Mangrove                         | nca.ecology.ipcc:TropicalRegion    | #                                           | nca.ecology.ipcc:TropicalDry        | #                             | #                                     | 53.52             | 0               ,
   nca.landuse.ipcc:Wetland    | landcover:Mangrove                         | nca.ecology.ipcc:TropicalRegion    | #                                           | nca.ecology.ipcc:TropicalMoist      | #                             | #                                     | 89.02             | 0               ,
   nca.landuse.ipcc:Wetland    | landcover:Mangrove                         | nca.ecology.ipcc:TropicalRegion    | #                                           | nca.ecology.ipcc:TropicalWet        | #                             | #                                     | 129.02            | 0               ,
+  nca.landuse.ipcc:WaterBody  |						#					   |				#					|							#				  |					#					|				#				|					#					| 	#		  		|  #			  ,
  			#				  |						#					   |				#					|							#				  |					#					|				#				|					#					| 	0		  		|  0
  }}; 
 //  
