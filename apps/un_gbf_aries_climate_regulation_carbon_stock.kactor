@@ -12,7 +12,8 @@ output_folder_directory = "UN_GBF/Climate_Regulation/Carbon_Stock"
 
 set observables_urns (
 	// before the dependencies
-	gbf.aries.climate_regulation.ipcc_forest_type.forest_type
+	gbf.aries.climate_regulation.ipcc_forest_type.ipcc_forest_type_2020
+//	gbf.aries.climate_regulation.ipcc_forest_type.forest_type // to be used only for 2022
 	gbf.aries.climate_regulation.vegetation_carbon_stock
 		)
 
