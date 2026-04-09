@@ -756,9 +756,9 @@ define IPCC_CARBON_STOCK_VEGETATION_TABLE as {{
   nca.landuse.ipcc:Wetland    | landcover:Mangrove                         | #                                           | nca.ecology.ipcc:TropicalDry        | #                             | #                                     | 53.52                            ,
   nca.landuse.ipcc:Wetland    | landcover:Mangrove                         | #                                           | nca.ecology.ipcc:TropicalMoist      | #                             | #                                     | 89.02                            ,
   nca.landuse.ipcc:Wetland    | landcover:Mangrove                         | #                                           | nca.ecology.ipcc:TropicalWet        | #                             | #                                     | 129.02                          ,
-  nca.landuse.ipcc:WaterBody  |						#			           |							#		    	 |					#				   |				#			   |	 				#				   | 	#		  	   			     ,
- nca.landuse.ipcc:ForestLand  | landcover:Forest                           | #                                           | #                                   | #                             | #                                     | 46.97                            ,    
- 			#				  |						#					   |							#				 |					#				   |				#			   |					#				   | 	0		  	   
+  nca.landuse.ipcc:WaterBody  |	#			           					   | #									    	 | #								   | #						   	   | #									   | 0		  	   			     ,//TODO check the correct value
+  nca.landuse.ipcc:ForestLand | landcover:Forest                           | #                                           | #                                   | #                             | #                                     | 46.97                            ,    
+  #							  |	#					   					   | #											 | #								   | #							   | #									   | 0		  	   
  }}; 
 //  
 //  nca.landuse.ipcc:OtherLand  | landcover:LichenMoss                       | nca.ecology.ipcc:TropicalRegion    | #                                           | nca.ecology.ipcc:TropicalDry        | #                             | #                                     | 0                 | 0               ,
