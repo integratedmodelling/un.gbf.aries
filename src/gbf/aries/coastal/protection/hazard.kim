@@ -135,7 +135,8 @@ define EXPOSURE_THRESHOLD_RANK as {{
 		0.044 to 0.069	|0.396 to 0.549 |15 to 20		|790 to 1844 	|615 to 876 	| 2,
 		0.069 to 0.076	|0.549 to 0.725 |10 to 15		|1844 to 3397 	|876 to 1018 	| 3,
 		0.076 to 0.086	|0.725 to 1.024	|5 to 10		|3397 to 8123 	|1018 to 1265	| 4,
-			 > 0.086	|> 1.024 		|-50 to 5		|> 8123 		|> 1265.40		| 5
+			 > 0.086	|> 1.024 		|-50 to 5		|> 8123 		|> 1265.40		| 5,
+			 # 			|# 				|# 				|# 				|# 				| 1		 
 }};
 
 /*
@@ -557,7 +558,7 @@ model im:Predicted value of risk:Hazard earth:Coast with SeaGrass
  */
 observe earth:Region named first_coastline_chunk
      over space(
-			urn = 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_2km_buffer_4326#tile_index=2000',
+			urn = 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_4326#tile_index_1d=23335',
     		grid = "100 m",
     		projection = "EPSG:4326"),
     	 time(
@@ -584,7 +585,7 @@ observe earth:Region named one_tile_with_mangroves
     	 
 observe earth:Region named one_coastline_chunk
      over space(
-			urn = 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326#tile_index_1d=42649',
+			urn = 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326#tile_index_1d=23335',
     		grid = "1000 m",
     		projection = "EPSG:4326"),
     	 time(
