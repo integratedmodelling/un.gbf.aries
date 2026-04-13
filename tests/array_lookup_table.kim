@@ -1,0 +1,58 @@
+worldview im;
+
+@test(
+    name = "array_lookup_table",
+    description  = "",
+    // add to the list any concepts to be observed in the context below
+    observations = (
+	"gbf.aries.climate_regulation.vegetation_carbon_stock"
+//    "im|un.gbf.aries/tests/array_lookup_table.inappropriate-forest-carbon-mass-resolver"
+//    "im|un.gbf.aries/tests/array_lookup_table.vegetation-carbon-mass-resolver"
+    ),
+    // add assertions to check the observations after execution
+    assertions = ()
+)
+// change the concept to the one you want; use a URN optionally (in a separate test project including the resource)
+observe /* a:urn:to:use#objectid as */ earth:Region named array_lookup_table
+    over space(shape='EPSG:4326 POLYGON ((21.741145542247537 38.82651019686824, 21.532043121254908 38.82651019686824, 21.532043121254908 38.904354535691226, 21.741145542247537 38.904354535691226, 21.741145542247537 38.82651019686824))',
+    		grid="300 m",
+    		projection="EPSG:4326"),
+    time(year=2020); 
+// add any models here
+
+
+define TABLE_1 as {{
+  ipcc_landuse                | landcover                                  | ecological_zones                            | climate_zones                       | continent                     | ipcc_forest_type_reference            | tot_biomass_c_all  
+  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  #							  |landcover:Forest								| #											 | #								   | #							   | #									   | 100,		  	   					
+  #							  |landcover:ArtificialSurface					| #											 | #								   | #							   | #									   | 0,		  	   					
+  #							  |in (landcover:LandSurface landcover:Wetland)| #											 | #								   | #							   | #									   | 0		  	   					
+//  #							  | landcover:LandSurface					   | #											 | #								   | #							   | #									   | 0		  	   					,
+//  #							  | landcover:Wetland						   | #											 | #								   | #							   | #									   | 0		  	   
+ }}; 
+
+define TABLE_2 as {{
+  ipcc_landuse                | landcover                                  | ecological_zones                            | climate_zones                       | continent                     | ipcc_forest_type_reference            | tot_biomass_c_all  
+  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  #							  |landcover:Forest								| #											 | #								   | #							   | #									   | 100,		  	   					
+  #							  |landcover:ArtificialSurface					| #											 | #								   | #							   | #									   | 0,		  	   					
+//  #							  |in (landcover:LandSurface landcover:Wetland)| #											 | #								   | #							   | #									   | 0		  	   					
+  #							  | landcover:LandSurface					   | #											 | #								   | #							   | #									   | 0		  	   					,
+  #							  | landcover:Wetland						   | #											 | #								   | #							   | #									   | 0		  	   
+ }}; 
+ 
+@intensive(space)
+@intensive(time)
+model im:Inappropriate ecology:Forest chemistry:Carbon im:Mass in t/ha
+	observing
+	landcover:LandCoverType 					named landcover
+lookup (*, landcover, *,*, *, *, ?)
+	into TABLE_1;
+
+@intensive(space)
+@intensive(time)
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha
+	observing
+	landcover:LandCoverType 					named landcover
+lookup (*, landcover, *,*, *, *, ?)
+	into TABLE_2;
