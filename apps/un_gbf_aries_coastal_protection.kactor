@@ -1,24 +1,30 @@
 script un.gbf.aries.coastal_protection
 
 action main:
+info("started k.Actor")
 
 coastal_protection_spatial_boundaries = 
 'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_6km_buffer_grid_split_4326'
-
+klab_grid_tiles = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_1d_tile_index_v2'
+//#select=13426, 23264, 25951, 31633, 35252, 35946, 37021, 38754, 43862, 44084, 44229, 44230, 44950, 45924, 46281, 46399, 51098, 54199, 55281, 56160, 57240, 61359'
 output_folder_directory = "UN_GBF/Coastal_Protection"
 
 set observables_urns (
 	// before the dependencies
 	gbf.aries.coastal.protection.exposurevulnerability.combined_delta
-	gbf.aries.coastal.protection.exposurevulnerability.cp_demand
-	gbf.aries.coastal.protection.exposurevulnerability.cp_supply
-	gbf.aries.coastal.protection.exposurevulnerability.cp_total_new
+//	gbf.aries.coastal.protection.exposurevulnerability.cp_demand
+//	gbf.aries.coastal.protection.exposurevulnerability.cp_supply
+//	gbf.aries.coastal.protection.exposurevulnerability.cp_total_new
 		)
 
 resolution = 100.m
-for year in (2020 2021 2022) (
-		for tile in coastal_protection_spatial_boundaries (
-//			if [tile.tile_index_1d == 42649](
+for year in (2020) (
+		for tile in klab_grid_tiles (
+			if [
+tile.tile_index == 39703
+			](
+//				info(["Calculating "+tile.tile_index_1d])
+				info(["Calculating "+tile.tile_index])
 		
 			// set context for all the observations
 		    context(tile,resolution,Time(year=year))
@@ -28,13 +34,17 @@ for year in (2020 2021 2022) (
 				submit(urn): (
 					WAITING     -> ()
 					STARTED     -> ()
-					ABORTED     -> warning("Aborted")
-					INTERRUPTED -> warning("Interrupted")
+//					ABORTED     -> warning(["Aborted: "+tile.tile_index_1d])
+//					INTERRUPTED -> warning(["Interrupted: "+tile.tile_index_1d])
+					ABORTED     -> warning(["Aborted: "+tile.tile_index])
+					INTERRUPTED -> warning(["Interrupted: "+tile.tile_index])
 					empty -> (
 						// popup on application
 						alert("The computation did not produce results. Some needed resources may be offline, or the system may be overloaded.")
 						// error with detail in k.LAB console
-						error(["Empty observation: " + urn_name])
+//						error(["Empty observation: " + urn_name + ", tile: " + tile.tile_index_1d])
+						error(["Empty observation: " + urn_name + ", tile: " + tile.tile_index])
+			
 					)
 					observation -> (
 						set urn_name ""
@@ -44,13 +54,16 @@ for year in (2020 2021 2022) (
 							set urn_name urn
 						)
 						if [observation.isEmpty()] (
-							warning(["Observation " + urn_name + " is empty"])
+//							warning(["Observation " + urn_name + ", tile: " + tile.tile_index_1d + " is empty"])
+							warning(["Observation " + urn_name + ", tile: " + tile.tile_index + " is empty"])
 						) else (
-							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "/" + urn_name + "_" + "tile_index_1d_" +  tile.tile_index_1d + "_" + resolution + "_" + year + ".tiff"])						
-							info(["Exporting urn " + urn_name])
+//							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "/" + "tile_index_1d_" +  tile.tile_index_1d + "_" + resolution + "_" + year + ".tiff"])						
+							observation.export([output_folder_directory +"/"+ year +"/"+ "maps" +"/"+ urn_name + "/" + "tile_index_" +  tile.tile_index + "_" + resolution + "_" + year + ".tiff"])						
+//							info(["Exporting urn " + urn_name + ", tile: " + tile.tile_index_1d])
+							info(["Exporting urn " + urn_name + ", tile: " + tile.tile_index])							
 						)
 					)
 				)	
-			)
+			))
 		)
 	)
