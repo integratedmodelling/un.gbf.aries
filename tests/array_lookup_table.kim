@@ -5,9 +5,8 @@ worldview im;
     description  = "",
     // add to the list any concepts to be observed in the context below
     observations = (
-	"gbf.aries.climate_regulation.vegetation_carbon_stock"
-//    "im|un.gbf.aries/tests/array_lookup_table.inappropriate-forest-carbon-mass-resolver"
-//    "im|un.gbf.aries/tests/array_lookup_table.vegetation-carbon-mass-resolver"
+	"im|un.gbf.aries/tests/array_lookup_table.table_1"
+	"im|un.gbf.aries/tests/array_lookup_table.table_2"
     ),
     // add assertions to check the observations after execution
     assertions = ()
@@ -24,9 +23,10 @@ observe /* a:urn:to:use#objectid as */ earth:Region named array_lookup_table
 define TABLE_1 as {{
   ipcc_landuse                | landcover                                  | ecological_zones                            | climate_zones                       | continent                     | ipcc_forest_type_reference            | tot_biomass_c_all  
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  #							  |landcover:Forest								| #											 | #								   | #							   | #									   | 100,		  	   					
+  #							  |landcover:NaturalVegetation					| #											 | #								   | #							   | #									   | 100,		  	   					
+  #							  |landcover:SeminaturalVegetation				| #											 | #								   | #							   | #									   | 0,		  	   					
   #							  |landcover:ArtificialSurface					| #											 | #								   | #							   | #									   | 0,		  	   					
-  #							  |in (landcover:LandSurface landcover:Wetland)| #											 | #								   | #							   | #									   | 0		  	   					
+  #							  |in (landcover:LandSurface landcover:Wetland) | #											 | #								   | #							   | #									   | 0		  	   					
 //  #							  | landcover:LandSurface					   | #											 | #								   | #							   | #									   | 0		  	   					,
 //  #							  | landcover:Wetland						   | #											 | #								   | #							   | #									   | 0		  	   
  }}; 
@@ -34,7 +34,8 @@ define TABLE_1 as {{
 define TABLE_2 as {{
   ipcc_landuse                | landcover                                  | ecological_zones                            | climate_zones                       | continent                     | ipcc_forest_type_reference            | tot_biomass_c_all  
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  #							  |landcover:Forest								| #											 | #								   | #							   | #									   | 100,		  	   					
+  #							  |landcover:NaturalVegetation					| #											 | #								   | #							   | #									   | 100,		  	   					
+  #							  |landcover:SeminaturalVegetation				| #											 | #								   | #							   | #									   | 0,		  	   					
   #							  |landcover:ArtificialSurface					| #											 | #								   | #							   | #									   | 0,		  	   					
 //  #							  |in (landcover:LandSurface landcover:Wetland)| #											 | #								   | #							   | #									   | 0		  	   					
   #							  | landcover:LandSurface					   | #											 | #								   | #							   | #									   | 0		  	   					,
@@ -43,7 +44,7 @@ define TABLE_2 as {{
  
 @intensive(space)
 @intensive(time)
-model im:Inappropriate ecology:Forest chemistry:Carbon im:Mass in t/ha
+model im:Inappropriate ecology:Vegetation chemistry:Carbon im:Mass in t/ha named table_1
 	observing
 	landcover:LandCoverType 					named landcover
 lookup (*, landcover, *,*, *, *, ?)
@@ -51,7 +52,7 @@ lookup (*, landcover, *,*, *, *, ?)
 
 @intensive(space)
 @intensive(time)
-model ecology:Vegetation chemistry:Carbon im:Mass in t/ha
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named table_2
 	observing
 	landcover:LandCoverType 					named landcover
 lookup (*, landcover, *,*, *, *, ?)
