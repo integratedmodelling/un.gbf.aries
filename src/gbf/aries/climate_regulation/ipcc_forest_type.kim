@@ -349,7 +349,16 @@ model im:Age of ecology:Forest earth:Region in year named forest_age
  * # 8) Model dynamic forest type. -----------------------------------------------------------------------------------------------------------------------------
  */
 model local:liberentaizp:im.data.global:global_forest_type_2020_epsg_4326
-	as im:Reference nca.landuse.ipcc:ForestType;
+	as im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
+	classified into
+		nca.landuse.ipcc:PrimaryForest if 0,
+		nca.landuse.ipcc:PerennialCropland if 1,
+		nca.landuse.ipcc:OldPlantedForest if 2,
+		nca.landuse.ipcc:YoungPlantedForest if 3,
+		nca.landuse.ipcc:YoungSecondaryForest if 4,
+		nca.landuse.ipcc:OldSecondaryForest if 5,
+		nca.landuse.ipcc:OtherForest if 6,
+		nca.landuse.ipcc:OtherLand if 7;
 
 model nca.landuse.ipcc:ForestType named forest_type
 	observing
