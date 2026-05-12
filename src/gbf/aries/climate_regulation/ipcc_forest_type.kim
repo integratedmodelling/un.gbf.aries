@@ -314,13 +314,13 @@ model im:Reference im:Age of ecology:Forest earth:Region in year named forest_ag
 model im:Age of ecology:Forest earth:Region in year named forest_age
 	observing
 		im:Reference im:Age of ecology:Forest earth:Region in year named forest_age_2020,
-		landcover:LandCoverType named landcover,
+		type of nca.landuse.ipcc:LandUse named landuse,
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
 	set to [
 		def ret = forest_age_2020
 		if (scale.time.start.year != 2020) {
 			if (forest_age_2020 == 0) {
-				if (landcover == landcover:Forest) {
+				if (landuse == nca.landuse.ipcc:ForestLand) {
 					ret = 3
 				} else {
 					ret = 0
@@ -330,7 +330,7 @@ model im:Age of ecology:Forest earth:Region in year named forest_age
 				if (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year)) {
 					ret = forest_age_2020 + accu_year
 				} else {
-					if (landcover == landcover:Forest) {
+					if (landuse == nca.landuse.ipcc:ForestLand) {
 						ret = scale.time.start.year - year_of_deforestation
 					} else {
 						ret = 0
@@ -365,7 +365,7 @@ model nca.landuse.ipcc:ForestType named forest_type
 		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,
 		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		im:Age of ecology:Forest earth:Region in year named forest_age,
-		landcover:LandCoverType named landcover
+		type of nca.landuse.ipcc:LandUse named landuse
 	set to [
 		def ret = ipcc_forest_type_2020
 		if (((ipcc_forest_type_2020 == nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldPlantedForest)) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
@@ -385,13 +385,13 @@ model nca.landuse.ipcc:ForestType named forest_type
 		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:OldSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
 			ret = ipcc_forest_type_2020
 		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:PerennialCropland) {
-			if (landcover == landcover:Forest) {
+			if (landuse == nca.landuse.ipcc:ForestLand) {
 				ret = ipcc_forest_type_2020
 			} else {
 				ret = nca.landuse.ipcc:OtherLand
 			}
 		} else {
-			if (landcover == landcover:Forest) {
+			if (landuse == nca.landuse.ipcc:ForestLand) {
 				ret = nca.landuse.ipcc:OtherForest
 			} else {
 				ret = nca.landuse.ipcc:OtherLand
