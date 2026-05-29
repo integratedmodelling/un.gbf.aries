@@ -94,8 +94,8 @@ model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbo
 	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
 	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
 	type of geography:ContinentalRegion			named continent,
-	im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_reference
-lookup (ipcc_landuse, landcover, ecological_zones, climate_zones, continent, ipcc_forest_type_reference, ?)
+	nca.landuse.ipcc:ForestType 				named forest_type
+lookup (ipcc_landuse, landcover, ecological_zones, climate_zones, continent, forest_type, ?)
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE;
 		
 
