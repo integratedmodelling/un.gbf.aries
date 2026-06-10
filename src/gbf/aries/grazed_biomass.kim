@@ -26,6 +26,7 @@ abstract attribute Vegetation
 quantity Intake; //kg of dry biomass required to sustain livestock animals
 quantity LightUseEfficiency;
 quantity GrossPrimaryProductivity;
+// TODO: check if need to add quantity NetPrimaryProductivity;
 
 /*
  * Summary of resources from STAC
@@ -96,7 +97,8 @@ model ecology:Vegetation ecology:PrimaryProductivity in t/ha
 	observing
 		im:Gross chemistry:Carbon ecology:PrimaryProductivity in g/m^2 named gross_primary_productivity,
 		LightUseEfficiency named light_use_efficiency
-	set to [ gross_primary_productivity * light_use_efficiency*2.7*0.01];
+	set to [ gross_primary_productivity * 0.5 * light_use_efficiency*2.7*0.01];
+	// FYI added the 0.5 to convert from gross to net primary producivity
 
 model type of Vegetation 
 	observing
