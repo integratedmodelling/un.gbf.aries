@@ -1,8 +1,10 @@
 private namespace gbf.aries.grazed_biomass
 using
-(ADJUSTED_GPP_TABLE) from gbf.aries.grazed_biomass.input_tables,
-(VEGETATION_SUITABLE_FOR_PASTURE) from gbf.aries.grazed_biomass.input_tables,
-(IPCC_LIVESTOCK_WEIGHT) from gbf.aries.grazed_biomass.input_tables;
+(ADJUSTED_GPP_TABLE, 
+	VEGETATION_SUITABLE_FOR_PASTURE, 
+	CATTLE_DISTRIBUTION_TABLE,
+	IPCC_LIVESTOCK_WEIGHT
+) from gbf.aries.grazed_biomass.input_tables;
 
 //abstract attribute Vegetation
 //	describes im:Type of ecology:HerbaceousVegetation earth:LandCover within earth:Location
@@ -179,26 +181,7 @@ model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faosta
 //    label       = "Cattle_type_proportion",
 //    description = "Proportion of cattle that are DairyCattle (0–1), rest are BeefCattle"
 //)
-define CATTLE_DISTRIBUTION_TABLE as {{
-  region                        | diary_cattle | beef_cattle
-  ---------------------------------------------------------
-  geography:UnitedStates        | 0.24       | 0.76     ,
-  geography:Brazil              | 0.49       | 0.51     ,
-  geography:India               | 0.71       | 0.29     ,
-  geography:China               | 0.05       | 0.95     ,
-  geography:Germany             | 0.25       | 0.75     ,
-  geography:Argentina           | 0.18       | 0.82     ,
-  geography:Australia           | 0.2        | 0.8      ,
-  geography:Mexico              | 0.42       | 0.58     ,
-  geography:France              | 0.47       | 0.53     ,
-  geography:Russia              | 0.05       | 0.95     ,
-  geography:AfricanRegion       | 0.37       | 0.63     ,
-  geography:AsianRegion         | 0.67       | 0.33     ,
-  geography:EuropeanRegion      | 0.47       | 0.53     ,
-  geography:NorthAmericanRegion | 0.09       | 0.91     ,
-  geography:OceanicRegion       | 0.33       | 0.67     ,
-  geography:SouthAmericanRegion | 0.08       | 0.92     
-}};
+
 
 @extensive(space)
 model count of biology:Individual agriculture:DairyCattle
