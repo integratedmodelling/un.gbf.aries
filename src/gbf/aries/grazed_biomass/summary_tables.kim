@@ -11,11 +11,13 @@ define table grazing_biomass_supply_by_natural_ecosystem_typology_static as {
 			 {title: "Total", summarize: sum, style: bold}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
-/// name has been changed as below table is all grazing lands, not just nat/sn (check in kactor)
-define table grazing_biomass_supply_total_ecosystem_typology_static as {
-	title: "Potential supply of dry matter for grazing by ecosystem type (tonnes)",
-	label: "Potential supply of dry matter for grazing by ecosystem type (tonnes)",
-	target: im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha
-	columns:({ title:  "{classifier}", target: im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha, filter: landcover:LandCoverType}
-			 {title: "Total", summarize: sum, style: bold}),
-	rows:   ({ title: "Dry Matter {start} (tonnes)" })};	
+
+// WE ARE ONLY LOOKING AT NATURAL
+///// name has been changed as below table is all grazing lands, not just nat/sn (check in kactor)
+//define table grazing_biomass_supply_total_ecosystem_typology_static as {
+//	title: "Potential supply of dry matter for grazing by ecosystem type (tonnes)",
+//	label: "Potential supply of dry matter for grazing by ecosystem type (tonnes)",
+//	target: im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha
+//	columns:({ title:  "{classifier}", target: im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha, filter: landcover:LandCoverType}
+//			 {title: "Total", summarize: sum, style: bold}),
+//	rows:   ({ title: "Dry Matter {start} (tonnes)" })};	
