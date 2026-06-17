@@ -1,47 +1,15 @@
 private namespace gbf.aries.grazed_biomass
-using
-(ADJUSTED_GPP_TABLE, 
-	VEGETATION_SUITABLE_FOR_PASTURE, 
-	CATTLE_DISTRIBUTION_TABLE,
-	IPCC_LIVESTOCK_WEIGHT
-) from gbf.aries.grazed_biomass.input_tables;
-
-//abstract attribute Vegetation
-//	describes im:Type of ecology:HerbaceousVegetation earth:LandCover within earth:Location
-//	has disjoint children 
-//	(abstract Grassland has children
-//	(CultivatedGrassland
-//	"Areas where grasses and other forage plants have been intentionally planted and managed, as well as areas of native grassland-type vegetation where they clearly exhibit active and 'heavy' management for specific human-directed uses, such as directed grazing of livestock."),
-//	(NaturalSeminaturalGrassland
-//	"Relatively undisturbed native grasslands/short-height vegetation, such as steppes and tundra, as well as areas that have experienced varying degrees of human activity in the past, which may contain a mix of native and introduced species due to historical land use and natural processes. In general, they exhibit natural-looking patterns of varied vegetation and clearly ordered hydrological relationships throughout the landscape.")
-//	),
-//	(Shrubland has children
-//		(OpenShrubland "Land on which the vegetation is dominated by low-growing woody plants, characterized by a sparse distribution of shrubs and dominated by woody perennials. Typically covers 50—75% of the area, with significant open ground (with or without herbaceous understory) between them, where shrub canopies are less than 10 meters in diameter, and tree cover is below 10%, meaning they do not form a continuous or semi-continuous canopy")
-//	),
-//	SparseVegetation;
-
-	
-
-//class GrasslandType
-//	is type of Grassland;
+	using
+		(ADJUSTED_GPP_TABLE, 
+		VEGETATION_SUITABLE_FOR_PASTURE, 
+		CATTLE_DISTRIBUTION_TABLE,
+		IPCC_LIVESTOCK_WEIGHT) 
+	from gbf.aries.grazed_biomass.input_tables;
 
 quantity Intake; //kg of dry biomass required to sustain livestock animals
 quantity LightUseEfficiency;
 quantity GrossPrimaryProductivity;
 
-/*
- * Summary of resources from STAC
- */
-
-//Dominant grassland type
-//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
-//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
-
-
-//GPP 
-//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2020,
-//	  local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2024
- 
 //Uganda small area
 observe earth:Region named area_of_testing_grazing_biomass_uganda
 over space(shape="EPSG:4326 POLYGON ((34.5221204785619 1.3183493778487332, 34.497289468275554 1.0662906901491738, 34.42375067921644 0.823898951667303, 34.30433016580706 0.6004962870331667, 34.143617191405944 0.4046745903333573, 33.94778786549046 0.243964243282349, 33.72436779923318 0.1245443689916499, 33.48194290048496 0.0510056712746945, 33.22982942215124 0.0261746668147964, 32.97771594381752 0.0510056712746945, 32.735291045069296 0.1245443689916499, 32.51187097881202 0.243964243282349, 32.31604165289653 0.4046745903333573, 32.155328678495415 0.6004962870331667, 32.035908165086035 0.823898951667303, 31.962369376026924 1.0662906901491738, 31.937538365740572 1.3183493778487332, 31.962369376026924 1.5703825490789285, 32.035908165086035 1.812701625058068, 32.155328678495415 2.035995548804948, 32.31604165289653 2.231688986488024, 32.51187097881202 2.392271084918022, 32.735291045069296 2.5115822434190136, 32.97771594381752 2.5850483037307583, 33.22982942215124 2.609853802117044, 33.48194290048496 2.5850483037307583, 33.72436779923318 2.5115822434190136, 33.94778786549046 2.392271084918022, 34.143617191405944 2.231688986488024, 34.30433016580706 2.035995548804948, 34.42375067921644 1.812701625058068, 34.497289468275554 1.5703825490789285, 34.5221204785619 1.3183493778487332))",
@@ -52,42 +20,40 @@ over space(shape="EPSG:4326 POLYGON ((33.29116583527641 0.9945560693862632, 33.2
 	 grid="300 m"),
 	 time(year=2020); 
 
+
 /* Add data resources  */
 
-model 
-//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
-//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
-//	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2000,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2001,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2002,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2003,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2004,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2005,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2006,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2007,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2008,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2009,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2010,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2011,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2012,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2013,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2014,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2015,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2016,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2017,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2018,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2019,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2021,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2023,
-	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
-	as type of ecology:Grassland named grassland_type classified into
+model	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2000',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2001',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2002',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2003',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2004',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2005',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2006',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2007',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2008',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2009',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2010',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2011',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2012',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2013',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2014',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2015',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2016',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2017',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2018',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2019',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2020',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2021',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2023',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024'
+	as type of ecology:Grassland 
+	named grassland_type 
+	classified into
 		ecology:CultivatedGrassland if 1,
 		ecology:NaturalSeminaturalGrassland if 2,
-		ecology:OpenShrubland if 3;// currently not a class, leave if data is added 
-// over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
+		ecology:OpenShrubland if 3; //currently not a class, leave if data is added 
  
 model	'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_1985_mosaic',
 		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_1990_mosaic',
@@ -115,11 +81,37 @@ model	'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc
 		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic',
 		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic',
 		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic'
-	as landcover:LandCoverType classified according to im:glc-fcs30-enconding;
+	as landcover:LandCoverType 
+	classified according to im:glc-fcs30-enconding;
 
 //// GPW annual GPP dataset (unit gC/m2/year)
-model local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2020
-	as im:Gross chemistry:Carbon ecology:PrimaryProductivity  in g/m^2 //* year
+// TODO: add missing years
+model	//'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2000',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2001',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2002',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2003',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2004',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2005',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2006',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2007',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2008',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2009',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2010',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2011',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2012',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2013',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2014',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2015',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2016',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2017',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2018',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2019',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2020',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2021',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2022',
+//	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2023',
+	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gross_primary_productivity_2024'
+	as im:Gross chemistry:Carbon ecology:PrimaryProductivity in g/m^2 //* year
 	set to [self == 65000 ? unknown : self ];
 
 /* MODELLING DRY MATTER PRODUCTIVITY (SUPPLY) */
@@ -127,7 +119,6 @@ model local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gr
 model LightUseEfficiency named light_use_efficiency
 	observing
 		type of ecology:Grassland named vegetation_cover,
-//		type of landcover:LandCover named lc
 		landcover:LandCoverType named lc
 	lookup (vegetation_cover, lc, ?) into ADJUSTED_GPP_TABLE; 
 
