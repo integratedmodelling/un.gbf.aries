@@ -3,23 +3,23 @@ project private namespace gbf.aries.grazed_biomass.input_tables;
 //(PDF) Light Use Efficiency (LUE) based bimonthly Gross Primary Productivity (GPP) for global grasslands at 30 m spatial resolution (2000-2022). Available from: https://www.researchgate.net/publication/386558109_Light_Use_Efficiency_LUE_based_bimonthly_Gross_Primary_Productivity_GPP_for_global_grasslands_at_30_m_spatial_resolution_2000-2022 [accessed Nov 27 2025].
 // https://www.researchgate.net/publication/386558109_Light_Use_Efficiency_LUE_based_bimonthly_Gross_Primary_Productivity_GPP_for_global_grasslands_at_30_m_spatial_resolution_2000-2022
 define ADJUSTED_GPP_TABLE as {{
-  vegetation                                             | landcover                      		| lue  
+  vegetation                             | landcover    						| lue  
   -----------------------------------------------------------------------------------------------------
-  ecology:CultivatedGrassland	         | #                                  	| 0.86  ,
-  ecology:NaturalSeminaturalGrassland	 | #                                   	| 0.86  ,
-  ecology:OpenShrubland	             | #                                   	| 0.841 ,
-//  #                                                       | landcover:EvergreenConiferousForest | 0.962 ,
-//  #                                                       | landcover:EvergreenBroadleafForest  | 1.268 ,
-//  #                                                       | landcover:DeciduousConiferousForest | 1.086 ,
-//  #                                                       | landcover:DeciduousBroadleafForest  | 1.165 ,
-//  #                                                       | landcover:MixedForest               | 1.051 ,
-  #                                                      | landcover:DenseShrubland            	| 1.281 ,
-  #                                                      | landcover:OpenShrubland             	| 0.841 ,
-  #                                                      | landcover:Shrubland             		| 1.061 , 
-  #                                                      | landcover:ClosedSavanna             	| 1.239 ,
-  #                                                      | landcover:OpenSavanna               	| 1.206 ,
-  #                                                      | landcover:Grassland                 	| 0.86  ,
-  #                                                      | landcover:ArableLand                	| 1.302
+  ecology:CultivatedGrassland	         |						#            	| 0.86  ,
+  ecology:NaturalSeminaturalGrassland	 | 						#               | 0.86  ,
+  ecology:OpenShrubland	             	 | 						#             	| 0.841 ,
+//  #                                    	 | landcover:EvergreenConiferousForest 	| 0.962 ,
+//  #                                    	 | landcover:EvergreenBroadleafForest  	| 1.268 ,
+//  #                                    	 | landcover:DeciduousConiferousForest 	| 1.086 ,
+//  #                                    	 | landcover:DeciduousBroadleafForest  	| 1.165 ,
+//  #                                    	 | landcover:MixedForest               	| 1.051 ,
+  #                                      | landcover:DenseShrubland            	| 1.281 ,
+  #                                      | landcover:OpenShrubland             	| 0.841 ,
+  #                                      | landcover:Shrubland             		| 1.061 , 
+  #                                      | landcover:ClosedSavanna             	| 1.239 ,
+  #                                      | landcover:OpenSavanna               	| 1.206 ,
+  #                                      | landcover:Grassland                 	| 0.86  ,
+  #                                      | landcover:ArableLand                	| 1.302
 }};
 
 
