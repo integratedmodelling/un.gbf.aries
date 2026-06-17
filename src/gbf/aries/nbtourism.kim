@@ -2,21 +2,23 @@ project private namespace gbf.aries.nbtourism;
 
 /* 1. Getting national tourism statistics metrics per country per year */
 
+//buffering the country to avoid using statistics from neighbouring countries
+private model each im:Reference earth:Location
+	observing geography:Country earth:Region named country_region
+	using 
+		im.geoprocessing.buffer(artifact = country_region, radius = -5000, subtract = false);
+
+@main
 model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitors'
 	as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
-	set to [ country_overnight_visitors == 0 ? null : country_overnight_visitors.mean];          
-//need to enable the mode.
-  
-////default only as number
-////TBD: enable user provided data in app?
-//@parameter(label = "visitors", default = "country_overnight_visitors", name = user_provided_country_visitors, description = "country specific user provided statistics on tourism")
-//number	user_provided_visitors
-//    observing country_overnight_visitors
-//	set to [user_provided_country_visitors];
+    observing 
+    presence of im:Reference earth:Location named country_presence
+    set to [(country_overnight_visitors != 0 && country_presence) ? country_overnight_visitors : null];
 
 /*2. Separate Nature-Based Contribution   */
 
 //multiply country stats by nature-based ratio
+@main
 model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region  
 	observing 
 		behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors,
@@ -32,6 +34,7 @@ model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:Overnight
  */ 
 
 // use ROS to select the NB tourism area
+@main
 model presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation  
 	observing 
 		im:Potential value of behavior:Outdoor behavior:Recreation named recreation_opportunity_spectrum
@@ -53,6 +56,7 @@ model value of earth:Terrestrial im:Extent named cell_area_where_terrestrial
 		geography:Slope > 0 named terrestrial_area
 	set to [terrestrial_area / terrestrial_area * space.area];  
 
+@main
 model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:Numerosity 
 		observing
 		cell_area_where_realized_outdoor_value,
@@ -78,12 +82,13 @@ model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 t
 		    return (realized_outdoor_value_area ? rescaled : unknown)
 	];
 
+@main
 @extensive(space) // it's number of tourists in each gridcell 
 model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named realized_visitors
 	 observing 
 		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, 
 		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region   named nature_based_country_visitors
-	 set to [visitors_indicator_weight * nature_based_country_visitors / visitors_indicator_weight.getCurrentSum(context)]; 	
+	 set to [visitors_indicator_weight * nature_based_country_visitors.mean / visitors_indicator_weight.getCurrentSum(context)]; 	
 
 //optional to get aprox. results per sq. km
 //@intensive(space)  
