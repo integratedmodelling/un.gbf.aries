@@ -89,10 +89,32 @@ model
 		ecology:OpenShrubland if 3;// currently not a class, leave if data is added 
 // over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
  
-model
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic,
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic,
-	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic
+model	'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_1985_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_1990_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_1995_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2000_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2001_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2002_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2003_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2004_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2005_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2006_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2007_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2008_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2009_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2010_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2011_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2012_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2013_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2014_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2015_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2016_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2017_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2018_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2019_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic',
+		'local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic'
 	as landcover:LandCoverType classified according to im:glc-fcs30-enconding;
 
 //// GPW annual GPP dataset (unit gC/m2/year)
@@ -168,10 +190,30 @@ model im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:Pri
 
 // Livestock grazing distribution (GPW) number of heads of livestock per 1km grid cell (FAO stat adjusted) 
 @extensive(space)
-model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1',
-	  'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2021_v1',
-	  'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2022_v1'
- 	as count of biology:Individual agriculture:Cattle
+model 	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2000_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2001_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2002_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2003_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2004_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2005_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2006_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2007_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2008_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2009_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2010_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2011_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2012_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2013_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2014_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2015_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2016_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2017_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2018_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2019_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2020_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2021_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_cattle_headcount_epsg4326_1km_2022_v1'
+	as count of biology:Individual agriculture:Cattle
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 
@@ -202,17 +244,83 @@ model count of biology:Individual agriculture:BeefCattle
 //	set to [ cattle_count > 0 ? cattle_count*cattle_type_proportion : nodata];
 
 @extensive(space)
-model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1'
+model  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2000_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2001_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2002_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2003_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2004_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2005_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2006_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2007_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2008_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2009_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2010_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2011_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2012_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2013_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2014_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2015_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2016_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2017_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2018_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2019_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2020_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2021_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_sheep_headcount_epsg4326_1km_2022_v1'
  	as count of biology:Individual agriculture:Sheep
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 @extensive(space)
-model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1'
+model 	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2000_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2001_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2002_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2003_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2004_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2005_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2006_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2007_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2008_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2009_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2010_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2011_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2012_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2013_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2014_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2015_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2016_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2017_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2018_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2019_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2020_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2021_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_goat_headcount_epsg4326_1km_2022_v1'
  	as count of biology:Individual agriculture:Goat
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
 @extensive(space)
-model 'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1' /// horses not available?
+model 	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2000_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2001_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2002_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2003_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2004_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2005_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2006_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2007_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2008_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2009_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2010_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2011_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2012_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2013_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2014_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2015_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2016_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2017_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2018_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2019_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2020_v1',
+		'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2021_v1',
+	  	'local:rubencc:im.data.global:im-data-global-agriculture.global_gpw_faostat_horse_headcount_epsg4326_1km_2022_v1' /// horses not available?
  	as count of biology:Individual agriculture:Horse
 // 	set to [self/Math.sqrt(space.area)]
  	; //agriculture:Grazing biology:Individual agriculture:Cattle
