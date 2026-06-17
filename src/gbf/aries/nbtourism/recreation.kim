@@ -50,7 +50,8 @@ model value of behavior:Outdoor landcover:LandscapeHeterogeneity named recreatio
     set to [(1 - biodivesity_indicator) + recreation_distance + 
     	     (nodata(campsite_indicator) ? 0 : campsite_indicator)],
     klab.data.normalize(); 
- 
+
+@main 
 @documented(recreation.values.theoretical)
 model im:Theoretical value of behavior:Outdoor behavior:Recreation 
 		observing 
