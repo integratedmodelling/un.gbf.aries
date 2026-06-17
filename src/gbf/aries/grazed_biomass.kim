@@ -4,19 +4,19 @@ using
 (VEGETATION_SUITABLE_FOR_PASTURE) from gbf.aries.grazed_biomass.input_tables,
 (IPCC_LIVESTOCK_WEIGHT) from gbf.aries.grazed_biomass.input_tables;
 
-abstract attribute Vegetation
-	describes im:Type of ecology:HerbaceousVegetation earth:LandCover within earth:Location
-	has disjoint children 
-	(abstract Grassland has children
-	(CultivatedGrassland
-	"Areas where grasses and other forage plants have been intentionally planted and managed, as well as areas of native grassland-type vegetation where they clearly exhibit active and 'heavy' management for specific human-directed uses, such as directed grazing of livestock."),
-	(NaturalSeminaturalGrassland
-	"Relatively undisturbed native grasslands/short-height vegetation, such as steppes and tundra, as well as areas that have experienced varying degrees of human activity in the past, which may contain a mix of native and introduced species due to historical land use and natural processes. In general, they exhibit natural-looking patterns of varied vegetation and clearly ordered hydrological relationships throughout the landscape.")
-	),
-	(Shrubland has children
-		(OpenShrubland "Land on which the vegetation is dominated by low-growing woody plants, characterized by a sparse distribution of shrubs and dominated by woody perennials. Typically covers 50—75% of the area, with significant open ground (with or without herbaceous understory) between them, where shrub canopies are less than 10 meters in diameter, and tree cover is below 10%, meaning they do not form a continuous or semi-continuous canopy")
-	),
-	SparseVegetation;
+//abstract attribute Vegetation
+//	describes im:Type of ecology:HerbaceousVegetation earth:LandCover within earth:Location
+//	has disjoint children 
+//	(abstract Grassland has children
+//	(CultivatedGrassland
+//	"Areas where grasses and other forage plants have been intentionally planted and managed, as well as areas of native grassland-type vegetation where they clearly exhibit active and 'heavy' management for specific human-directed uses, such as directed grazing of livestock."),
+//	(NaturalSeminaturalGrassland
+//	"Relatively undisturbed native grasslands/short-height vegetation, such as steppes and tundra, as well as areas that have experienced varying degrees of human activity in the past, which may contain a mix of native and introduced species due to historical land use and natural processes. In general, they exhibit natural-looking patterns of varied vegetation and clearly ordered hydrological relationships throughout the landscape.")
+//	),
+//	(Shrubland has children
+//		(OpenShrubland "Land on which the vegetation is dominated by low-growing woody plants, characterized by a sparse distribution of shrubs and dominated by woody perennials. Typically covers 50—75% of the area, with significant open ground (with or without herbaceous understory) between them, where shrub canopies are less than 10 meters in diameter, and tree cover is below 10%, meaning they do not form a continuous or semi-continuous canopy")
+//	),
+//	SparseVegetation;
 
 	
 
@@ -52,11 +52,6 @@ over space(shape="EPSG:4326 POLYGON ((33.29116583527641 0.9945560693862632, 33.2
 
 /* Add data resources  */
 
-@colormap(values = {
-	gbf.aries.grazed_biomass:CultivatedGrassland: (255, 205, 115)
-	gbf.aries.grazed_biomass:NaturalSeminaturalGrassland: (255, 153, 22)
-	gbf.aries.grazed_biomass:OpenShrubland: (168, 139, 75)
-})
 model 
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2020,
 //	  local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_gpw_grassland_rf_epsg_4326_2024
@@ -86,10 +81,10 @@ model
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2022,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2023,
 	  local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2024
-	as type of Grassland named grassland_type classified into
-		gbf.aries.grazed_biomass:CultivatedGrassland if 1,
-		gbf.aries.grazed_biomass:NaturalSeminaturalGrassland if 2,
-		gbf.aries.grazed_biomass:OpenShrubland if 3;// currently not a class, leave if data is added 
+	as type of ecology:Grassland named grassland_type classified into
+		ecology:CultivatedGrassland if 1,
+		ecology:NaturalSeminaturalGrassland if 2,
+		ecology:OpenShrubland if 3;// currently not a class, leave if data is added 
 // over space (EPSG:4326 POLYGON ((-56 -179 76 180)));
  
 model
@@ -107,7 +102,7 @@ model local:alessio.bulckaen:im.data.global:global_pasture_watch.uncalibrated_gr
 
 model LightUseEfficiency named light_use_efficiency
 	observing
-		type of Grassland named vegetation_cover,
+		type of ecology:Grassland named vegetation_cover,
 //		type of landcover:LandCover named lc
 		landcover:LandCoverType named lc
 	lookup (vegetation_cover, lc, ?) into ADJUSTED_GPP_TABLE; 
@@ -117,32 +112,36 @@ model ecology:Vegetation ecology:PrimaryProductivity in t/ha
 	observing
 		im:Gross chemistry:Carbon ecology:PrimaryProductivity in g/m^2 named gross_primary_productivity,
 		LightUseEfficiency named light_use_efficiency
-	set to [ gross_primary_productivity * light_use_efficiency*2.7*0.01];
+	set to [ gross_primary_productivity * light_use_efficiency*2.7*0.01*0.5];
 
-model type of Vegetation 
-	observing
-		type of Grassland named grassland_type, 
-		landcover:LandCoverType named landcover 
-  	lookup (grassland_type, landcover,*, *, ? )
-  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+// WE DON'T NEED THE TYPE OF, JUST PRESENCE OF
+//model type of ecology:HerbaceousVegetationLanduse 
+//	observing
+//		type of ecology:Grassland named grassland_type, 
+//		landcover:LandCoverType named landcover 
+//  	lookup (grassland_type, landcover,*, *, ? )
+//  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+//
+// WE DON'T NEED THE TYPE OF, JUST PRESENCE OF
+//model type of im:Natural ecology:HerbaceousVegetationLanduse 
+//	observing
+//		type of ecology:Grassland named grassland_type, 
+//		landcover:LandCoverType named landcover 
+//  	lookup (grassland_type, landcover,*, im:Natural, ? )
+//  	into	VEGETATION_SUITABLE_FOR_PASTURE;
 
-model type of im:Natural Vegetation
-	observing
-		type of Grassland named grassland_type, 
-		landcover:LandCoverType named landcover 
-  	lookup (grassland_type, landcover,*, im:Natural, ? )
-  	into	VEGETATION_SUITABLE_FOR_PASTURE;
 
-model presence of im:Potential ecology:Vegetation earth:Region for agriculture:Pasture named presence_pastureland
-	observing
-		type of Grassland named grassland_type, 
-		landcover:LandCoverType named landcover 
-  	lookup (grassland_type, landcover, ? ) 
-  	into	VEGETATION_SUITABLE_FOR_PASTURE;
+// ONLY USING NATURAL IN THIS MODEL
+//model presence of im:Potential ecology:Vegetation earth:Region for agriculture:Pasture named presence_pastureland
+//	observing
+//		type of ecology:Grassland named grassland_type, 
+//		landcover:LandCoverType named landcover 
+//  	lookup (grassland_type, landcover, ? ) 
+//  	into	VEGETATION_SUITABLE_FOR_PASTURE;
 
 model presence of im:Potential ecology:Vegetation earth:Region for im:Natural agriculture:Pasture named presence_natural_pastureland
 	observing
-		type of Grassland named grassland_type, 
+		type of ecology:Grassland named grassland_type, 
 		landcover:LandCoverType named landcover 
   	lookup (grassland_type, landcover, ? ,im:Natural) 
   	into	VEGETATION_SUITABLE_FOR_PASTURE;
@@ -153,11 +152,15 @@ model im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:Pri
 		ecology:Vegetation ecology:PrimaryProductivity in t/ha named productivity
 	set to [(presence_natural_pastureland) ? productivity : unknown];
 
-model im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named potenital_vegetation_supply_for_grazing
-	observing
-		presence of im:Potential ecology:Vegetation earth:Region for agriculture:Pasture  named presence_pastureland,
-		ecology:Vegetation ecology:PrimaryProductivity in t/ha named productivity
-	set to [(presence_pastureland) ? productivity : unknown];	
+// ONLY USING NATURAL IN THIS MODEL
+//model im:Potential agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named potenital_vegetation_supply_for_grazing
+//	observing
+//		presence of im:Potential ecology:Vegetation earth:Region for agriculture:Pasture  named presence_pastureland,
+//		ecology:Vegetation ecology:PrimaryProductivity in t/ha named productivity
+//	set to [(presence_pastureland) ? productivity : unknown];	
+
+
+
 
 /* MODELLING DRY MATTER DEMAND */
 

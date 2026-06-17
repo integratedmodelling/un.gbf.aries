@@ -5,9 +5,9 @@ project private namespace gbf.aries.grazed_biomass.input_tables;
 define ADJUSTED_GPP_TABLE as {{
   vegetation                                             | landcover                      		| lue  
   -----------------------------------------------------------------------------------------------------
-  gbf.aries.grazed_biomass:CultivatedGrassland	         | #                                  	| 0.86  ,
-  gbf.aries.grazed_biomass:NaturalSeminaturalGrassland	 | #                                   	| 0.86  ,
-  gbf.aries.grazed_biomass:OpenShrubland	             | #                                   	| 0.841 ,
+  ecology:CultivatedGrassland	         | #                                  	| 0.86  ,
+  ecology:NaturalSeminaturalGrassland	 | #                                   	| 0.86  ,
+  ecology:OpenShrubland	             | #                                   	| 0.841 ,
 //  #                                                       | landcover:EvergreenConiferousForest | 0.962 ,
 //  #                                                       | landcover:EvergreenBroadleafForest  | 1.268 ,
 //  #                                                       | landcover:DeciduousConiferousForest | 1.086 ,
@@ -35,15 +35,14 @@ define ADJUSTED_GPP_TABLE as {{
 //}};
 
 define VEGETATION_SUITABLE_FOR_PASTURE as {{
- 					grassland_type							|			landcover 			| suitable_land |natural_vegetation| type_of_vegetation                    
+ 	grassland_type							|			landcover 			| suitable_land |natural_vegetation| type_of_vegetation                    
  ------------------------------------------------------------------------------------------------------------------------------------------------------------
-  gbf.aries.grazed_biomass:NaturalSeminaturalGrassland		|				#				| 	    true	|	im:Natural		|gbf.aries.grazed_biomass:NaturalSeminaturalGrassland,
-  		gbf.aries.grazed_biomass:OpenShrubland				|				#				|       true	|	im:Natural		|gbf.aries.grazed_biomass:OpenShrubland				 ,
-    gbf.aries.grazed_biomass:CultivatedGrassland			|				# 				| 		true	|		false		|gbf.aries.grazed_biomass:CultivatedGrassland		 ,
-
-  						#									|	landcover:Shrubland 		| 		true	|	im:Natural		|gbf.aries.grazed_biomass:Shrubland					 ,
-						#									|	landcover:Grassland 		| 		true	|		false		|gbf.aries.grazed_biomass:Grassland					,
-						#									|	landcover:SparseVegetation 	| 		true	|	im:Natural		|gbf.aries.grazed_biomass:SparseVegetation
+  ecology:NaturalSeminaturalGrassland		|				#				| 	    true	|	im:Natural		|ecology:NaturalSeminaturalGrassland	,
+  ecology:OpenShrubland						|				#				|       true	|	im:Natural		|ecology:OpenShrubland				 	,
+   ecology:CultivatedGrassland				|				# 				| 		true	|		false		|ecology:CultivatedGrassland		 	,
+  						#					|	landcover:Shrubland 		| 		true	|	im:Natural		|ecology:Shrubland					 	,
+						#					|	landcover:Grassland 		| 		true	|		false		|ecology:Grassland						,
+						#					|	landcover:SparseVegetation 	| 		true	|	im:Natural		|ecology:SparseVegetation	
 }};
 
 
