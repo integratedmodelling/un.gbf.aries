@@ -1,0 +1,37 @@
+{
+  "urn" : "local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_coastal_protection_combined_delta_epsg4326_50m_2022_v1",
+  "version" : "0.0.1",
+  "adapterType" : "wcs",
+  "localPath" : "un.gbf.aries/resources/im-data-global-conservation.global_gbfb1_coastal_protection_combined_delta_epsg4326_50m_2022_v1",
+  "geometry" : "S2(719999,280900){bbox=[-180.0 180.0000000000001 -56.75840000000004 83.6921],proj=EPSG:4326}",
+  "projectName" : "un.gbf.aries",
+  "localName" : "im-data-global-conservation.global_gbfb1_coastal_protection_combined_delta_epsg4326_50m_2022_v1",
+  "type" : "NUMBER",
+  "resourceTimestamp" : 1781793697956,
+  "metadata" : { },
+  "parameters" : {
+    "wcsIdentifier" : "im-data-global-conservation__global_gbfb1_coastal_protection_combined_delta_epsg4326_50m_2022_v1",
+    "transform" : "",
+    "serviceUrl" : "https://integration.integratedmodelling.org/geoserver/im-data-global-conservation/wcs",
+    "nodata" : "NaN",
+    "wcsVersion" : "2.0.1"
+  },
+  "localPaths" : [ ],
+  "history" : [ ],
+  "notifications" : [ ],
+  "attributes" : [ ],
+  "spatialExtent" : {
+    "east" : 180.0000000000001,
+    "west" : -180.0,
+    "north" : 83.6921,
+    "south" : -56.75840000000004,
+    "gridResolution" : null,
+    "gridUnit" : null
+  },
+  "dependencies" : null,
+  "outputs" : null,
+  "categorizables" : [ ],
+  "codelists" : [ ],
+  "availability" : null,
+  "exportFormats" : { }
+}
