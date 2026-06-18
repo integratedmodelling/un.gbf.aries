@@ -41,8 +41,8 @@ model im:Indicator value of ecology:SpeciesRichness
       value of ecology:SpeciesRichness named species_richness
       set to [(species_richness - species_richness.min) / (species_richness.max - species_richness.min) ];
 
-//landscape features with biodiversity //inverted for conveniency 
-model value of behavior:Outdoor landcover:LandscapeHeterogeneity named recreational_landscape_indicator
+//landscape features with biodiversity //inverted for convenience 
+model value of behavior:Outdoor landcover:LandscapeHeterogeneity named recreational_landscape_indicator_inverted
 	observing 
 		im:Indicator value of ecology:SpeciesRichness               named biodivesity_indicator, //include condition later
 		im:Indicator distance to behavior:Recreational earth:Region named recreation_distance, 
@@ -50,13 +50,14 @@ model value of behavior:Outdoor landcover:LandscapeHeterogeneity named recreatio
     set to [(1 - biodivesity_indicator) + recreation_distance + 
     	     (nodata(campsite_indicator) ? 0 : campsite_indicator)],
     klab.data.normalize(); 
- 
+
+@main 
 @documented(recreation.values.theoretical)
 model im:Theoretical value of behavior:Outdoor behavior:Recreation 
 		observing 
 		proportion of (not conservation:Pristine) earth:Region caused by demography:HumanPopulation named human_influence, 
-        recreational_landscape_indicator
-    set to [(human_influence == 1 ) ? unknown : ((human_influence ** 1.25) * (recreational_landscape_indicator ** 0.5))] //Non-symmetric utility function with increasing returns to scale
+        recreational_landscape_indicator_inverted
+    set to [(human_influence == 1 ) ? unknown : ((human_influence ** 1.25) * (recreational_landscape_indicator_inverted ** 0.5))] //Non-symmetric utility function with increasing returns to scale
     then [ self.invert() ],
     klab.data.normalize(); 
 
@@ -74,7 +75,8 @@ model  im:Normalized im:Indicator(im:Duration of behavior:TravelConnection)
       im:Indicator (im:Duration of behavior:TravelConnection) named travel_time_indicator
       set to [ (travel_time_indicator - travel_time_indicator.min) / (travel_time_indicator.max -travel_time_indicator.min )];
 
-/*ROS METHOD */    
+/*ROS METHOD */  
+@main  
 @documented(recreation.values.potential) 
 model im:Potential value of behavior:Outdoor behavior:Recreation 1 to 9
 	observing
