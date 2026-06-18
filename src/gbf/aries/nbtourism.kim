@@ -3,6 +3,7 @@ project private namespace gbf.aries.nbtourism;
 /* 1. Getting national tourism statistics metrics per country per year */
 
 //buffering the country to avoid using statistics from neighbouring countries
+@hide
 private model each im:Reference earth:Location
 	observing geography:Country earth:Region named country_region
 	using 
@@ -45,12 +46,14 @@ model presence of earth:Region with im:Realized value of behavior:Outdoor behavi
 		    recreation_opportunity_spectrum == 8 	]; // 'high provision, accessible' 	    
 
 /*compare extension of NB tourism area vs all country region */
+@hide
 model value of behavior:Outdoor im:Extent named cell_area_where_realized_outdoor_value
 	observing
 		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area 
 	set to [realized_outdoor_value_area ? space.area : unknown]; 
 
 //use only terrestrial part of the context 
+@hide
 model value of earth:Terrestrial im:Extent named cell_area_where_terrestrial
   observing
 		geography:Slope > 0 named terrestrial_area
@@ -73,6 +76,7 @@ model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:
  * i.e. in "presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation". 
  */
 
+@hide
 model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 named visitors_indicator_weight // update using behavior:Tourism
 	observing 
 		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area,
@@ -91,11 +95,11 @@ model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubati
 	 set to [visitors_indicator_weight * nature_based_country_visitors.mean / visitors_indicator_weight.getCurrentSum(context)]; 	
 
 //optional to get aprox. results per sq. km
-//@intensive(space)  
-//model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
-//	observing  
-//	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
-//	set to [ vistors_per_gridcell * (1000000 / space.area)];
+@intensive(space)  
+model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+	observing  
+	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
+	set to [ vistors_per_gridcell * (1000000 / space.area)];
 
 
 /*4. Tabular reporting by ecosystem type or land cover type */
