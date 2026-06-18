@@ -1,0 +1,14 @@
+project private namespace gbf.aries.nbtourism.reference;
+
+
+/*5. Allowing for use at non-country scale */ 
+
+// tale last version of 2020 results 
+model local:rubencc:un.seea.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v1 as 
+	  im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity;
+
+// calculate proportion over total in 2020
+
+// use the same ration in current year
+
+//spatially distribute
