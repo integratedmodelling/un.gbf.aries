@@ -71,6 +71,7 @@ lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, 
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE
 set to [(unknown ? 0 : self)];
 
+@documented(gbf.carbon.global.vegetation)
 @intensive(space)
 @intensive(time)
 model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
