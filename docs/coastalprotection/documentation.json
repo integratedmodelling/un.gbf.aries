@@ -1,0 +1,38 @@
+{
+  "coastalprotection.hazard#Definition#Results" : {
+    "trigger" : "DEFINITION",
+    "sectionRole" : "RESULTS",
+    "section" : "Results",
+    "documentedId" : "coastalprotection.hazard",
+    "extended" : null,
+    "template" : "test",
+    "sectionType" : "BODY",
+    "documentedUrns" : [ ],
+    "eventType" : null,
+    "variables" : { }
+  },
+  "coastalprotection.hazard#Definition#Introduction" : {
+    "trigger" : "DEFINITION",
+    "sectionRole" : "INTRODUCTION",
+    "section" : "Introduction",
+    "documentedId" : "coastalprotection.hazard",
+    "extended" : null,
+    "template" : "Test",
+    "sectionType" : "BODY",
+    "documentedUrns" : [ ],
+    "eventType" : null,
+    "variables" : { }
+  },
+  "coastalprotection.hazard#Definition#Methods" : {
+    "trigger" : "DEFINITION",
+    "sectionRole" : "METHODS",
+    "section" : "Methods",
+    "documentedId" : "coastalprotection.hazard",
+    "extended" : null,
+    "template" : "test",
+    "sectionType" : "BODY",
+    "documentedUrns" : [ ],
+    "eventType" : null,
+    "variables" : { }
+  }
+}

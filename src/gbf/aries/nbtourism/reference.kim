@@ -1,14 +1,63 @@
 project private namespace gbf.aries.nbtourism.reference;
 
+/*5. Allowing for use at non-country scale and at different spatial resolutions*/ 
 
-/*5. Allowing for use at non-country scale */ 
-
-// take last version of 2020 results + 2022
-model local:rubencc:un.seea.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v1 as 
-	  im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity;
-
-model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of earth:Region  
+// Uses the results computed at 1km for 2020 and 2022 as reference
+@intensive(space)           
+@extensive(time)
+model local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v2,  
+	  local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1 
+	 as 
+	  count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2;    
+   
+@hide
+model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity   named region_nature_based_visitors
 	observing 
-		 im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named region_overnight_visitors
-	set to [region_overnight_visitors.sum];
+		 count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual named reference_nature_based_visitors
+	set to [reference_nature_based_visitors.getCurrentSum(context) / (1000000 / space.area)]; 
 
+@main
+@extensive(space) // it's number of tourists in each gridcell 
+model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
+	 observing 
+		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, // this model is in gbf.aries.nbtourism
+		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity  named nature_based_region_visitors
+	 set to [visitors_indicator_weight * nature_based_region_visitors.mean / visitors_indicator_weight.getCurrentSum(context)]; 	
+
+//optional to get aprox. results per sq. km
+@intensive(space)  
+model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+	observing  
+	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
+	set to [ vistors_per_gridcell * (1000000 / space.area)];
+
+//table with extensive results for non country level analysis	
+define table visitors_static_reference as {
+	title: "Visitors by land cover type in given year",
+	label: "Visitors by land cover",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
+	columns: ({ title: "{classifier}", target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity, filter: landcover:LandCoverType, aggregation: sum }
+			  { title: "Total", summarize: sum, style: bold
+	}),
+	rows: { title: "Visitors {start}" } 
+};
+
+
+@var(timespan=(init end)) 
+define table visitors_dynamic_reference as {
+	name: "tourism_biophysical"
+	title: "Tourism Physical Supply (Visitors)",
+	label: "Tourism Physical Supply (Visitors) Change Summary",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: landcover:LandCoverType	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
+};

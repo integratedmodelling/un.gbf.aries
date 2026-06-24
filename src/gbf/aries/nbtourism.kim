@@ -72,12 +72,12 @@ model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:
  * percentage of overnights stays attributed to an ecosystem is equal to the attractiveness metric (one component of the ROS)
  * of the ecosystem divided by the sum of all attractiveness metrics within the country region. 
  * While INCA uses 3 classes of weights low = 0, medium = 0,5 and high = 1 here we use the 
- * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB toursim is realized 
+ * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB tourism is realized 
  * i.e. in "presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation". 
  */
 
-@hide
-model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 named visitors_indicator_weight // update using behavior:Tourism
+@main
+model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 named visitors_indicator_weight // main output in absence of statistics
 	observing 
 		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area,
 		im:Theoretical value of behavior:Outdoor behavior:Recreation  named theoretical_recreation_supply
@@ -103,28 +103,9 @@ model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior
 
 
 /*4. Tabular reporting by ecosystem type or land cover type */
+/*This model should run at country scale, otherwise use the one in gbf.aries.nbtourism.reference */
 
-//@var(timespan=(init end)) 
-//define table tourism_biophysical_supply_dynamic as {
-//	name: "tourism_biophysical"
-//	title: "Tourism Physical Supply (Visitors)",
-//	label: "Tourism Physical Supply (Visitors) Change Summary",
-//	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
-//	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
-//	when: end
-//	use: tables.compiler.summarize(contabilize-nulls = true, 
-//		rowsummary = { filter: "change" title: "Net change"}, 
-//		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
-//		rows =       { filter: %timespan% }, 
-//		columns =    { filter: landcover:LandCoverType	 }, 
-//		//statistic =  "", default should be the sum
-//		empty='', 
-//		no-data = ''
-//	)
-//};
-
-
-// Simplest, basic, static account per landcover type
+ //Simplest, basic, static account per landcover type
 define table visitors_static as {
 	title: "Visitors by land cover type in given year",
 	label: "Visitors by land cover",
