@@ -5,8 +5,10 @@ project private namespace gbf.aries.nbtourism.reference;
 // Uses the results computed at 1km for 2020 and 2022 as reference
 @intensive(space)
 @extensive(time)            
-model local:rubencc:un.seea.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v1 as 
-	  count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2; 
+model local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v2,
+	  local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_coastal_protection_total_new_epsg4326_50m_2022_v1
+	 as 
+	  count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2;   
 
 @hide
 model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity   named region_nature_based_visitors
