@@ -105,25 +105,6 @@ model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior
 /*4. Tabular reporting by ecosystem type or land cover type */
 /*This model should run at country scale, otherwise use the one in gbf.aries.nbtourism.reference */
 
-//@var(timespan=(init end)) 
-//define table tourism_biophysical_supply_dynamic as {
-//	name: "tourism_biophysical"
-//	title: "Tourism Physical Supply (Visitors)",
-//	label: "Tourism Physical Supply (Visitors) Change Summary",
-//	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
-//	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
-//	when: end
-//	use: tables.compiler.summarize(contabilize-nulls = true, 
-//		rowsummary = { filter: "change" title: "Net change"}, 
-//		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
-//		rows =       { filter: %timespan% }, 
-//		columns =    { filter: landcover:LandCoverType	 }, 
-//		//statistic =  "", default should be the sum
-//		empty='', 
-//		no-data = ''
-//	)
-//};
-
  //Simplest, basic, static account per landcover type
 define table visitors_static as {
 	title: "Visitors by land cover type in given year",

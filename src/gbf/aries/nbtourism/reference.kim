@@ -3,12 +3,13 @@ project private namespace gbf.aries.nbtourism.reference;
 /*5. Allowing for use at non-country scale and at different spatial resolutions*/ 
 
 // Uses the results computed at 1km for 2020 and 2022 as reference
-           
+@intensive(space)           
+@extensive(time)
 model local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v2,  
 	  local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1 
 	 as 
 	  count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2;    
-
+   
 @hide
 model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity   named region_nature_based_visitors
 	observing 
@@ -40,4 +41,23 @@ define table visitors_static_reference as {
 	}),
 	rows: { title: "Visitors {start}" } 
 };
-	
+
+
+@var(timespan=(init end)) 
+define table visitors_dynamic_reference as {
+	name: "tourism_biophysical"
+	title: "Tourism Physical Supply (Visitors)",
+	label: "Tourism Physical Supply (Visitors) Change Summary",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: landcover:LandCoverType	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
+};

@@ -36,8 +36,8 @@ observe earth:Region named uganda_gadm
                  grid= "500 m",
                  projection= "EPSG:4326"
 	),
-//		 time(start=2020, end=2021, step = 1.year);  
-         time (year = 2022);
+		 time(start=2020, end=2023, step = 1.year);  
+//         time (year = 2022);
          
 observe earth:Region named albania
 	over space 
