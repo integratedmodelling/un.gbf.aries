@@ -33,7 +33,7 @@ observe earth:Region named uganda_gadm
 	over space 
 	(	urn = 'local:justus.muhando:im.data.global:im-data-global-geography_administrative_level_0_un_v1#GID=UGA',	 
 	//urn = 'local:rubencc:im.data.global:im-data-global-geography_administrative_units_un_gadm_level0_can_rus_1#CID=UGA', // UGA UGANDA GADM
-                 grid= "1000 m",
+                 grid= "500 m",
                  projection= "EPSG:4326"
 	),
 //		 time(start=2020, end=2021, step = 1.year);  

@@ -72,7 +72,7 @@ model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:
  * percentage of overnights stays attributed to an ecosystem is equal to the attractiveness metric (one component of the ROS)
  * of the ecosystem divided by the sum of all attractiveness metrics within the country region. 
  * While INCA uses 3 classes of weights low = 0, medium = 0,5 and high = 1 here we use the 
- * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB toursim is realized 
+ * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB tourism is realized 
  * i.e. in "presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation". 
  */
 
@@ -103,6 +103,7 @@ model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior
 
 
 /*4. Tabular reporting by ecosystem type or land cover type */
+/*This model should run at country scale, otherwise use the one in gbf.aries.nbtourism.reference */
 
 //@var(timespan=(init end)) 
 //define table tourism_biophysical_supply_dynamic as {
@@ -123,8 +124,7 @@ model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior
 //	)
 //};
 
-
-// Simplest, basic, static account per landcover type
+ //Simplest, basic, static account per landcover type
 define table visitors_static as {
 	title: "Visitors by land cover type in given year",
 	label: "Visitors by land cover",
