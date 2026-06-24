@@ -1,0 +1,37 @@
+{
+  "urn" : "local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1",
+  "version" : "0.0.1",
+  "adapterType" : "wcs",
+  "localPath" : "un.gbf.aries/resources/im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1",
+  "geometry" : "S2(16735,7083){bbox=[-141.00556393099993 178.55146142600006 -55.97940000000001 72.00214264500005],proj=EPSG:4326}",
+  "projectName" : "un.gbf.aries",
+  "localName" : "im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1",
+  "type" : "NUMBER",
+  "resourceTimestamp" : 1781793697975,
+  "metadata" : { },
+  "parameters" : {
+    "wcsIdentifier" : "im-data-global-conservation__global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1",
+    "transform" : "",
+    "serviceUrl" : "https://integration.integratedmodelling.org/geoserver/im-data-global-conservation/wcs",
+    "nodata" : "-9999.0",
+    "wcsVersion" : "2.0.1"
+  },
+  "localPaths" : [ ],
+  "history" : [ ],
+  "notifications" : [ ],
+  "attributes" : [ ],
+  "spatialExtent" : {
+    "east" : 178.55146142600006,
+    "west" : -141.00556393099993,
+    "north" : 72.00214264500005,
+    "south" : -55.97940000000001,
+    "gridResolution" : null,
+    "gridUnit" : null
+  },
+  "dependencies" : null,
+  "outputs" : null,
+  "categorizables" : [ ],
+  "codelists" : [ ],
+  "availability" : null,
+  "exportFormats" : { }
+}
