@@ -23,6 +23,10 @@
     "examplecitation" : "UNEP-WCMC (2025). Ocean+ Habitats [On-line], [accessed May 2025]. Available at: habitats.oceanplus.org.",
     "key" : "UNEP-WCMC(2025)"
   },
+  "ARIES2019" : {
+    "examplecitation" : "Martínez-López, J., Bagstad, K. J., Balbi, S., Magrach, A., Voigt, B., Athanasiadis, I., ... & Villa, F. (2019). Towards globally customizable ecosystem service models. Science of the Total Environment, 650, 2325-2336.",
+    "key" : "ARIES2019"
+  },
   "NaturalCapital Project(2025)" : {
     "examplecitation" : "Natural Capital Project (2025). InVEST 3.16.2. Stanford University, University of Minnesota, Chinese Academy of Sciences, The Nature Conservancy, World Wildlife Fund, Stockholm Resilience Centre and the Royal Swedish Academy of Sciences. https://doi.org/10.60793/natcap-invest-3.16.2",
     "key" : "NaturalCapital Project(2025)"
