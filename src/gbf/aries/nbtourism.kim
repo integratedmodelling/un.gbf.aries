@@ -15,7 +15,7 @@ model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitor
     observing 
     presence of im:Reference earth:Location named country_presence
     set to [(country_overnight_visitors != 0 && country_presence) ? country_overnight_visitors : null];
-
+ 
 /*2. Separate Nature-Based Contribution   */
 
 //multiply country stats by nature-based ratio
