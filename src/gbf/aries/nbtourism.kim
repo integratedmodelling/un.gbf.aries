@@ -76,7 +76,7 @@ model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:
  * i.e. in "presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation". 
  */
 
-@documented(tourism.naturebased)
+@documented(tourism.naturebased) 
 @main
 model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 named visitors_indicator_weight // main output in absence of statistics
 	observing 
