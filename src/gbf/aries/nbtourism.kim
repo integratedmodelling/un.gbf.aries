@@ -11,9 +11,9 @@ private model each im:Reference earth:Location
 
 @main
 model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitors'
-	as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
+		as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
     observing 
-    presence of im:Reference earth:Location named country_presence
+    	presence of im:Reference earth:Location named country_presence
     set to [(country_overnight_visitors != 0 && country_presence) ? country_overnight_visitors : null];
  
 /*2. Separate Nature-Based Contribution   */
@@ -61,7 +61,7 @@ model value of earth:Terrestrial im:Extent named cell_area_where_terrestrial
 
 @main
 model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:Numerosity 
-		observing
+	observing
 		cell_area_where_realized_outdoor_value,
 		cell_area_where_terrestrial
 	set to [ cell_area_where_realized_outdoor_value.getCurrentSum(context)  / cell_area_where_terrestrial.getCurrentSum(context)]; 
@@ -98,9 +98,8 @@ model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubati
 @intensive(space)  
 model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
 	observing  
-	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
+		im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
 	set to [ vistors_per_gridcell * (1000000 / space.area)];
-
 
 /*4. Tabular reporting by ecosystem type or land cover type */
 /*This model should run at country scale, otherwise use the one in gbf.aries.nbtourism.reference */
