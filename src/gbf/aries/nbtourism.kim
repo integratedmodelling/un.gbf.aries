@@ -115,4 +115,4 @@ define table visitors_static as {
 	}),
 	rows: { title: "Visitors {start}" } 
 };
-
+ 
