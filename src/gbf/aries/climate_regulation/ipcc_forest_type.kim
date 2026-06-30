@@ -2,13 +2,7 @@ project private namespace gbf.aries.climate_regulation.ipcc_forest_type
 	using 
 		nca.landuse.ipcc,
 		gbf.aries.climate_regulation;
-		
-quantity Integrity
-	describes im:Wholeness physical:Status;
 	
-quantity Year
-	describes value of im:Year;
-
 /*
  * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
  */		
@@ -38,7 +32,7 @@ model value of ecology:Tropical ecology:Forest named tropical_forest_type
  		
  //// FOREST LOSS (HANSEN GFC DATASET)
 model local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_forest_watch_data_lossyear_2000_2022 
-	as gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+	as im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation
 	set to [self + 2000];
  
  
@@ -52,7 +46,7 @@ model local:rubencc:im.data.global:im-data-global-conservation.global_intact_for
 	set to [self == 1 ? true : false];
 
 model 'local:megan.critchley:im.data.global:im-data-global-ecology.global_forest_landscape_integrity_index_epsg4326_300m_2019'
-	as gbf.aries.climate_regulation.ipcc_forest_type:Integrity of ecology:Forest earth:Region named forest_integrity
+	as physical.incubation:Integrity of ecology:Forest earth:Region named forest_integrity
 	set to [self * 0.001];
 		 
 	  	
@@ -79,14 +73,14 @@ model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
-		gbf.aries.climate_regulation.ipcc_forest_type:Integrity of ecology:Forest earth:Region named forest_integrity,
+		physical.incubation:Integrity of ecology:Forest earth:Region named forest_integrity,
 		presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest_presence_2000,
 		value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence,
 		presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence,
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		type of nca.landuse.ipcc:LandUse named landuse			
 	set to [
 		((landuse is nca.landuse.ipcc:ForestLand) &&
@@ -104,12 +98,12 @@ model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named es
  * # 2) Old Plantation Forest. -------------------------------------------------------------------------------------------------------------------------------
  */
 model 'local:alessio.bulckaen:im.data.global:im-data-global-conservation.global_treeplantationyears_forestry_epsg4326_30m_2020_mosaic'
-	as gbf.aries.climate_regulation.ipcc_forest_type:Year of agriculture:Planted ecology:Forest earth:Region named plantation_year
+	as im:CalendarYear of agriculture:Planted ecology:Forest earth:Region named plantation_year
 	set to [((self != 32767) && (self >= 1982)) ? self : unknown];
 
 model im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age
 	observing
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of agriculture:Planted ecology:Forest earth:Region named plantation_year
+		im:CalendarYear of agriculture:Planted ecology:Forest earth:Region named plantation_year
 	set to [
 		def forest_age= scale.time.start.year - plantation_year
 		def ret = (forest_age >= 0 ? forest_age : null)
@@ -134,7 +128,7 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named iiasa_planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		type of nca.landuse.ipcc:LandUse named landuse
 	set to [
 	    ((landuse is nca.landuse.ipcc:ForestLand) &&
@@ -159,7 +153,7 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
 	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named iiasa_planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		type of nca.landuse.ipcc:LandUse named landuse
 //Adjust underestimation of planted forest including planted forest as a whole, since those with planted_forest_age > 20 have been mapped as OldPlantedForest already
 	set to [
@@ -191,7 +185,7 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 	observing 
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age,
 		type of nca.landuse.ipcc:LandUse named landuse
@@ -315,7 +309,7 @@ model im:Age of ecology:Forest earth:Region in year named forest_age
 	observing
 		im:Reference im:Age of ecology:Forest earth:Region in year named forest_age_2020,
 		type of nca.landuse.ipcc:LandUse named landuse,
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation
 	set to [
 		def ret = forest_age_2020
 		if (scale.time.start.year != 2020) {
@@ -363,7 +357,7 @@ model local:liberentaizp:im.data.global:global_forest_type_2020_epsg_4326
 model nca.landuse.ipcc:ForestType named forest_type
 	observing
 		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,
-		gbf.aries.climate_regulation.ipcc_forest_type:Year of im:Removed ecology:Forest earth:Region named year_of_deforestation,
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		im:Age of ecology:Forest earth:Region in year named forest_age,
 		type of nca.landuse.ipcc:LandUse named landuse
 	set to [
