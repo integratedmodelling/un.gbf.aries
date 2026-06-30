@@ -14,13 +14,15 @@ model 'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_fore
 
 
 model local:rubencc:im.data.global:im-data-global-conservation.global_tropical_moist_forest_transition_subtyp_30m_v1_1982_2024	 
-//	as type of ecology:Tropical ecology:Forest named tropical_forest_type
-//	classified into
-//		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
-//		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
-// 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
-// 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
-// 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86)
+/* 
+	as type of ecology:Tropical ecology:Forest named tropical_forest_type
+	classified into
+		ecology:Tropical nca.landuse.ipcc:PrimaryForest if 10,
+		ecology:Tropical nca.landuse.ipcc:OldSecondaryForest if 31,
+ 		ecology:Tropical nca.landuse.ipcc:YoungSecondaryForest if in (32, 33, 92, 93, 94),		
+ 		ecology:Tropical nca.landuse.ipcc:OldPlantedForest if 81,
+ 		ecology:Tropical nca.landuse.ipcc:YoungPlantedForest if in (82, 83, 84, 85, 86)
+*/
  	as value of ecology:Tropical ecology:Forest named tropical_forest_type
  	over space(shape='EPSG:4326 POLYGON ((-110.00014384489000463 -40.10780114231157256, 179.99999999999997158 -40.10780114231157256, 179.99999999999997158 30.0947298278733264, -110.00014384489000463 30.0947298278733264, -110.00014384489000463 -40.10780114231157256))');
 	
@@ -204,8 +206,6 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 /* MODELLING SECONDARY OLD FORESTS  */
 
 /// Anything which isnt identified as other forest types 
-
-
 /*
  * # 5) Final Forest Type Estimation. -------------------------------------------------------------------------------------------------------------------------------
  */
@@ -234,7 +234,8 @@ model presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennia
 }};
 
 /*
- * The model to produce reference layer of forest type in 2020.
+ * Code needs to be kept, in case we want to make forest type in 2020 dynamic/at different scales 
+ *The model to produce reference layer of forest type in 2020.
  */		
 //model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 //	observing
@@ -354,6 +355,7 @@ model local:liberentaizp:im.data.global:global_forest_type_2020_epsg_4326
 		nca.landuse.ipcc:OtherForest if 6,
 		nca.landuse.ipcc:OtherLand if 7;
 
+/* Only to be used to calculate forest type from 2020 onwards */
 model nca.landuse.ipcc:ForestType named forest_type
 	observing
 		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,

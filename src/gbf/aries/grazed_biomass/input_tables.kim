@@ -8,11 +8,6 @@ define ADJUSTED_GPP_TABLE as {{
   ecology:CultivatedGrassland	         |						#            	| 0.86  ,
   ecology:NaturalSeminaturalGrassland	 | 						#               | 0.86  ,
   ecology:OpenShrubland	             	 | 						#             	| 0.841 ,
-//  #                                    	 | landcover:EvergreenConiferousForest 	| 0.962 ,
-//  #                                    	 | landcover:EvergreenBroadleafForest  	| 1.268 ,
-//  #                                    	 | landcover:DeciduousConiferousForest 	| 1.086 ,
-//  #                                    	 | landcover:DeciduousBroadleafForest  	| 1.165 ,
-//  #                                    	 | landcover:MixedForest               	| 1.051 ,
   #                                      | landcover:DenseShrubland            	| 1.281 ,
   #                                      | landcover:OpenShrubland             	| 0.841 ,
   #                                      | landcover:Shrubland             		| 1.061 , 
@@ -22,17 +17,6 @@ define ADJUSTED_GPP_TABLE as {{
   #                                      | landcover:ArableLand                	| 1.302
 }};
 
-
-//define VEGETATION_SUITABLE_FOR_PASTURE as {{
-// 					grassland_type							|			landcover 			| suitable_land |natural_vegetation| type_of_vegetation                    
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------
-//  	gbf.aries.grazed_biomass:NaturalSeminaturalGrassland	|				#				| 	    true	|	im:Natural		|gbf.aries.grazed_biomass:NaturalSeminaturalGrassland,
-//  		gbf.aries.grazed_biomass:OpenShrubland				|				#				|       true	|	im:Natural		|gbf.aries.grazed_biomass:OpenShrubland				,
-//    gbf.aries.grazed_biomass:CultivatedGrassland			|				# 				| 		true	|		false		|gbf.aries.grazed_biomass:CultivatedGrassland		,
-// 						#									|	landcover:Shrubland 		| 		true	|	im:Natural		|gbf.aries.grazed_biomass:Shrubland					,
-//						#									|	landcover:Grassland 		| 		true	|	im:Natural		|gbf.aries.grazed_biomass:Grassland					,
-//						#									|	landcover:SparseVegetation 	| 		true	|	im:Natural		|gbf.aries.grazed_biomass:SparseVegetation
-//}};
 
 define VEGETATION_SUITABLE_FOR_PASTURE as {{
  	grassland_type							|			landcover 			| suitable_land |natural_vegetation| type_of_vegetation                    
