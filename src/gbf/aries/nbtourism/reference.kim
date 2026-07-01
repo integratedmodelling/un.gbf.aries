@@ -1,6 +1,6 @@
 project private namespace gbf.aries.nbtourism.reference;
 
-/*5. Allowing for use at non-country scale and at different spatial resolutions*/ 
+/*Allowing for use at non-country scale and at different spatial resolutions*/ 
 
 // Uses the results computed at 1km for 2020 and 2022 as reference
 @intensive(space)           
@@ -26,13 +26,13 @@ model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubati
 
 //optional to get aprox. results per sq. km
 @intensive(space)  
-model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2 named realized_nature_based_visitors
 	observing  
-	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
+		im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
 	set to [ vistors_per_gridcell * (1000000 / space.area)];
 
 //table with extensive results for non country level analysis	
-define table visitors_static_reference as {
+define table visitors_reference_static as {
 	title: "Visitors by land cover type in given year",
 	label: "Visitors by land cover",
 	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
@@ -43,17 +43,17 @@ define table visitors_static_reference as {
 };
 
 
-@var(timespan=(init end)) 
-define table visitors_dynamic_reference as {
+@var(timespan=(start end)) 
+define table visitors_reference_dynamic as {
 	name: "tourism_biophysical"
 	title: "Tourism Physical Supply (Visitors)",
 	label: "Tourism Physical Supply (Visitors) Change Summary",
 	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
-	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
+	observables: landcover:LandCoverType	 
 	when: end
 	use: tables.compiler.summarize(contabilize-nulls = true, 
 		rowsummary = { filter: "change" title: "Net change"}, 
-		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
+		colsummary=  { filter: "total", title: "Total" }, 
 		rows =       { filter: %timespan% }, 
 		columns =    { filter: landcover:LandCoverType	 }, 
 		//statistic =  "", default should be the sum
