@@ -7,10 +7,10 @@ project private namespace gbf.aries.coastal.protection.hazard;
 number	'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2020_mosaic',
 		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2021_mosaic',
 		'local:samjinoj:im.data.global:im-data-global-hydrology:global_wetlands_20m_2022_mosaic'
-	as coastal_protective_habitat_type;
+			as coastal_protective_habitat_type;
 
 number 'local:samjinoj:im.data.global:im-data-global-marine:coral_systems_4326'
-	as coral_systems;
+			as coral_systems;
 	
 model 
 	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2020',
@@ -42,7 +42,7 @@ model
     'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2022',
     'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2023',
     'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_msl_4326_2024' 
-       		as value of im:Mean hydrology:Water im:Level;
+       		as value of im:Mean hydrology:Water im:Level earth:Sea;
 
 model each 
 	'local:rubencc:im.data.global:im-data-global-geography_global_osm_coastline_4326'	
@@ -66,8 +66,7 @@ define EXPOSURE_THRESHOLD_RANK as {{
  */
  @documented(coastalprotection.hazard)	 
  model risk.incubation:ProtectiveHabitatType
- // coral first
- 	observing 
+  	observing 
 		coastal_protective_habitat_type, 
 		coral_systems
 	set to [
@@ -81,20 +80,6 @@ define EXPOSURE_THRESHOLD_RANK as {{
 		)
 		)];
  
-model im:Predicted value of hydrology:Water im:Level of earth:Flood
-    observing  
-    	value of im:High hydrology:Water im:Level of earth:Flood named surge_95_percentile
-    set to 	[   
-    		return (surge_95_percentile)
- 			];
- 			 
-model im:Predicted value of im:Mean im:Level earth:Sea 
-	observing
-	value of im:Mean hydrology:Water im:Level named sea_level
-	set to [
-			( sea_level )
-	 		];
-	 				
 model value of risk.incubation:ProtectiveHabitatType 
 	observing
 		risk.incubation:ProtectiveHabitatType named habitat
@@ -109,6 +94,16 @@ model value of risk.incubation:ProtectiveHabitatType
 		# 							| 	1
 		;  		
 
+model im:Predicted value of hydrology:Water im:Level of earth:Flood
+    observing  
+    	value of im:High hydrology:Water im:Level of earth:Flood named surge_95_percentile
+    set to 	[ surge_95_percentile ];
+ 			 
+model im:Predicted value of im:Mean im:Level earth:Sea 
+	observing
+		value of im:Mean hydrology:Water im:Level earth:Sea named sea_level
+	set to [ sea_level ];
+	 				
 model value of risk.incubation:WaterBody
 	observing
 		risk.incubation:ProtectiveHabitatType named habitat
@@ -147,7 +142,7 @@ model im:Potential value of risk:ExposureMetric earth:Wind
     lookup (*,*,*,*,wind_exposure,?) into EXPOSURE_THRESHOLD_RANK;
 
 				 
-model im:Potential value of risk:ExposureMetric im:HeightLevel
+model im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation
 	observing
 		geography:Elevation in m named elevation
 	lookup  (*,*,elevation,*,*, ?) into EXPOSURE_THRESHOLD_RANK;	
@@ -155,11 +150,11 @@ model im:Potential value of risk:ExposureMetric im:HeightLevel
     			 
 model im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood
 	observing 
-		im:Predicted value of hydrology:Water im:Level of earth:Flood named surge_level
+		im:Predicted value of hydrology:Water im:Level of earth:Flood 	named surge_level
     lookup (*, surge_level,*,*,*, ?) into EXPOSURE_THRESHOLD_RANK;		 
 
 			 
-model im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea
+model im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea
 	observing 
 		im:Predicted value of im:Mean im:Level earth:Sea  named sea_level_index
     lookup (sea_level_index, *, *,*,*, ?) into EXPOSURE_THRESHOLD_RANK;
@@ -243,7 +238,6 @@ private model (value of landcover:LandCoverType risk:VulnerabilityMetric) caused
 
  
  // ************************ (1) With Ecosystem (Mangrove, Seagrass, Coral & Saltmarsh) Natural Habitat	***************************************************	
-@documented(coastalprotection.hazard)	
 @colormap(values = {
 1: (0,204,0),
 2: (204, 204, 0),
@@ -253,21 +247,20 @@ private model (value of landcover:LandCoverType risk:VulnerabilityMetric) caused
 }, continuous=true)	
 model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:All
 	observing
-	im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea named sea_level_rise_index,
-	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
-	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
-	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of risk.incubation:ProtectiveHabitatType named natural_habitat_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
+	value of risk.incubation:ProtectiveHabitatType 									named natural_habitat_index,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
-	distance to earth:Coastline in m named coast
+	distance to earth:Coastline in m 												named coast
 set to [
 	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * natural_habitat_index * geomorphology_index)**(1.0/7);
 	return ( coast < 20000 ? hazard_index : null );
 		];
 		
 // ************************ (2) Without Natural Habitat	********************************************************************************************************	
-@documented(coastalprotection.hazard)
 @colormap(values = {
 1: (0,204,0),
 2: (204, 204, 0),
@@ -277,21 +270,20 @@ set to [
 }, continuous=true)
 model im:Predicted value of risk:Hazard earth:Coast
 	observing
-	im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea named sea_level_rise_index,
-	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
-	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
-	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of risk.incubation:WaterBody named water_cover_without_et,		
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
+	value of risk.incubation:WaterBody 												named water_cover_without_et,		
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
-	distance to earth:Coastline in m named coast
+	distance to earth:Coastline in m 												named coast
 	set to [
 	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * geomorphology_index * water_cover_without_et)**(1.0/7);
 	return ( coast < 20000 ? hazard_index : null );
 	];
 
 // ************************ (3) With Mangrove Ecosystem Natural Habitat	******************************************************************************************************	
-@documented(coastalprotection.hazard)	
 @colormap(values = {
 1: (0,204,0),
 2: (204, 204, 0),
@@ -301,21 +293,20 @@ model im:Predicted value of risk:Hazard earth:Coast
 }, continuous=true)
 model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:Mangrove
 	observing
-	im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea named sea_level_rise_index,
-	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
-	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
-	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of risk.incubation:Mangrove named mangrove_only,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
+	value of risk.incubation:Mangrove 												named mangrove_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
-	distance to earth:Coastline in m named coast
+	distance to earth:Coastline in m 												named coast
 	set to [
 	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * mangrove_only * wind_index * geomorphology_index)**(1.0/7);
 	return ( coast < 20000 ? hazard_index : null );
 	];
 
 // ************************ (4) With SaltMarsh Ecosystem Natural Habitat ******************************************************************************************************	
-@documented(coastalprotection.hazard)
 @colormap(values = {
 1: (0,204,0),
 2: (204, 204, 0),
@@ -325,21 +316,20 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:Mangrov
 }, continuous=true)
 model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SaltMarsh
 	observing
-	im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea named sea_level_rise_index,
-	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
-	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
-	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of risk.incubation:SaltMarsh named saltmarsh_only,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
+	value of risk.incubation:SaltMarsh 												named saltmarsh_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
-	distance to earth:Coastline in m named coast
+	distance to earth:Coastline in m 												named coast
 	set to [
 	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * saltmarsh_only * geomorphology_index)**(1.0/7);
 	return ( coast < 20000 ? hazard_index : null );
 	];
 
 // ************************ (5) With Coral Ecosystem Natural Habitat **********************************************************************************************************	
-@documented(coastalprotection.hazard)	
 @colormap(values = {
 1: (0,204,0),
 2: (204, 204, 0),
@@ -349,21 +339,20 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SaltMar
 }, continuous=true)
 model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:CoralReef
 	observing
-	im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea named sea_level_rise_index,
-	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
-	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
-	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of risk.incubation:CoralReef named coral_only,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
+	value of risk.incubation:CoralReef 												named coral_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
-	distance to earth:Coastline in m named coast
+	distance to earth:Coastline in m 												named coast
 	set to [
 	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * coral_only * geomorphology_index)**(1.0/7);
 	return ( coast < 20000 ? hazard_index : null );
 	];
 
 // ************************ (6) With Seagrass Ecosystem Natural Habitat	******************************************************************************************************
-@documented(coastalprotection.hazard)
 @colormap(values = {
 1: (0,204,0),
 2: (204, 204, 0),
@@ -373,14 +362,14 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:CoralRe
 }, continuous=true)	
 model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SeaGrass
 	observing
-	im:Potential value of risk:ExposureMetric hydrology:Water earth:Sea named sea_level_rise_index,
-	im:Potential value of risk:ExposureMetric im:HeightLevel named relief_index,
-	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave named wave_index,
-	im:Potential value of risk:ExposureMetric earth:Wind named wind_index,
-	value of risk.incubation:SeaGrass named seagrass_only,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
+	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
+	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
+	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
+	value of risk.incubation:SeaGrass 												named seagrass_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
-	distance to earth:Coastline in m named coast
+	distance to earth:Coastline in m 												named coast
 	set to [
 	def hazard_index = (sea_level_rise_index * relief_index * surge_index * wave_index * wind_index * seagrass_only * geomorphology_index)**(1.0/7);
 	return ( coast < 20000 ? hazard_index : null );
