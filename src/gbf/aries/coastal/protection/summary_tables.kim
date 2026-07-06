@@ -6,9 +6,9 @@ define table cp_demand_endangered_people_table as {
 	name: "cp_demand_endangered_people_table"
 	title: "Coastal Protection Demand (people in hazardous areas)",
 	label: "Coastal Protection Demand (number of people)",
-	target: risk.incubation:VulnerabilityLevel
+	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
-				target: count of risk.incubation:Exposed demography:HumanIndividual ,
+				target: count of (demography:HumanIndividual with risk:Exposure),
 				filter: risk.incubation:ProtectiveHabitatType
 
 			}
@@ -17,11 +17,11 @@ define table cp_demand_endangered_people_table as {
 			}
 			{	title: "Total (not sum)", 
 //				summarize: sum, style: bold
-				target: count of risk.incubation:Exposed demography:HumanIndividual
+				target: count of (demography:HumanIndividual with risk:Exposure)
 			}
 			)
 	rows:   ({	title: "{classifier}",  
-				filter: risk.incubation:VulnerabilityLevel
+				filter: es.coastalprotection:GlobalVulnerabilityMetric
 			}
 			{title: "Total", summarize: sum, style: bold}
 			)
@@ -31,9 +31,9 @@ define table cp_supply_protected_people_table as {
 	name: "cp_supply_protected_people_table"
 	title: "Coastal Protection Supply (people in hazardous areas beneffited from the presence of an ET)",
 	label: "Coastal Protection Supply (number of people)",
-	target: risk.incubation:VulnerabilityLevel
+	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
-				target: count of risk.incubation:Protected demography:HumanIndividual ,
+				target: es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual ,
 				filter: risk.incubation:ProtectiveHabitatType
 
 			}
@@ -42,11 +42,11 @@ define table cp_supply_protected_people_table as {
 			}
 			{	title: "Total (not sum)", 
 //				summarize: sum, style: bold
-				target: count of risk.incubation:Protected demography:HumanIndividual
+				target: es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
 			}
 			)
 	rows:   ({	title: "{classifier}",  
-				filter: risk.incubation:VulnerabilityLevel
+				filter: es.coastalprotection:GlobalVulnerabilityMetric
 			}
 			{title: "Total", summarize: sum, style: bold}
 			)
@@ -55,13 +55,13 @@ define table cp_supply_hazard_reduction_table as {
 	name: "cp_deltahazard_supply_table"
 	title: "Coastal Protection Supply (decrease in hazard by protective ET)",
 	label: "Coastal Protection Supply (delta hazard)",
-	target: risk.incubation:VulnerabilityLevel
+	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "All",
 				target: aries.global.coastalprotection.exposurevulnerability.stratified.delta_all
 			}
 			)
 	rows:   ({	title: "{classifier}",  
-				filter: risk.incubation:VulnerabilityLevel
+				filter: es.coastalprotection:GlobalVulnerabilityMetric
 			}
 			{title: "Total", summarize: sum, style: bold}
 			)
@@ -71,32 +71,34 @@ define table cp_supply_cpi_table as {
 	name: "cp_new_headcount_supply_table"
 	title: "Coastal Protection Supply (people in hazardous areas beneffited from the presence of an ET)",
 	label: "Coastal Protection Supply (number of people)",
-	target: risk.incubation:VulnerabilityLevel
+	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "Mangrove",
-				target: risk.incubation:CoastalProtectionIndex with risk.incubation:Mangrove 
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:Mangrove) 
 			}
 			{ 	title:  "Saltmarsh",
-				target: risk.incubation:CoastalProtectionIndex with risk.incubation:SaltMarsh 
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:SaltMarsh) 
 			}
 			{ 	title:  "Coral reef",
-				target: risk.incubation:CoastalProtectionIndex with risk.incubation:CoralReef
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:CoralReef)
 			}
 			{ 	title:  "Seagrass",
-				target: risk.incubation:CoastalProtectionIndex with risk.incubation:SeaGrass
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:SeaGrass)
 			}
 			{	title: "Total (mean hazard)", 
-				target: im:Mean risk.incubation:CoastalProtectionIndex
+				target: im:Mean es.coastalprotection:CoastalProtectionIndex
 			}
 			{	title: "Total (max hazard)", 
-				target: im:Maximum risk.incubation:CoastalProtectionIndex
+				target: im:Maximum es.coastalprotection:CoastalProtectionIndex
 			}
 			{	title: "Total (summed hazard)", 
-				target: risk.incubation:Aggregated risk.incubation:CoastalProtectionIndex
+				target: risk.incubation:Aggregated es.coastalprotection:CoastalProtectionIndex
 			}
 			)
 	rows:   ({	title: "{classifier}",  
-				filter: risk.incubation:VulnerabilityLevel
+				filter: es.coastalprotection:GlobalVulnerabilityMetric
 			}
 			{title: "Total", summarize: sum, style: bold}
 			)
 	};
+	
+	
