@@ -18,7 +18,7 @@ model
 	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2022',
 	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2023',
 	'local:samjinoj:im.data.global:un_ecosystem_services:global_ecmwf_wave_exposure_4326_2024' 
-			as value of risk:ExposureMetric physical:Wave;
+			as value of risk:ExposureMetric physical:Wavelength ;
 
 model 
 	'local:samjinoj:im.data.global:un_ecosystem_services:global_copernicus_era5_mhwl_4326_2020',
@@ -130,9 +130,9 @@ model value of risk.incubation:SeaGrass
 	set to [habitat == risk.incubation:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
 	  		
 
-model im:Potential value of risk:ExposureMetric physical:Wave
+model im:Potential value of risk:ExposureMetric physical:Wavelength 
 	observing 
-		value of risk:ExposureMetric physical:Wave named wave_exposure
+		value of risk:ExposureMetric physical:Wavelength  named wave_exposure
     lookup (*,*,*,wave_exposure,*,?) into EXPOSURE_THRESHOLD_RANK;
 
 	
@@ -250,7 +250,7 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:All
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric physical:Wavelength  					named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
 	value of risk.incubation:ProtectiveHabitatType 									named natural_habitat_index,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
@@ -273,7 +273,7 @@ model im:Predicted value of risk:Hazard earth:Coast
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric physical:Wavelength 					named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
 	value of risk.incubation:WaterBody 												named water_cover_without_et,		
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
@@ -296,7 +296,7 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:Mangrov
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric physical:Wavelength  					named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
 	value of risk.incubation:Mangrove 												named mangrove_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
@@ -319,7 +319,7 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SaltMar
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric physical:Wavelength 					named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
 	value of risk.incubation:SaltMarsh 												named saltmarsh_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
@@ -342,7 +342,7 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:CoralRe
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric physical:Wavelength  					named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
 	value of risk.incubation:CoralReef 												named coral_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
@@ -365,7 +365,7 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SeaGras
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	im:Potential value of risk:ExposureMetric physical:Wave 						named wave_index,
+	im:Potential value of risk:ExposureMetric physical:Wavelength 					named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
 	value of risk.incubation:SeaGrass 												named seagrass_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
