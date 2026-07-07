@@ -1,0 +1,50 @@
+{
+  "globalclimatereregulation#Definition#Introduction": {
+    "trigger": "DEFINITION",
+    "sectionRole": "INTRODUCTION",
+    "section": "Introduction",
+    "documentedId": "globalclimatereregulation",
+    "extended": null,
+    "template": "@section(Disclaimer)\n\nThe designations employed and the presentation of material on this map and any map used in this application do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers or boundaries. This application allows users to select different backgrounds as maps. The Clear Map (https://www.un.org/geospatial/mapsgeo/webservices) is the official UN provided map. Other backgrounds such as Open Street Map are available for experimentation and to provide an enhanced user experience (in multiple languages). The results of the selected ecosystem accounts presented in this report are based on the context as specified by the user.\n\nSystem of Environmental-Economic Accounting – Ecosystem Accounting (SEEA EA)\n\nThe System of Environmental-Economic Accounting—Ecosystem Accounting (SEEA EA) is a spatially based, integrated statistical framework for organizing biophysical information about ecosystems, measuring ecosystem services, tracking changes in ecosystem extent and condition, valuing ecosystem services and assets and linking this information to measures of economic and human activity @cite(UN2021).\n\nThe United Nations Statistics Division, in collaboration with the ARIES team, has developed a toolbox (the ARIES for SEEA Explorer) to better implement this accounting system globally. The ARIES for SEEA Explorer enables biophysical modelling, mapping, and valuation for various accounts including ecosystem extent, condition, physical and monetary supply and use, asset accounts, as well as some thematic accounts. Accounts can be compiled for any region on Earth using global data, with local data and parameters added to improve estimates for countries where local data are available.\n\n@section(Global Climate Regulation) \n\nAs defined in the SEEA EA, Global climate regulation services are the ecosystem contributions to reducing concentrations of GHG in the atmosphere through the removal (sequestration) of carbon from the atmosphere and the retention (storage) of carbon in ecosystems. These services support the regulation of the chemical composition of the atmosphere and oceans. This is a final ecosystem service.\n\nThis module aims to begin addressing a critical global data gap by developing annual layers based on the IPCC Tier 1 ‘stock-difference’ methodology. This approach covers all terrestrial ecosystems, as well as mangroves, which are transitional marine-freshwater-terrestrial ecosystems. The module does not address carbon sequestered and stored in marine ecosystems. The ‘stock-difference’ approach uses repeated inventories of carbon stocks, and the accumulation and losses of carbon is derived as the difference between two time steps.",
+    "sectionType": "BODY",
+    "documentedUrns": [],
+    "eventType": null,
+    "variables": {}
+  },
+  "globalclimatereregulation#Definition#Methods": {
+    "trigger": "DEFINITION",
+    "sectionRole": "METHODS",
+    "section": "Methods",
+    "documentedId": "globalclimatereregulation",
+    "extended": null,
+    "template": "@section(Physical supply) \nLand cover data is used to identify different land cover types spatially. These land cover types are assigned an IPCC Tier 1 carbon stock value @cite(IPCC2006) @cite(IPCC2013) @cite(IPCC2019) based on their type, geographic region and ecological zone (for forests)/climate zone (for non-forests) @cite(JRC2010) @cite(FAO2012). Forest (and some shrub) land cover classes are defined by continent, Global Ecological Zone (GEZ) @cite(FAO2012), management practices and age. Forest classes are stratified into Primary Forest, Secondary Old, Secondary Young, Plantation Old and Plantation Young, as per IPCC (2019) tables @cite(IPCC2019). The stratification methodology utilises global and regional datasets to identify each forest type, aligned with methodologies employed by Bourgoin et al. (2025) @cite(Bourgoin2025) and Hunka et al. (2024) @cite(Hunka2024). Datasets were selected based on geographic coverage, spatial and temporal resolution. The baseline year for the analysis is 2020. Therefore, all ‘young’ forest cells in 2020 are assigned an approximate age, which will be updated for further analysis years to ensure additional carbon sequestered through growth is applied. Any new forest cells appearing in subsequent years will be assigned an age of 3 years (assuming some years of growth have occurred before satellite-based algorithms flagged them as forest pixels).\n\n@section(Use) \nFor this service the physical supply = the use as this service benefits the global population regardless of proximity to where the carbon is stored.",
+    "sectionType": "BODY",
+    "documentedUrns": [],
+    "eventType": null,
+    "variables": {}
+  },
+  "globalclimatereregulation#Definition#Results": {
+    "trigger": "DEFINITION",
+    "sectionRole": "RESULTS",
+    "section": "Results",
+    "documentedId": "globalclimatereregulation",
+    "extended": null,
+    "template": "@figure(self, Vegetation carbon stocks)\n\nThe figure shows total vegetation carbon stock in the study year. All values are tonnes per hectare.",
+    "sectionType": "BODY",
+    "documentedUrns": [],
+    "eventType": null,
+    "variables": {}
+  },
+  "globalclimatereregulation#Definition#Discussion": {
+    "trigger": "DEFINITION",
+    "sectionRole": "DISCUSSION",
+    "section": "Discussion",
+    "documentedId": "globalclimatereregulation",
+    "extended": null,
+    "template": "This methodology builds upon the previous ARIES modules by incorporating IPCC updates from the 2013 wetlands supplement and 2019 refinement, more detailed forest type and age data to improve the carbon estimation in these ecosystems. Additionally, carbon accumulation in young growing forests is captured. \n\nThe methodology has several limitations. These include:\n*(space)the use of global layers to assign carbon stock values, these are generated at different temporal and spatial resolution and this can add considerable uncertainty to the model. \n*(space)the use of global Tier 1 default carbon stock, sequestration, carbon fraction and R:S ratios. At a local scale these may not be representative,\n*(space)limitation to vegetation carbon stock. Ecosystems such as wetlands often represent significant soil carbon pools. Therefore low vegetation carbon stock values do not definitely mean low importance of the ecosystem for carbon sequestration and storage\n*(space)exclusion of ecosystem degradation. The condition of an ecosystem influences its capacity to store and sequester carbon. The current approach does not integrate ecosystem condition in the estimation of carbon stock.\n\nTherefore, caution must be taken particularly when applying the model in very local contexts, as the use of global default values may not be accurate.\n\nWhere possible, it is recommended to review other national, regional and global layers of vegetation and soil organic carbon stocks. In many cases, data based on remote sensed data and calibrated to the national context may be available. \n\nCurrently, this model focuses on vegetation carbon as annual global SOC layers and data are less available. However, this is beginning to change. Users are therefore encouraged to review additional data to support the inlcusion of SOC, as in many ecosystems it represents one of the largest carbon pools.",
+    "sectionType": "BODY",
+    "documentedUrns": [],
+    "eventType": null,
+    "variables": {}
+  }
+}

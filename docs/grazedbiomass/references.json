@@ -1,0 +1,42 @@
+{
+  "UN2021": {
+    "examplecitation": "United Nations. (2021). System of Environmental-Economic Accounting - Ecosystem Accounting, Final Draft. Version 5 February 2021.",
+    "key": "UN2021"
+  },
+  "Arantes2018": {
+    "examplecitation": "Arantes, A. E., Couto, V. R. de M., Sano, E. E., and Ferreira, L. G. (2018). Livestock intensification potential in Brazil based on agricultural census and satellite data analysis. Pesquisa Agropecuaria Brasileira, 53(9), 1053–1060. https://doi.org/10.1590/S0100-204X2018000900009",
+    "key": "Arantes2018"
+  },
+  "ChaplinKramer2023": {
+    "examplecitation": "Chaplin-Kramer, R., Neugarten, R.A., Sharp, R.P. et al. (2023). Mapping the planet’s critical natural assets. Nat Ecol Evol, 7, 51–61. https://doi.org/10.1038/s41559-022-01934-5",
+    "key": "ChaplinKramer2023"
+  },
+  "IPCC2019": {
+    "examplecitation": "IPCC (2019). “2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories.” Switzerland: IPCC.",
+    "key": "IPCC2019"
+  },
+  "Mulligan2024": {
+    "examplecitation": "Mulligan (Feb 9, 2024 update). Documentation for the Co$tingNature Model V3. www.policysupport.org/costingnature. Original V3 documentation 2017.",
+    "key": "Mulligan2024"
+  },
+  "Parente2024": {
+    "examplecitation": "Parente, L., Sloat, L., Mesquita, V., Consoli, D., Stanimirova, R., Hengl, T., Bonannella, C. et al. (2024). “Global Pasture Watch - Annual Grassland Class and Extent Maps at 30-m Spatial Resolution (2000—2022)”. Zenodo, https://doi.org/10.5281/zenodo.13890417.",
+    "key": "Parente2024"
+  },
+  "Parente2025": {
+    "examplecitation": "Parente, L., Ehrmann, S., Hengl, T., Fritz, S., Bonannella, C., Malek, Ž., Fischer, C., Perez-Guzman, K., Stanimirova, R., Meyer, C., Wisser, D., Cinardi, G. and Sloat, L. (2025). Global distribution of cattle, goats, sheep and horses at 1-km resolution for 2000-2022 based on sub-national census data and spatiotemporal Machine Learning. 10.21203/rs.3.rs-6201916/v1.",
+    "key": "Parente2025"
+  },
+  "UN2024": {
+    "examplecitation": "United Nations (2024). System of Environmental-Economic Accounting: Ecosystem Accounting. Accessed at: https://seea.un.org/sites/seea.un.org/files/documents/EA/seea_ea_f124_web_12dec24.pdf",
+    "key": "UN2024"
+  },
+  "Veloso2020": {
+    "examplecitation": "Veloso, G.A., Ferreira, M.E., Ferreira Júnior, L.G., Barbosa da Silva.B. (2020). Modelling gross primary productivity in tropical savanna pasturelands for livestock intensification in Brazil, Remote Sensing Applications: Society and Environment, 17, 100288, ISSN 2352-9385, https://doi.org/10.1016/j.rsase.2020.100288.",
+    "key": "Veloso2020"
+  },
+  "Zhang2024": {
+    "examplecitation": "Zhang, X., Zhao, T., Xu, H., Liu, W., Wang, J., Chen, X., and Liu, L. (2024). GLC_FCS30D: the first global 30 m land-cover dynamics monitoring product with a fine classification system for the period from 1985 to 2022 generated using dense-time-series Landsat imagery and the continuous change-detection method. Earth Syst. Sci. Data, 16, 1353–1381, https://doi.org/10.5194/essd-16-1353-2024.",
+    "key": "Zhang2024"
+  }
+}
