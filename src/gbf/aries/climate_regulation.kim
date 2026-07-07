@@ -87,13 +87,3 @@ lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, 
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE
 	set to [(young_forest_carbon_stock > 0 ? young_forest_carbon_stock : self)];
 
-/*
- * The account table for vegetation carbon stock.
- */
-define table vegetation_carbon_stock_statistics as {
-	title: "Vegetation carbon account - Vegetation carbon stock (t/ha)"
-	label: "Mean vegetation carbon stock (t/ha) per forest type"
-	target: gbf.aries.climate_regulation.vegetation_carbon_stock
-	columns:({ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}), 
-	rows:   ({ title: "Vegetation carbon stock in {start} (t/ha):"})
-	};			
