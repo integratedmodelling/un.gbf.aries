@@ -89,7 +89,7 @@ model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 t
 
 @main
 @extensive(space) // it's number of tourists in each gridcell 
-model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named realized_visitors
+model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
 	 observing 
 		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, 
 		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region   named nature_based_country_visitors
@@ -97,7 +97,7 @@ model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubati
 
 //optional to get aprox. results per sq. km
 @intensive(space)  
-model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2 named realized_nature_based_visitors
 	observing  
 		im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
 	set to [ vistors_per_gridcell * (1000000 / space.area)];
@@ -115,5 +115,24 @@ define table visitors_static as {
 	}),
 	rows: { title: "Visitors {start}" } 
 };
- 
- 
+
+
+//tabular output for dynamic context but needs fix to issue #114 
+@var(timespan=(init end)) 
+define table visitors_dynamic as {
+	name: "tourism_biophysical"
+	title: "Tourism Physical Supply (Visitors)",
+	label: "Tourism Physical Supply (Visitors) Change Summary",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+	observables: landcover:LandCoverType	 
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, 
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: landcover:LandCoverType	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
+}; 
