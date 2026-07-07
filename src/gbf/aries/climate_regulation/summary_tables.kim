@@ -12,10 +12,10 @@ define table vegetation_carbon_stock_statistics as {
 	target: gbf.aries.climate_regulation.vegetation_carbon_stock
 	columns:(
 		{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
-		{ title: "Total (t/ha)", summarize: sum, style: bold}
+		{ title: "Total vegetation carbon stock in {start} (t/ha)", summarize: sum, style: bold}
 	), 
 	rows:   (
-		{ title: "Vegetation carbon stock in {start} (t/ha):", filter: landcover:LandCoverType}
-		{ title: "Total (t/ha)", summarize: sum, style: bold}
+		{ title: "Land Cover Type: {classifier}", filter: landcover:LandCoverType}
+		{ title: "Total vegetation carbon stock in {start} (t/ha)", summarize: sum, style: bold}
 	)};		
 	
