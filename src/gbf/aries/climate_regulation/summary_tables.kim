@@ -15,7 +15,7 @@ define table vegetation_carbon_stock_statistics as {
 		{ title: "Total vegetation carbon stock in {start} (t/ha)", summarize: sum, style: bold}
 	), 
 	rows:   (
-		{ title: "Land Cover Type: {classifier}", filter: landcover:LandCoverType}
+		{ title: "Land Cover Type: {classifier}", filter: landcover:LandCoverType}    // TODO: Find the code/key word to group child classes into level 1 classes.
 		{ title: "Total vegetation carbon stock in {start} (t/ha)", summarize: sum, style: bold}
 	)};		
 	
