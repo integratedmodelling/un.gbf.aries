@@ -1,7 +1,9 @@
 project private namespace gbf.aries.climate_regulation.ipcc_forest_type
 	using 
 		nca.landuse.ipcc,
-		gbf.aries.climate_regulation;
+		gbf.aries.climate_regulation,
+		nca.ecology.ipcc,
+		(IPCC_LANDUSE_TABLE) from gbf.aries.climate_regulation.input_tables;
 	
 /*
  * # A) Universal inputs. -------------------------------------------------------------------------------------------------------------------------------
@@ -82,10 +84,11 @@ model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named es
 		presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region named europe_primary_forest_presence,
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
-		type of nca.landuse.ipcc:LandUse named landuse			
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation
+//		type of nca.landuse.ipcc:LandUse named landuse			
 	set to [
-		((landuse is nca.landuse.ipcc:ForestLand) &&
+		(
+//			(landuse is nca.landuse.ipcc:ForestLand) &&
 			((!nodata(forest_integrity) && (forest_integrity >= 9.8)) || intact_forest_presence_2000 || (tropical_forest_type == 10) || tropical_humid_primary_forest_presence || europe_primary_forest_presence) 
 			&& (!nodata(forest_height_2000) && !nodata(forest_height_2020) && (forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
 			&& (nodata(year_of_deforestation) || (year_of_deforestation > 2020))
@@ -130,10 +133,11 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named iiasa_planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
-		type of nca.landuse.ipcc:LandUse named landuse
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation
+//		type of nca.landuse.ipcc:LandUse named landuse
 	set to [
-	    ((landuse is nca.landuse.ipcc:ForestLand) &&
+	    (
+//	    	(landuse is nca.landuse.ipcc:ForestLand) &&
 	    	((!nodata(planted_forest_age) && (planted_forest_age > 20)) || (tropical_forest_type == 81) || iiasa_planted_forest_presence) 
 	    	&& (!nodata(forest_height_2000) && !nodata(forest_height_2020) && (forest_height_2000 >= 5) && (forest_height_2020 >= 5)) 
 	    	&& (nodata(year_of_deforestation) || (year_of_deforestation > 2020))
@@ -155,11 +159,12 @@ model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region nam
 	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named iiasa_planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
-		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
-		type of nca.landuse.ipcc:LandUse named landuse
+		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation
+//		type of nca.landuse.ipcc:LandUse named landuse
 //Adjust underestimation of planted forest including planted forest as a whole, since those with planted_forest_age > 20 have been mapped as OldPlantedForest already
 	set to [
-	    ((landuse is nca.landuse.ipcc:ForestLand) &&
+	    (
+//	    	(landuse is nca.landuse.ipcc:ForestLand) &&
 	    	((!nodata(planted_forest_age) && (planted_forest_age <= 20)) || ((tropical_forest_type == 82) || (tropical_forest_type == 83) || (tropical_forest_type == 84) || (tropical_forest_type == 85) || (tropical_forest_type == 86)) || iiasa_planted_forest_presence) 
 	    	&& ((nodata(forest_height_2000) || (forest_height_2000 < 5)) || (year_of_deforestation <= 2020))
 	    ) ? true : false
@@ -189,10 +194,11 @@ model presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region n
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
 		im:CalendarYear of im:Removed ecology:Forest earth:Region named year_of_deforestation,
 		value of ecology:Tropical ecology:Forest named tropical_forest_type,
-		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age,
-		type of nca.landuse.ipcc:LandUse named landuse
+		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
+//		type of nca.landuse.ipcc:LandUse named landuse
 	set to [		        
-		((landuse is nca.landuse.ipcc:ForestLand) &&
+		(
+//			(landuse is nca.landuse.ipcc:ForestLand) &&
 			(((nodata(forest_height_2000) || (forest_height_2000 < 5)) && (!nodata(forest_height_2020) && (forest_height_2020 >= 5))) 
 			|| (!nodata(forest_height_2000) && !nodata(forest_height_2020) && !nodata(year_of_deforestation) && (forest_height_2000 >= 5) && (forest_height_2020 >= 5) && (year_of_deforestation <= 2020)) 
 			|| ((tropical_forest_type == 32) || (tropical_forest_type == 33) || (tropical_forest_type == 92) || (tropical_forest_type == 93) || (tropical_forest_type == 94)) 
@@ -216,39 +222,63 @@ model local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_fo
 	
 model presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennial_cropland_presence
 	observing
-		presence of landcover:AgroforestryLand earth:Region named iiasa_agroforestry_presence,
-		landcover:LandCoverType named landcover
-	set to [(iiasa_agroforestry_presence && (landcover is landcover:Forest)) ? true : false];
+		presence of landcover:AgroforestryLand earth:Region named iiasa_agroforestry_presence
+//		landcover:LandCoverType named landcover
+//	set to [(iiasa_agroforestry_presence && (landcover is landcover:Forest)) ? true : false];
+	set to [iiasa_agroforestry_presence ? true : false];
 	
 	define FOREST_TYPE_TABLE as {{	 
-     primary_forest |	perennial_cropland	| old_planted_forest	| young_planted_forest	|  young_secondary_forest 	|forest_height_2020	|	landuse						| 	  forest_type
+     primary_forest |	perennial_cropland	| old_planted_forest	| young_planted_forest	|  young_secondary_forest 	|forest_height_2020	|			landuse				|		landcover		| 	  forest_type
   -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	  	 true		|		#				|	  	#				|	  	#				|	    	#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:PrimaryForest		,
-		 #			|		true			|	  	#				|		#				|		  	#				|		#			|				#				| nca.landuse.ipcc:PerennialCropland	,	  	 
-		 false		|		#				|	  true				|		#				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:OldPlantedForest		,
-		 false		|		#				|	  false				|	  true				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:YoungPlantedForest	,
-		 false		|		#				|	  false				|	  false				|	    	true			|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:YoungSecondaryForest	,
-		 false		|		#				|	  false				|	  false				|	  		false			|		>= 5		|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:OldSecondaryForest	,
-		 false		|		#				|	  false				|	  false				|	  		false			|		#			|	nca.landuse.ipcc:ForestLand	| nca.landuse.ipcc:OtherForest			,
-		  #			|		#				|	  	#				|	  	#				|	  		#				|		#			|				#				| nca.landuse.ipcc:OtherLand			
+	  	 true		|		#				|	  	#				|	  	#				|	    	#				|		#			|	nca.landuse.ipcc:ForestLand	|			#			| nca.landuse.ipcc:PrimaryForest		,
+		 #			|		true			|	  	#				|		#				|		  	#				|		#			|				#				|	landcover:Forest	| nca.landuse.ipcc:PerennialCropland	,	  	 
+		 false		|		#				|	  true				|		#				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	|			#			| nca.landuse.ipcc:OldPlantedForest		,
+		 false		|		#				|	  false				|	  true				|		  	#				|		#			|	nca.landuse.ipcc:ForestLand	|			#			| nca.landuse.ipcc:YoungPlantedForest	,
+		 false		|		#				|	  false				|	  false				|	    	true			|		#			|	nca.landuse.ipcc:ForestLand	|			#			| nca.landuse.ipcc:YoungSecondaryForest	,
+		 false		|		#				|	  false				|	  false				|	  		false			|		>= 5		|	nca.landuse.ipcc:ForestLand	|			#			| nca.landuse.ipcc:OldSecondaryForest	,
+		 false		|		#				|	  false				|	  false				|	  		false			|		#			|	nca.landuse.ipcc:ForestLand	|			#			| nca.landuse.ipcc:OtherForest			,
+		  #			|		#				|	  	#				|	  	#				|	  		#				|		#			|				#				|			#			| nca.landuse.ipcc:OtherLand			
 }};
 
 /*
  * Code needs to be kept, in case we want to make forest type in 2020 dynamic/at different scales 
  *The model to produce reference layer of forest type in 2020.
  */		
-//model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
-//	observing
-//		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
-//		presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennial_cropland_presence,
-//		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
-//		presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence,
-//		presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence,
-//		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
-//		type of nca.landuse.ipcc:LandUse named landuse		
-//	lookup (estimated_primary_forest_presence, perennial_cropland_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, forest_height_2020, landuse, ?) 
-//			into FOREST_TYPE_TABLE;		
-			
+model local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic
+	as im:Reference landcover:LandCoverType named landcover_2020 
+	classified according to im:glc-fcs30-enconding;
+	
+model im:Reference type of nca.landuse.ipcc:LandUse named landuse_2020
+	observing
+		im:Reference landcover:LandCoverType named landcover_2020,
+		type of nca.ecology.ipcc:EcologicalRegion named ecological_zone,
+		im:Height of ecology:Forest earth:Region in m named forest_height_2020
+	lookup (landcover, ecological_zone, forest_height, ?) into IPCC_LANDUSE_TABLE;
+
+model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
+	observing
+		presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence,
+		presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennial_cropland_presence,
+		presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence,
+		presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence,
+		presence of im:Likely nca.landuse.ipcc:YoungSecondaryForest earth:Region named estimated_young_secondary_forest_presence,
+		im:Height of ecology:Forest earth:Region in m named forest_height_2020,
+		im:Reference type of nca.landuse.ipcc:LandUse named landuse_2020,
+		im:Reference landcover:LandCoverType named landcover_2020		
+	lookup (estimated_primary_forest_presence, perennial_cropland_presence, estimated_old_planted_forest_presence, estimated_young_planted_forest_presence, estimated_young_secondary_forest_presence, forest_height_2020, landuse_2020, landcover_2020, ?) 
+			into FOREST_TYPE_TABLE;		
+
+//model local:liberentaizp:im.data.global:global_forest_type_2020_epsg_4326
+//	as im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
+//	classified into
+//		nca.landuse.ipcc:PrimaryForest if 0,
+//		nca.landuse.ipcc:PerennialCropland if 1,
+//		nca.landuse.ipcc:OldPlantedForest if 2,
+//		nca.landuse.ipcc:YoungPlantedForest if 3,
+//		nca.landuse.ipcc:YoungSecondaryForest if 4,
+//		nca.landuse.ipcc:OldSecondaryForest if 5,
+//		nca.landuse.ipcc:OtherForest if 6,
+//		nca.landuse.ipcc:OtherLand if 7;			
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------- */
  
 
@@ -343,18 +373,6 @@ model im:Age of ecology:Forest earth:Region in year named forest_age
 /*
  * # 8) Model dynamic forest type. -----------------------------------------------------------------------------------------------------------------------------
  */
-model local:liberentaizp:im.data.global:global_forest_type_2020_epsg_4326
-	as im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
-	classified into
-		nca.landuse.ipcc:PrimaryForest if 0,
-		nca.landuse.ipcc:PerennialCropland if 1,
-		nca.landuse.ipcc:OldPlantedForest if 2,
-		nca.landuse.ipcc:YoungPlantedForest if 3,
-		nca.landuse.ipcc:YoungSecondaryForest if 4,
-		nca.landuse.ipcc:OldSecondaryForest if 5,
-		nca.landuse.ipcc:OtherForest if 6,
-		nca.landuse.ipcc:OtherLand if 7;
-
 /* Only to be used to calculate forest type from 2020 onwards */
 model nca.landuse.ipcc:ForestType named forest_type
 	observing
@@ -364,33 +382,35 @@ model nca.landuse.ipcc:ForestType named forest_type
 		type of nca.landuse.ipcc:LandUse named landuse
 	set to [
 		def ret = ipcc_forest_type_2020
-		if (((ipcc_forest_type_2020 == nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldPlantedForest)) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
-			ret = ipcc_forest_type_2020			
-		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:YoungPlantedForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
-			if (!nodata(forest_age) && (forest_age <= 20)) {
+		if (scale.time.start.year != 2020) {
+			if (((ipcc_forest_type_2020 == nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldPlantedForest)) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+				ret = ipcc_forest_type_2020			
+			} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:YoungPlantedForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+				if (!nodata(forest_age) && (forest_age <= 20)) {
+					ret = ipcc_forest_type_2020
+				} else if (!nodata(forest_age) && (forest_age > 20)) {
+					ret = nca.landuse.ipcc:OldPlantedForest
+				}
+			} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:YoungSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
+				if (!nodata(forest_age) && (forest_age <= 20)) {
+					ret = ipcc_forest_type_2020
+				} else if (!nodata(forest_age) && (forest_age > 20)) {
+					ret = nca.landuse.ipcc:OldSecondaryForest
+				}
+			} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:OldSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
 				ret = ipcc_forest_type_2020
-			} else if (!nodata(forest_age) && (forest_age > 20)) {
-				ret = nca.landuse.ipcc:OldPlantedForest
-			}
-		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:YoungSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
-			if (!nodata(forest_age) && (forest_age <= 20)) {
-				ret = ipcc_forest_type_2020
-			} else if (!nodata(forest_age) && (forest_age > 20)) {
-				ret = nca.landuse.ipcc:OldSecondaryForest
-			}
-		} else if ((ipcc_forest_type_2020 == nca.landuse.ipcc:OldSecondaryForest) && (nodata(year_of_deforestation) || (year_of_deforestation < 2020) || (year_of_deforestation > scale.time.start.year))) {
-			ret = ipcc_forest_type_2020
-		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:PerennialCropland) {
-			if (landuse == nca.landuse.ipcc:ForestLand) {
-				ret = ipcc_forest_type_2020
+			} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:PerennialCropland) {
+				if (landuse == nca.landuse.ipcc:ForestLand) {
+					ret = ipcc_forest_type_2020
+				} else {
+					ret = nca.landuse.ipcc:OtherLand
+				}
 			} else {
-				ret = nca.landuse.ipcc:OtherLand
-			}
-		} else {
-			if (landuse == nca.landuse.ipcc:ForestLand) {
-				ret = nca.landuse.ipcc:OtherForest
-			} else {
-				ret = nca.landuse.ipcc:OtherLand
+				if (landuse == nca.landuse.ipcc:ForestLand) {
+					ret = nca.landuse.ipcc:OtherForest
+				} else {
+					ret = nca.landuse.ipcc:OtherLand
+				}
 			}
 		}
 		return ret
