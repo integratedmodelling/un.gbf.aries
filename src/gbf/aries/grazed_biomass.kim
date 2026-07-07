@@ -6,11 +6,6 @@ private namespace gbf.aries.grazed_biomass
 		IPCC_LIVESTOCK_WEIGHT) 
 	from gbf.aries.grazed_biomass.input_tables;
 
-// LOCAL CONCEPTS, WHAT TO DO?
-quantity Intake; //kg of dry biomass required to sustain livestock animals
-quantity LightUseEfficiency;
-
-
 /* Add data resources  */
 //model	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2000',
 //	  	'local:alessio.bulckaen:im.data.global:global_pasture_watch.dominant_grassland_class_extent_2001',
@@ -105,7 +100,7 @@ quantity LightUseEfficiency;
 //
 ///* MODELLING DRY MATTER PRODUCTIVITY (SUPPLY) */
 //
-//model LightUseEfficiency named light_use_efficiency
+//model ecology:LightUseEfficiency named light_use_efficiency
 //	observing
 //		type of ecology:Grassland named vegetation_cover,
 //		landcover:LandCoverType named lc
@@ -114,7 +109,7 @@ quantity LightUseEfficiency;
 //model ecology:Vegetation ecology:PrimaryProductivity in t/ha
 //	observing
 //		im:Gross chemistry:Carbon ecology:PrimaryProductivity in g/m^2 named gross_primary_productivity,
-//		LightUseEfficiency named light_use_efficiency
+//		ecology:LightUseEfficiency named light_use_efficiency
 //	set to [gross_primary_productivity * light_use_efficiency * 2.7 * 0.01 * 0.5]; // converted gC/m2 > tDM/ha
 //
 //// WE DON'T NEED THE TYPE OF, JUST PRESENCE OF
@@ -284,14 +279,14 @@ model im:Mean agriculture:DairyCattle im:Weight in kg
 // model annual cattle intake needs 
 /// MC: we want to switch the use of nutrient to 'intake' the concept defined locally above
 @extensive(space)
-model im:Yearly agriculture:DairyCattle biology:Nutrient biology:Biomass in t
+model im:Yearly agriculture:DairyCattle biology.incubation:Intake in t
 	observing
 		im:Mean agriculture:DairyCattle im:Weight in kg 	named average_dairy_cattle_weight,
 		count of biology:Individual agriculture:DairyCattle named diary_cattle_units
 	set to [ average_dairy_cattle_weight * diary_cattle_units * 0.025 * 365 * 0.001];
 
 @extensive(space)
-model im:Yearly agriculture:BeefCattle biology:Nutrient biology:Biomass in t
+model im:Yearly agriculture:BeefCattle biology.incubation:Intake in t
 	observing
 		im:Mean agriculture:BeefCattle im:Weight in kg named average_beef_cattle_weight,
 		count of biology:Individual agriculture:BeefCattle named beef_cattle_units
@@ -304,7 +299,7 @@ model im:Mean agriculture:Sheep im:Weight in kg
 	lookup (agriculture:Sheep, region,?) into IPCC_LIVESTOCK_WEIGHT;
 
 //model annual sheep dry matter biology:Biomass in t needs 
-model im:Yearly agriculture:Sheep biology:Nutrient biology:Biomass in t
+model im:Yearly agriculture:Sheep biology.incubation:Intake in t
 	observing
 		im:Mean agriculture:Sheep im:Weight in kg named average_sheep_weight,
 		count of biology:Individual agriculture:Sheep named sheep_units
@@ -317,7 +312,7 @@ observing
 	lookup (agriculture:Goat,region,?) into IPCC_LIVESTOCK_WEIGHT;
 
 @extensive(space) 
-model im:Yearly agriculture:Goat biology:Nutrient biology:Biomass in t
+model im:Yearly agriculture:Goat biology.incubation:Intake in t
 observing
 	im:Mean agriculture:Goat im:Weight in kg named average_goat_weight,
 	count of biology:Individual agriculture:Goat named goat_units
@@ -330,20 +325,20 @@ observing
 	lookup (agriculture:Horse,region,?) into IPCC_LIVESTOCK_WEIGHT;
 
 @extensive(space)
-model im:Yearly agriculture:Horse biology:Nutrient biology:Biomass in t
+model im:Yearly agriculture:Horse biology.incubation:Intake in t
 observing
 	im:Mean agriculture:Horse im:Weight in kg named average_horse_weight,
 	count of biology:Individual agriculture:Horse named horse_units
 	set to [ average_horse_weight * horse_units *0.025*365*0.001];
 
 @extensive(space)
-model im:Yearly agriculture:Livestock biology:Nutrient biology:Biomass in t named total_livestock_demand
+model im:Yearly agriculture:Livestock biology.incubation:Intake in t named total_livestock_demand
 observing 
-	im:Yearly agriculture:DairyCattle biology:Nutrient biology:Biomass in t named yearly_dairy_cattle_nutrient_intake,
-	im:Yearly agriculture:BeefCattle biology:Nutrient biology:Biomass in t named yearly_beef_cattle_nutrient_intake,
-	im:Yearly agriculture:Goat biology:Nutrient biology:Biomass in t named yearly_goat_nutrient_intake,
-	im:Yearly agriculture:Sheep biology:Nutrient biology:Biomass in t named yearly_sheep_nutrient_intake,
-	im:Yearly agriculture:Horse biology:Nutrient biology:Biomass in t named yearly_horse_nutrient_intake
+	im:Yearly agriculture:DairyCattle biology.incubation:Intake in t named yearly_dairy_cattle_nutrient_intake,
+	im:Yearly agriculture:BeefCattle biology.incubation:Intake in t named yearly_beef_cattle_nutrient_intake,
+	im:Yearly agriculture:Goat biology.incubation:Intake in t named yearly_goat_nutrient_intake,
+	im:Yearly agriculture:Sheep biology.incubation:Intake in t named yearly_sheep_nutrient_intake,
+	im:Yearly agriculture:Horse biology.incubation:Intake in t named yearly_horse_nutrient_intake
 	set to [yearly_dairy_cattle_nutrient_intake + yearly_beef_cattle_nutrient_intake + yearly_goat_nutrient_intake + yearly_sheep_nutrient_intake + yearly_horse_nutrient_intake];
 
 /* MODELLING GRAZED BIOMASS USE */
@@ -351,7 +346,7 @@ observing
 model ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named estimated_use_of_natural_grazed_biomass
 observing
 	im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named natural_vegetation_biomass_supply_for_grazing,
-	im:Yearly agriculture:Livestock biology:Nutrient biology:Biomass in t named total_livestock_demand
+	im:Yearly agriculture:Livestock biology.incubation:Intake in t named total_livestock_demand
 	set to [ (natural_vegetation_biomass_supply_for_grazing == unknown || total_livestock_demand == unknown) 
 			? 0 :
 			(natural_vegetation_biomass_supply_for_grazing > total_livestock_demand)
