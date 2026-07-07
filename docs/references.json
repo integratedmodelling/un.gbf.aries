@@ -75,6 +75,10 @@
     "examplecitation" : "United Nations (2024). SEEA Ecosystem Accounting Framework. https://seea.un.org/sites/seea.un.org/files/documents/EA/seea_ea_f124_web_12dec24.pdf",
     "key" : "UN2024"
   },
+  "UN2021" : {
+    "examplecitation" : "United Nations. (2021). System of Environmental-Economic Accounting - Ecosystem Accounting, Final Draft. Version 5 February 2021.",
+    "key" : "UN2021"
+  },
   "BarbierEBetal2011" : {
     "examplecitation" : "Barbier, E.B., Hacker, S.D., Kennedy, C., Koch, E.W., Stier, A.C. and Silliman, B.R. (2011). The value of estuarine and coastal ecosystem services. Ecological Monographs, 81(2), pp.169–193. https://doi.org/10.1890/10-1510.1",
     "key" : "BarbierEBetal2011"
