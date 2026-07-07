@@ -1,0 +1,21 @@
+project private namespace gbf.aries.climate_regulation.summary_tables
+	using nca.landuse.ipcc,
+		  gbf.aries.climate_regulation,
+		  gbf.aries.climate_regulation.ipcc_forest_type;
+
+/*
+ * The account table for vegetation carbon stock.
+ */
+define table vegetation_carbon_stock_statistics as {
+	title: "Vegetation carbon account - Vegetation carbon stock (t/ha)"
+	label: "Mean vegetation carbon stock (t/ha) per forest type & land cover type"
+	target: gbf.aries.climate_regulation.vegetation_carbon_stock
+	columns:(
+		{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
+		{ title: "Total (t/ha)", summarize: sum, style: bold}
+	), 
+	rows:   (
+		{ title: "Vegetation carbon stock in {start} (t/ha):", filter: landcover:LandCoverType}
+		{ title: "Total (t/ha)", summarize: sum, style: bold}
+	)};		
+	
