@@ -23,9 +23,17 @@
     "examplecitation" : "Martínez-López, J., Bagstad, K. J., Balbi, S., Magrach, A., Voigt, B., Athanasiadis, I., ... & Villa, F. (2019). Towards globally customizable ecosystem service models. Science of the Total Environment, 650, 2325-2336.",
     "key" : "ARIES2019"
   },
+  "Arantes2018" : {
+    "examplecitation" : "Arantes, A. E., Couto, V. R. de M., Sano, E. E., and Ferreira, L. G. (2018). Livestock intensification potential in Brazil based on agricultural census and satellite data analysis. Pesquisa Agropecuaria Brasileira, 53(9), 1053–1060. https://doi.org/10.1590/S0100-204X2018000900009",
+    "key" : "Arantes2018"
+  },
   "EUSTAT24" : {
     "examplecitation" : "EUROSTAT 2024: Guidance notes on ecosystem services accounts. Technical Note Version: December 2024 https://ec.europa.eu/eurostat/documents/1798247/12357920/Guidance+note+on+ecosystem+services+accounts.pdf/3bc39658-8de5-79e1-e9b6-afe81141446d?t=1743161354131",
     "key" : "EUSTAT24"
+  },
+  "Veloso2020" : {
+    "examplecitation" : "Veloso, G.A., Ferreira, M.E., Ferreira Júnior, L.G., Barbosa da Silva.B. (2020). Modelling gross primary productivity in tropical savanna pasturelands for livestock intensification in Brazil, Remote Sensing Applications: Society and Environment, 17, 100288, ISSN 2352-9385, https://doi.org/10.1016/j.rsase.2020.100288.",
+    "key" : "Veloso2020"
   },
   "cmems" : {
     "examplecitation" : "Ocean and Coastal data products, Copernicus Marine Environment Monitoring Service (CMEMS).",
@@ -87,9 +95,17 @@
     "examplecitation" : "McIvor, A.L., Möller, I., Spencer, T. and Spalding, M. (2012). Reduction of wind and swell waves by mangroves. Natural Coastal Protection Series: Report 1, Cambridge Coastal Research Unit Working Paper 40.",
     "key" : "McIvoretal2012"
   },
+  "Mulligan2024" : {
+    "examplecitation" : "Mulligan (Feb 9, 2024 update). Documentation for the Co$tingNature Model V3. www.policysupport.org/costingnature. Original V3 documentation 2017.",
+    "key" : "Mulligan2024"
+  },
   "Hansen2013" : {
     "examplecitation" : "Hansen, M. C., Potapov, P. V., Moore, R., Hancher, M., Turubanova, S.A., Tyukavina, A., Thau, D. et al. (2013). “High-Resolution Global Maps of 21st-Century Forest Cover Change.” Science, 342 (6160): 850–53. https://doi.org/10.1126/science.1244693.",
     "key" : "Hansen2013"
+  },
+  "ChaplinKramer2023" : {
+    "examplecitation" : "Chaplin-Kramer, R., Neugarten, R.A., Sharp, R.P. et al. (2023). Mapping the planet’s critical natural assets. Nat Ecol Evol, 7, 51–61. https://doi.org/10.1038/s41559-022-01934-5",
+    "key" : "ChaplinKramer2023"
   },
   "NaturalCapital Project(2025)" : {
     "examplecitation" : "Natural Capital Project (2025). InVEST 3.16.2. Stanford University, University of Minnesota, Chinese Academy of Sciences, The Nature Conservancy, World Wildlife Fund, Stockholm Resilience Centre and the Royal Swedish Academy of Sciences. https://doi.org/10.60793/natcap-invest-3.16.2",
@@ -136,7 +152,7 @@
     "key" : "Spawn2020"
   },
   "Zhang2024" : {
-    "examplecitation" : "Zhang, X., Zhao, T., Xu, H., Liu, W., Wang, J., Chen, X., and Liu, L.G (2024). LC_FCS30D: the first global 30 m land-cover dynamics monitoring product with a fine classification system for the period from 1985 to 2022 generated using dense-time-series Landsat imagery and the continuous change-detection method, Earth Syst. Sci. Data, 16, 1353–1381, https://doi.org/10.5194/essd-16-1353-2024.",
+    "examplecitation" : "Zhang, X., Zhao, T., Xu, H., Liu, W., Wang, J., Chen, X., and Liu, L. (2024). GLC_FCS30D: the first global 30 m land-cover dynamics monitoring product with a fine classification system for the period from 1985 to 2022 generated using dense-time-series Landsat imagery and the continuous change-detection method. Earth Syst. Sci. Data, 16, 1353–1381, https://doi.org/10.5194/essd-16-1353-2024.",
     "key" : "Zhang2024"
   },
   "Lesiv2022" : {
@@ -151,6 +167,10 @@
     "examplecitation" : "United Nations. (2021). System of Environmental-Economic Accounting - Ecosystem Accounting, Final Draft. Version 5 February 2021.",
     "key" : "UN2021"
   },
+  "Parente2024" : {
+    "examplecitation" : "Parente, L., Sloat, L., Mesquita, V., Consoli, D., Stanimirova, R., Hengl, T., Bonannella, C. et al. (2024). “Global Pasture Watch - Annual Grassland Class and Extent Maps at 30-m Spatial Resolution (2000—2022)”. Zenodo, https://doi.org/10.5281/zenodo.13890417.",
+    "key" : "Parente2024"
+  },
   "Batjes2024" : {
     "examplecitation" : "Batjes, N.H. and de Sousa L.M. (2024). Providing quality-assessed and standardised soil data to support global mapping and modelling (WoSIS snapshot 2023). ESSD, 16, 4735–4765, https://doi.org/10.5194/essd-16-4735-2024",
     "key" : "Batjes2024"
@@ -158,5 +178,9 @@
   "BarbierEBetal2011" : {
     "examplecitation" : "Barbier, E.B., Hacker, S.D., Kennedy, C., Koch, E.W., Stier, A.C. and Silliman, B.R. (2011). The value of estuarine and coastal ecosystem services. Ecological Monographs, 81(2), pp.169–193. https://doi.org/10.1890/10-1510.1",
     "key" : "BarbierEBetal2011"
+  },
+  "Parente2025" : {
+    "examplecitation" : "Parente, L., Ehrmann, S., Hengl, T., Fritz, S., Bonannella, C., Malek, Ž., Fischer, C., Perez-Guzman, K., Stanimirova, R., Meyer, C., Wisser, D., Cinardi, G. and Sloat, L. (2025). Global distribution of cattle, goats, sheep and horses at 1-km resolution for 2000-2022 based on sub-national census data and spatiotemporal Machine Learning. 10.21203/rs.3.rs-6201916/v1.",
+    "key" : "Parente2025"
   }
 }
