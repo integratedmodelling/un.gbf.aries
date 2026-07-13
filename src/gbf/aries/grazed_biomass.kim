@@ -138,7 +138,7 @@ private namespace gbf.aries.grazed_biomass
 // Natural grazing supply pre-computed and aggregated to 1km 
 
 model 'local:liberentaizp:im.data.global:im-data-global-ecology.global_gbfb1_grazed_biomass_supply_epsg4326_1km_2020_v3',
-	  'local:liberentaizp:un.gbf.aries:im-data-global-ecology.global_gbfb1_grazed_biomass_supply_epsg4326_1km_2021_v1',
+	  'local:liberentaizp:im.data.global:im-data-global-ecology.global_gbfb1_grazed_biomass_supply_epsg4326_1km_2021_v1',
 	  'local:liberentaizp:im.data.global:im-data-global-ecology.global_gbfb1_grazed_biomass_supply_epsg4326_1km_2022_v1'
 	  as im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t/ha named potential_natural_vegetation_supply_for_grazing;
 	  
