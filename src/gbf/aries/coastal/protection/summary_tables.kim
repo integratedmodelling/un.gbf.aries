@@ -33,7 +33,7 @@ define table cp_supply_protected_people_table as {
 	label: "Coastal Protection Supply (number of people)",
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
-				target: es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual ,
+				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual ,
 				filter: risk.incubation:ProtectiveHabitatType
 
 			}
@@ -42,7 +42,7 @@ define table cp_supply_protected_people_table as {
 			}
 			{	title: "Total (not sum)", 
 //				summarize: sum, style: bold
-				target: es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
+				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
 			}
 			)
 	rows:   ({	title: "{classifier}",  
@@ -101,4 +101,364 @@ define table cp_supply_cpi_table as {
 			)
 	};
 	
+@var(timespan=(start end))
+define table cp_demand_endangered_people_table_dynamic as {
+	name: "cp_demand_endangered_people_table_dynamic"
+	title: "Coastal Protection Demand (people in hazardous areas)",
+	label: "Coastal Protection Demand (number of people)",
+	target: es.coastalprotection:GlobalVulnerabilityMetric
 	
+	columns:({ 	title:  "{classifier}",
+				target: count of (demography:HumanIndividual with risk:Exposure),
+				filter: risk.incubation:ProtectiveHabitatType
+			}
+//			{	title: "Sum (Habitats)", 
+//				summarize: sum, 
+//				style: bold
+//			}
+			{	title: "Total Landscape Exposure", 
+				target: count of (demography:HumanIndividual with risk:Exposure)
+			}
+			)
+			
+	rows:   (
+			// --- OPENING DEMAND (evaluated at start) ---
+			{	name: open_low,
+				title: "Opening Demand Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: open_med,
+				title: "Opening Demand Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: open_high,
+				title: "Opening Demand High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: open_unknown,
+				title: "Opening Demand Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- CLOSING DEMAND (evaluated at end) ---
+			{	name: close_low,
+				title: "Closing Demand Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: close_med,
+				title: "Closing Demand Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: close_high,
+				title: "Closing Demand High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: close_unknown,
+				title: "Closing Demand Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- NET CHANGE (Closing - Opening) ---
+			{	title: "Net Change Low Vulnerability", 
+				summarize: [close_low - open_low], 
+				style: bold
+			}
+			{	title: "Net Change Medium Vulnerability", 
+				summarize: [close_med - open_med], 
+				style: bold
+			}
+			{	title: "Net Change High Vulnerability", 
+				summarize: [close_high - open_high], 
+				style: bold
+			}
+			{	title: "Net Change Unknown Vulnerability", 
+				summarize: [close_unknown - open_unknown], 
+				style: bold
+			}
+			)
+	};
+	
+/*
+ * DYNAMIC COASTAL PROTECTION SUPPLY REPORT
+ * Tracks protected population across vulnerability strata and habitat types over time
+ */
+@var(timespan=(start end))
+define table cp_supply_protected_people_table_dynamic as {
+	name: "cp_supply_protected_people_table_dynamic"
+	title: "Coastal Protection Supply (people in hazardous areas benefitted from the presence of an ET)",
+	label: "Coastal Protection Supply (number of people)",
+	target: es.coastalprotection:GlobalVulnerabilityMetric
+	
+	columns:({ 	title:  "{classifier}",
+				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual,
+				filter: risk.incubation:ProtectiveHabitatType
+			}
+//			{	title: "Sum (Habitats)", 
+//				summarize: sum, 
+//				style: bold
+//			}
+			{	title: "Total Landscape Protection", 
+				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
+			}
+			)
+			
+	rows:   (
+			// --- OPENING SUPPLY (evaluated at start) ---
+			{	name: open_low,
+				title: "Opening Supply Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: open_med,
+				title: "Opening Supply Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: open_high,
+				title: "Opening Supply High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: open_unknown,
+				title: "Opening Supply Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- CLOSING SUPPLY (evaluated at end) ---
+			{	name: close_low,
+				title: "Closing Supply Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: close_med,
+				title: "Closing Supply Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: close_high,
+				title: "Closing Supply High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: close_unknown,
+				title: "Closing Supply Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- NET CHANGE (Closing - Opening) ---
+			{	title: "Net Change Low Vulnerability", 
+				summarize: [close_low - open_low], 
+				style: bold
+			}
+			{	title: "Net Change Medium Vulnerability", 
+				summarize: [close_med - open_med], 
+				style: bold
+			}
+			{	title: "Net Change High Vulnerability", 
+				summarize: [close_high - open_high], 
+				style: bold
+			}
+			{	title: "Net Change Unknown Vulnerability", 
+				summarize: [close_unknown - open_unknown], 
+				style: bold
+			}
+			)
+	};
+	
+/*
+ * DYNAMIC COASTAL PROTECTION HAZARD REDUCTION REPORT
+ * Tracks decrease in hazard across vulnerability strata over time
+ */
+@var(timespan=(start end))
+define table cp_supply_hazard_reduction_table_dynamic as {
+	name: "cp_deltahazard_supply_table_dynamic"
+	title: "Coastal Protection Supply (decrease in hazard by protective ET)",
+	label: "Coastal Protection Supply (delta hazard)",
+	target: es.coastalprotection:GlobalVulnerabilityMetric
+	
+	columns:({ 	title:  "All",
+				target: (aries.global.coastalprotection.exposurevulnerability.stratified.delta_all),
+				filter: risk.incubation:ProtectiveHabitatType
+			}
+			)			
+	rows:   (
+			// --- OPENING HAZARD REDUCTION (evaluated at start) ---
+			{	name: open_low,
+				title: "Opening Hazard Reduction Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: open_med,
+				title: "Opening Hazard Reduction Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: open_high,
+				title: "Opening Hazard Reduction High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: open_unknown,
+				title: "Opening Hazard Reduction Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- CLOSING HAZARD REDUCTION (evaluated at end) ---
+			{	name: close_low,
+				title: "Closing Hazard Reduction Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: close_med,
+				title: "Closing Hazard Reduction Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: close_high,
+				title: "Closing Hazard Reduction High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: close_unknown,
+				title: "Closing Hazard Reduction Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- NET CHANGE (Closing - Opening) ---
+			{	title: "Net Change Low Vulnerability", 
+				summarize: [close_low - open_low], 
+				style: bold
+			}
+			{	title: "Net Change Medium Vulnerability", 
+				summarize: [close_med - open_med], 
+				style: bold
+			}
+			{	title: "Net Change High Vulnerability", 
+				summarize: [close_high - open_high], 
+				style: bold
+			}
+			{	title: "Net Change Unknown Vulnerability", 
+				summarize: [close_unknown - open_unknown], 
+				style: bold
+			}
+			)
+	};
+	
+/*
+ * DYNAMIC COASTAL PROTECTION INDEX (CPI) REPORT
+ * Tracks protective index values across vulnerability strata and habitat types over time
+ */
+@var(timespan=(start end))
+define table cp_supply_cpi_table_dynamic as {
+	name: "cp_new_headcount_supply_table_dynamic"
+	title: "Coastal Protection Supply (people in hazardous areas benefitted from the presence of an ET)",
+	label: "Coastal Protection Supply (number of people)",
+	target: es.coastalprotection:GlobalVulnerabilityMetric
+	
+	columns:({ 	title:  "Mangrove",
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:Mangrove) 
+			}
+			{ 	title:  "Saltmarsh",
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:SaltMarsh) 
+			}
+			{ 	title:  "Coral reef",
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:CoralReef)
+			}
+			{ 	title:  "Seagrass",
+				target: es.coastalprotection:CoastalProtectionIndex of (earth:Coast with risk.incubation:SeaGrass)
+			}
+			{	title: "Total (mean hazard)", 
+				target: im:Mean es.coastalprotection:CoastalProtectionIndex
+			}
+			{	title: "Total (max hazard)", 
+				target: im:Maximum es.coastalprotection:CoastalProtectionIndex
+			}
+			{	title: "Total (summed hazard)", 
+				target: risk.incubation:Aggregated es.coastalprotection:CoastalProtectionIndex
+			}
+			)
+			
+	rows:   (
+			// --- OPENING CPI (evaluated at start) ---
+			{	name: open_low,
+				title: "Opening CPI Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: open_med,
+				title: "Opening CPI Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: open_high,
+				title: "Opening CPI High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: open_unknown,
+				title: "Opening CPI Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, init),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- CLOSING CPI (evaluated at end) ---
+			{	name: close_low,
+				title: "Closing CPI Low Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:LowVulnerability
+			}
+			{	name: close_med,
+				title: "Closing CPI Medium Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:MediumVulnerability
+			}
+			{	name: close_high,
+				title: "Closing CPI High Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:HighVulnerability
+			}
+			{	name: close_unknown,
+				title: "Closing CPI Unknown Vulnerability ({time})",  
+				filter: (es.coastalprotection:GlobalVulnerabilityMetric, end),
+				keep: es.coastalprotection:UnknownVulnerability
+			}
+			empty
+			
+			// --- NET CHANGE (Closing - Opening) ---
+			{	title: "Net Change Low Vulnerability", 
+				summarize: [close_low - open_low], 
+				style: bold
+			}
+			{	title: "Net Change Medium Vulnerability", 
+				summarize: [close_med - open_med], 
+				style: bold
+			}
+			{	title: "Net Change High Vulnerability", 
+				summarize: [close_high - open_high], 
+				style: bold
+			}
+			{	title: "Net Change Unknown Vulnerability", 
+				summarize: [close_unknown - open_unknown], 
+				style: bold
+			}
+			)
+	};
