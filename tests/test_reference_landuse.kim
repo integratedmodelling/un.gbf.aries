@@ -1,0 +1,16 @@
+worldview im;
+
+@test(
+    name = "test_reference_landuse",
+    description  = "The refernce landuse model doesn't produce results, 
+					it's an input for the carbon model so the issue with the lookup model has to be fixed (and it's internal)",
+    observations = ("gbf.aries.climate_regulation.ipcc_forest_type.landuse_2020"),
+    assertions = ()
+)
+
+observe earth:Region named reference_landuse_nodata
+	over space(
+		shape='EPSG:4326 POLYGON ((-2.412101854172911 43.213920790961254, -2.415685285416835 43.213920790961254, -2.415685285416835 43.215723089984664, -2.412101854172911 43.215723089984664, -2.412101854172911 43.213920790961254))',
+		//'EPSG:4326 POLYGON ((-1.0154616004469534 42.74142348833374, -3.2572670635945418 42.74142348833374, -3.2572670635945418 43.591654892464874, -1.0154616004469534 43.591654892464874, -1.0154616004469534 42.74142348833374))',
+			   grid="250 m"),
+			time(start=2022, end=2023, step=1.year);

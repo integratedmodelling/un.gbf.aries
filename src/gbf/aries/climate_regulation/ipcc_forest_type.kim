@@ -77,7 +77,7 @@ model presence of nca.landuse.ipcc:PrimaryForest geography:European earth:Region
  
 model presence of im:Likely nca.landuse.ipcc:PrimaryForest earth:Region named estimated_primary_forest_presence
 	observing			
-		physical.incubation:Integrity of ecology:Forest earth:Region named forest_integrity,
+		physical.incubation:Integrity of ecology:Forest earth:Region named forest_integrity optional,
 		presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest_presence_2000,
 		value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence,
@@ -128,7 +128,7 @@ model local:alessio.bulckaen:im.data.global:im-data-global-agriculture.global_fo
 /* MODELLING - PLANTATIONS OLD FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named estimated_old_planted_forest_presence
 	observing
-		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age optional,
 	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named iiasa_planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
@@ -155,7 +155,7 @@ model presence of im:Likely nca.landuse.ipcc:OldPlantedForest earth:Region named
 /* MODELLING - PLANTATIONS YOUNG FORESTS  */
 model presence of im:Likely nca.landuse.ipcc:YoungPlantedForest earth:Region named estimated_young_planted_forest_presence
 	observing 
-		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age optional,
 	    value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		presence of nca.landuse.ipcc:PlantedForest earth:Region named iiasa_planted_forest_presence,	
 		im:Reference im:Height of ecology:Forest earth:Region in m named forest_height_2000,
@@ -253,7 +253,7 @@ model im:Reference type of nca.landuse.ipcc:LandUse named landuse_2020
 		im:Reference landcover:LandCoverType named landcover_2020,
 		type of nca.ecology.ipcc:EcologicalRegion named ecological_zone,
 		im:Height of ecology:Forest earth:Region in m named forest_height_2020
-	lookup (landcover, ecological_zone, forest_height, ?) into IPCC_LANDUSE_TABLE;
+	lookup (landcover_2020, ecological_zone, forest_height_2020, ?) into IPCC_LANDUSE_TABLE;
 
 model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 	observing
@@ -288,7 +288,7 @@ model im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020
 model im:Reference im:Age of ecology:Forest earth:Region in year named forest_age_2020  // forest age in year 2020
 	observing
 		im:Reference nca.landuse.ipcc:ForestType named ipcc_forest_type_2020,
-		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age,
+		im:Age of agriculture:Planted ecology:Forest earth:Region in year named planted_forest_age optional,
 		value of ecology:Tropical ecology:Forest named tropical_forest_type,
 		im:Age of ecology:Boreal ecology:Forest earth:Region in year named boreal_forest_age
 	set to [
