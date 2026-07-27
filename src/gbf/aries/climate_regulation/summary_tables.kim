@@ -11,11 +11,151 @@ define table vegetation_carbon_stock_statistics as {
 	label: "Mean vegetation carbon stock (t/ha) per forest type & land cover type"
 	target: gbf.aries.climate_regulation.vegetation_carbon_stock
 	columns:(
-		{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
+		{ title: "Land Use Type: {classifier}", filter: nca.landuse.ipcc:LandUseType}
+//				{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
 		{ title: "Total vegetation carbon stock in {start} (t/ha)", summarize: sum, style: bold}
 	), 
 	rows:   (
-		{ title: "Land Use Type: {classifier}", filter: type of nca.landuse.ipcc:LandUse}
+		{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
+//		{ title: "Land Use Type: {classifier}", filter: nca.landuse.ipcc:LandUseType}
 		{ title: "Total vegetation carbon stock in {start} (t/ha)", summarize: sum, style: bold}
-	)};		
+	)};	
+/*
+ * DYNAMIC VEGETATION CARBON STOCK REPORT
+ * Groups carbon stock results by Land Use Type over time with Net Change calculations
+ */
+@var(timespan=(start end))
+define table vegetation_carbon_stock_statistics_dynamic as {
+	title: "Vegetation carbon account - Vegetation carbon stock (t/ha)"
+	label: "Mean vegetation carbon stock (t/ha) per forest type & land cover type"
+	target: type of nca.landuse.ipcc:LandUse
 	
+	columns:(
+		{ title: "Forest Type: {classifier}", 
+			target: gbf.aries.climate_regulation.vegetation_carbon_stock,
+			filter: nca.landuse.ipcc:ForestType
+		}
+		{ title: "Total vegetation carbon stock (t/ha)", 
+			target: gbf.aries.climate_regulation.vegetation_carbon_stock,
+//			summarize: sum, 
+			style: bold
+		}
+	)
+	
+	rows:   (
+			// --- OPENING STOCK (evaluated at start year) ---
+			{	title: "#Opening Stock ({init})", 
+				separator: true 
+			}
+			{	title: "##Forest land", 
+				name: forest_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:ForestLand
+			}
+			{	title: "##Grassland", 
+				name: grassland_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:Grassland
+			}
+			{	title: "##Cropland", 
+				name: cropland_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:Cropland
+			}
+			{	title: "##Wetland", 
+				name: wetland_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:Wetland
+			}
+			{	title: "##Settlement", 
+				name: settlement_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:Settlement
+			}
+			{	title: "##Other land", 
+				name: otherland_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:OtherLand
+			}
+			{	title: "##Water body", 
+				name: waterbody_open,
+				filter: (type of nca.landuse.ipcc:LandUse, init),
+				keep: nca.landuse.ipcc:WaterBody
+			}
+			empty
+			
+			// --- CLOSING STOCK (evaluated at end year) ---
+			{	title: "#Closing Stock ({end})", 
+				separator: true 
+			}
+			{	title: "##Forest land", 
+				name: forest_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:ForestLand
+			}
+			{	title: "##Grassland", 
+				name: grassland_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:Grassland
+			}
+			{	title: "##Cropland", 
+				name: cropland_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:Cropland
+			}
+			{	title: "##Wetland", 
+				name: wetland_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:Wetland
+			}
+			{	title: "##Settlement", 
+				name: settlement_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:Settlement
+			}
+			{	title: "##Other land", 
+				name: otherland_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:OtherLand
+			}
+			{	title: "##Water body", 
+				name: waterbody_close,
+				filter: (type of nca.landuse.ipcc:LandUse, end),
+				keep: nca.landuse.ipcc:WaterBody
+			}
+			empty
+			
+			// --- NET CHANGE (Closing - Opening) ---
+			{	title: "#Net Change in Stock", 
+				separator: true 
+			}
+			{	title: "##Net Change Forest Land", 
+				summarize: [forest_close - forest_open], 
+				style: bold
+			}
+			{	title: "##Net Change Grassland", 
+				summarize: [grassland_close - grassland_open], 
+				style: bold
+			}
+			{	title: "##Net Change Cropland", 
+				summarize: [cropland_close - cropland_open], 
+				style: bold
+			}
+			{	title: "##Net Change Wetland", 
+				summarize: [wetland_close - wetland_open], 
+				style: bold
+			}
+			{	title: "##Net Change Settlement", 
+				summarize: [settlement_close - settlement_open], 
+				style: bold
+			}
+			{	title: "##Net Change Other Land", 
+				summarize: [otherland_close - otherland_open], 
+				style: bold
+			}
+			{	title: "##Net Change Water Body", 
+				summarize: [waterbody_close - waterbody_open], 
+				style: bold
+			}
+			)
+	};
