@@ -29,7 +29,7 @@ define table grazing_biomass_use_by_natural_ecosystem_typology_static as {
 //	rows:   ({ title: "Dry Matter {time} (tonnes)" , filter: (init, end)})};
 
 @var(timespan=(start end))	
-define table grazing_biomass_supply_change_by_natural_ecosystem_typology as {
+define table grazing_biomass_supply_change_by_natural_ecosystem_typology_dynamic as {
 	title: "Potential change in supply of dry matter for grazing by natural ecosystem type (tonnes/ha)",
 	label: "Potential change in supply of dry matter for grazing by natural ecosystem type (tonnes/ha)",
 	target: gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing
@@ -41,7 +41,7 @@ define table grazing_biomass_supply_change_by_natural_ecosystem_typology as {
 			 };
 
 @var(timespan=(start end))	
-define table grazing_biomass_use_change_by_natural_ecosystem_typology as {
+define table grazing_biomass_use_change_by_natural_ecosystem_typology_dynamic as {
 	title: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes/ha)",
 	label: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes/ha)",
 	target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass
