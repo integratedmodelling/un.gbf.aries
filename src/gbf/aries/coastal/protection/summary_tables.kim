@@ -2,7 +2,7 @@ project private namespace gbf.aries.coastal.protection.summary_tables
 	using 	gbf.aries.coastal.protection.hazard,
 			gbf.aries.coastal.protection.exposurevulnerability;
 
-define table cp_demand_endangered_people_table as {
+define table cp_demand_endangered_people_table_static as {
 	name: "cp_demand_endangered_people_table"
 	title: "Coastal Protection Demand (people in hazardous areas)",
 	label: "Coastal Protection Demand (number of people)",
@@ -28,7 +28,7 @@ define table cp_demand_endangered_people_table as {
 			)
 	};
 	
-define table cp_supply_protected_people_table as {
+define table cp_supply_protected_people_table_static as {
 	name: "cp_supply_protected_people_table"
 	title: "Coastal Protection Supply (people in hazardous areas beneffited from the presence of an ET)",
 	label: "Coastal Protection Supply (number of people)",
@@ -52,7 +52,7 @@ define table cp_supply_protected_people_table as {
 			{title: "Total", summarize: sum, style: bold}
 			)
 	};
-define table cp_supply_hazard_reduction_table as {
+define table cp_supply_hazard_reduction_table_static as {
 	name: "cp_deltahazard_supply_table"
 	title: "Coastal Protection Supply (decrease in hazard by protective ET)",
 	label: "Coastal Protection Supply (delta hazard)",
@@ -68,7 +68,7 @@ define table cp_supply_hazard_reduction_table as {
 			)
 	};
 	
-define table cp_supply_cpi_table as {
+define table cp_supply_cpi_table_static as {
 	name: "cp_new_headcount_supply_table"
 	title: "Coastal Protection Supply (people in hazardous areas beneffited from the presence of an ET)",
 	label: "Coastal Protection Supply (number of people)",

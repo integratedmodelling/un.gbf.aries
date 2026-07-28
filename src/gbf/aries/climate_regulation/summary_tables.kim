@@ -6,7 +6,7 @@ project private namespace gbf.aries.climate_regulation.summary_tables
 /*
  * The account table for vegetation carbon stock.
  */
-define table vegetation_carbon_stock_statistics as {
+define table vegetation_carbon_stock_statistics_static as {
 	title: "Vegetation carbon account - Vegetation carbon stock (t/ha)"
 	label: "Mean vegetation carbon stock (t/ha) per forest type & land cover type"
 	target: gbf.aries.climate_regulation.vegetation_carbon_stock
