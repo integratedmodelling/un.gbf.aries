@@ -65,32 +65,32 @@ define EXPOSURE_THRESHOLD_RANK as {{
  * **********************************
  */
  @documented(coastalprotection.hazard)	 
- model risk.incubation:ProtectiveHabitatType
+ model es.coastalprotection:ProtectiveHabitatType
   	observing 
 		value of ecology:Diversity ecology:Mangrove landcover:SaltMarsh named coastal_protective_habitat_type, 
 		coral_systems
 	set to [
-		(coral_systems == 1 ? risk.incubation:CoralReef : 
-			(coral_systems == 6 ? risk.incubation:SeaGrass : 
-				(coastal_protective_habitat_type == 185 ? risk.incubation:Mangrove :
-					(coastal_protective_habitat_type == 183 ? risk.incubation:SaltMarsh : 
-						(coastal_protective_habitat_type == 255 ? risk.incubation:WaterBody : unknown)							
+		(coral_systems == 1 ? es.coastalprotection:CoralReef : 
+			(coral_systems == 6 ? es.coastalprotection:SeaGrass : 
+				(coastal_protective_habitat_type == 185 ? es.coastalprotection:Mangrove :
+					(coastal_protective_habitat_type == 183 ? es.coastalprotection:SaltMarsh : 
+						(coastal_protective_habitat_type == 255 ? es.coastalprotection:WaterBody : unknown)							
 				)
 			)
 		)
 		)];
  
-model value of risk.incubation:ProtectiveHabitatType 
+model value of es.coastalprotection:ProtectiveHabitatType 
 	observing
-		risk.incubation:ProtectiveHabitatType named habitat
+		es.coastalprotection:ProtectiveHabitatType named habitat
 	lookup (habitat, ?) into
 		habitat 					|	rank 
 	----------------------------
-		risk.incubation:WaterBody	|	5		,
-		risk.incubation:Mangrove	|	1.8		,
-		risk.incubation:SaltMarsh	|	2.55	,
-		risk.incubation:CoralReef 	|	1.8	,
-		risk.incubation:SeaGrass	|	4.05	,
+		es.coastalprotection:WaterBody	|	5		,
+		es.coastalprotection:Mangrove	|	1.8		,
+		es.coastalprotection:SaltMarsh	|	2.55	,
+		es.coastalprotection:CoralReef 	|	1.8	,
+		es.coastalprotection:SeaGrass	|	4.05	,
 		# 							| 	1
 		;  		
 
@@ -104,30 +104,30 @@ model im:Predicted value of im:Mean im:Level earth:Sea
 		value of im:Mean hydrology:Water im:Level earth:Sea named sea_level
 	set to [ sea_level ];
 	 				
-model value of risk.incubation:WaterBody
+model value of es.coastalprotection:WaterBody
 	observing
-		risk.incubation:ProtectiveHabitatType named habitat
+		es.coastalprotection:ProtectiveHabitatType named habitat
 	set to [(habitat ? 5 : 1)];
 	
-model value of risk.incubation:Mangrove
+model value of es.coastalprotection:Mangrove
 	observing
-		risk.incubation:ProtectiveHabitatType named habitat
-	set to [habitat == risk.incubation:Mangrove ? 1.8 : (habitat ? 5 : 1)];
+		es.coastalprotection:ProtectiveHabitatType named habitat
+	set to [habitat == es.coastalprotection:Mangrove ? 1.8 : (habitat ? 5 : 1)];
 
-model value of risk.incubation:SaltMarsh
+model value of es.coastalprotection:SaltMarsh
 	observing
-		risk.incubation:ProtectiveHabitatType named habitat
-	set to [habitat == risk.incubation:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
+		es.coastalprotection:ProtectiveHabitatType named habitat
+	set to [habitat == es.coastalprotection:SaltMarsh ? 2.55 : (habitat ? 5 : 1)];
 
-model value of risk.incubation:CoralReef
+model value of es.coastalprotection:CoralReef
 	observing
-		risk.incubation:ProtectiveHabitatType named habitat
-	set to [habitat == risk.incubation:CoralReef ? 1.8 : (habitat ? 5 : 1)];
+		es.coastalprotection:ProtectiveHabitatType named habitat
+	set to [habitat == es.coastalprotection:CoralReef ? 1.8 : (habitat ? 5 : 1)];
 	
-model value of risk.incubation:SeaGrass
+model value of es.coastalprotection:SeaGrass
 	observing
-		risk.incubation:ProtectiveHabitatType named habitat
-	set to [habitat == risk.incubation:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
+		es.coastalprotection:ProtectiveHabitatType named habitat
+	set to [habitat == es.coastalprotection:SeaGrass ? 4.05 : (habitat ? 5 : 1)];	
 	  		
 model value of es.coastalprotection:StormWaveExposureMetric 
 	observing 
@@ -240,14 +240,14 @@ private model (value of landcover:LandCoverType risk:VulnerabilityMetric) caused
 4: (204, 0, 0),
 5: (204, 0, 204)
 }, continuous=true)	
-model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:All
+model im:Predicted value of risk:Hazard earth:Coast with es.coastalprotection:All
 	observing
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
 	value of es.coastalprotection:StormWaveExposureMetric				named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
-	value of risk.incubation:ProtectiveHabitatType 									named natural_habitat_index,
+	value of es.coastalprotection:ProtectiveHabitatType 									named natural_habitat_index,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m 												named coast
 set to [
@@ -270,7 +270,7 @@ model im:Predicted value of risk:Hazard earth:Coast
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
 	value of es.coastalprotection:StormWaveExposureMetric				named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
-	value of risk.incubation:WaterBody 												named water_cover_without_et,		
+	value of es.coastalprotection:WaterBody 												named water_cover_without_et,		
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m 												named coast
 	set to [
@@ -286,14 +286,14 @@ model im:Predicted value of risk:Hazard earth:Coast
 4: (204, 0, 0),
 5: (204, 0, 204)
 }, continuous=true)
-model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:Mangrove
+model im:Predicted value of risk:Hazard earth:Coast with es.coastalprotection:Mangrove
 	observing
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
 	value of es.coastalprotection:StormWaveExposureMetric				named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
-	value of risk.incubation:Mangrove 												named mangrove_only,
+	value of es.coastalprotection:Mangrove 												named mangrove_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m 												named coast
 	set to [
@@ -309,14 +309,14 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:Mangrov
 4: (204, 0, 0),
 5: (204, 0, 204)
 }, continuous=true)
-model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SaltMarsh
+model im:Predicted value of risk:Hazard earth:Coast with es.coastalprotection:SaltMarsh
 	observing
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
 	value of es.coastalprotection:StormWaveExposureMetric				named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
-	value of risk.incubation:SaltMarsh 												named saltmarsh_only,
+	value of es.coastalprotection:SaltMarsh 												named saltmarsh_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m 												named coast
 	set to [
@@ -332,14 +332,14 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SaltMar
 4: (204, 0, 0),
 5: (204, 0, 204)
 }, continuous=true)
-model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:CoralReef
+model im:Predicted value of risk:Hazard earth:Coast with es.coastalprotection:CoralReef
 	observing
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
 	value of es.coastalprotection:StormWaveExposureMetric				named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
-	value of risk.incubation:CoralReef 												named coral_only,
+	value of es.coastalprotection:CoralReef 												named coral_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m 												named coast
 	set to [
@@ -355,14 +355,14 @@ model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:CoralRe
 4: (204, 0, 0),
 5: (204, 0, 204)
 }, continuous=true)	
-model im:Predicted value of risk:Hazard earth:Coast with risk.incubation:SeaGrass
+model im:Predicted value of risk:Hazard earth:Coast with es.coastalprotection:SeaGrass
 	observing
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Sea 	named sea_level_rise_index,
 	im:Potential value of risk:ExposureMetric im:HeightLevel geography:Elevation 	named relief_index,
 	im:Potential value of risk:ExposureMetric hydrology:Water im:Level earth:Flood 	named surge_index,
-	value of es.coastalprotection:StormWaveExposureMetric				named wave_index,
+	value of es.coastalprotection:StormWaveExposureMetric							named wave_index,
 	im:Potential value of risk:ExposureMetric earth:Wind 							named wind_index,
-	value of risk.incubation:SeaGrass 												named seagrass_only,
+	value of es.coastalprotection:SeaGrass 											named seagrass_only,
 	value of landcover:LandCoverType risk:VulnerabilityMetric caused by earth:Marine earth:Flood named geomorphology_index,
 	distance to earth:Coastline in m 												named coast
 	set to [
