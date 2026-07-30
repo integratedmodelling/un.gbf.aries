@@ -1,0 +1,74 @@
+{
+  "FAO2012": {
+    "examplecitation": "FAO (2012). “Global Ecological Zones for FAO Forest Reporting: 2010 Update.” Rome: Food and Agricultural Organization of the United Nations.",
+    "key": "FAO2012"
+  },
+  "Gibbs2025": {
+    "examplecitation": "Gibbs, D., Rose, M., Grassi, G., Melo, J., Rossi, S., Heinrich, V. and Harris, N. (2025). Revised and updated geospatial monitoring of 21st century forest carbon fluxes, Earth System Science Data, 17, 3, 2025, 1217-1243, Copernicus Publications, https://data.europa.eu/doi/10.5194/essd-17-1217-2025, JRC139289.",
+    "key": "Gibbs2025"
+  },
+  "Hansen2013": {
+    "examplecitation": "Hansen, M. C., Potapov, P. V., Moore, R., Hancher, M., Turubanova, S.A., Tyukavina, A., Thau, D. et al. (2013). “High-Resolution Global Maps of 21st-Century Forest Cover Change.” Science, 342 (6160): 850–53.",
+    "key": "Hansen2013"
+  },
+  "Hengl2025": {
+    "examplecitation": "Hengl, T., Consoli, D., Tian, X., Nauman, T. W., Nussbaum, M., Isik, M. S., Parente, L., Ho, Y.-F., Simoes, R., Gupta, S., Samuel-Rosa, A., Zborowski Horst, T., Safanelli, J. L., and Harris, N. (2026). OpenLandMap-soildb: global soil information at 30~m spatial resolution for 2000--2022+ based on spatiotemporal Machine Learning and harmonized legacy soil samples and observations. Earth Syst. Sci. Data, 18, 989–1036, https://doi.org/10.5194/essd-18-989-2026",
+    "key": "Hengl2025"
+  },
+  "Batjes2024": {
+    "examplecitation": "Batjes, N.H. and de Sousa L.M. (2024). Providing quality-assessed and standardised soil data to support global mapping and modelling (WoSIS snapshot 2023). ESSD, 16, 4735–4765, https://doi.org/10.5194/essd-16-4735-2024",
+    "key": "Batjes2024"
+  },
+  "Bourgoin2025": {
+    "examplecitation": "Bourgoin, C., Verhegghen, A., Carboni, S., Degreve, L., Ameztoy Aramendi, I., Ceccherini, G., Colditz, R. and Achard, F. (2025). Global Forest Maps for the Year 2020 to Support the EU Regulation on Deforestation-free Supply Chains, Publications Office of the European Union, Luxembourg, https://data.europa.eu/doi/10.2760/1975879, JRC141702.",
+    "key": "Bourgoin2025"
+  },
+  "Canadell2025": {
+    "examplecitation": "Canadell,  J.G. (2025). Looking beyond the trees for carbon storage. Science 387, 1252-1253. DOI:10.1126/science.adw3259",
+    "key": "Canadell2025"
+  },
+  "Hunka2024": {
+    "examplecitation": "Hunka, N., Duncanson, L., Armston, J. et al. (2024). Intergovernmental Panel on Climate Change (IPCC) Tier 1 forest biomass estimates from Earth Observation. Sci Data 11, 1127. https://doi.org/10.1038/s41597-024-03930-9 doi:10.1038/s41597-024-03930-9",
+    "key": "Hunka2024"
+  },
+  "IPCC2006": {
+    "examplecitation": "IPCC (2006). “2006 IPCC Guidelines for National Greenhouse Gas Inventories.” Institute for Global Environmental Strategies (IGES) for the IPCC.",
+    "key": "IPCC2006"
+  },
+  "IPCC2019": {
+    "examplecitation": "IPCC (2019). “2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories.” Switzerland: IPCC.",
+    "key": "IPCC2019"
+  },
+  "JRC2010": {
+    "examplecitation": "JRC (2010). The Climatic Zone Layer, Support to Renewable Energy Directive. Accessed at: https://esdac.jrc.ec.europa.eu/content/support-renewable-energy-directive#tabs-0-description=1 (Accessed March 2025).",
+    "key": "JRC2010"
+  },
+  "Lesiv2022": {
+    "examplecitation": "Lesiv, M., Schepaschenko, D., Buchhorn, M., See, L., Dürauer, M., Georgieva, I., Jung, M. et al. (2022). “Global Forest Management Data for 2015 at a 100 m Resolution.” Scientific Data, 9 (1): 199.",
+    "key": "Lesiv2022"
+  },
+  "Lin2024": {
+    "examplecitation": "Lin, Z., Dai, Y., Mishra, U., Wang, G., Shangguan, W., Zhang, W. and Qin, Z. (2024). Global and regional soil organic carbon estimates: Magnitudes and uncertainties, Pedosphere, 34, 4, 685-698, ISSN 1002-0160, https://doi.org/10.1016/j.pedsph.2023.06.005.",
+    "key": "Lin2024"
+  },
+  "Potapov2017": {
+    "examplecitation": "Potapov, P., Hansen, M.C., Laestadius, L., Turubanova, S., Yaroshenko, A, Thies, C., Smith, W. et al. (2017). The Last Frontiers of Wilderness: Tracking Loss of Intact Forest Landscapes from 2000 to 2013. Science Advances, 3 (1): e1600821. https://doi.org/10.1126/sciadv.1600821.",
+    "key": "Potapov2017"
+  },
+  "Potapov2022": {
+    "examplecitation": "Potapov P., Hansen M.C., Pickens, A., Hernandez-Serna, A., Tyukavina, A., Turubanova, S., Zalles, V., Li, X., Khan, A., Stolle, F., Harris, N., Song, X-P., Baggett, A., Kommareddy, I. and Kommareddy, Anil. (2022). The Global 2000-2020 Land Cover and Land Use Change Dataset Derived From the Landsat Archive: First Results.",
+    "key": "Potapov2022"
+  },
+  "Spawn2020": {
+    "examplecitation": "Spawn, S.A., Sullivan, C.C., Lark, T.J. and Gibbs, H.K. (2020). “Harmonized Global Maps of Above and Belowground Biomass Carbon Density in the Year 2010.” Scientific Data, 7 (1): 112. 4",
+    "key": "Spawn2020"
+  },
+  "Zhang2024": {
+    "examplecitation": "Zhang, X., Zhao, T., Xu, H., Liu, W., Wang, J., Chen, X., and Liu, L.G (2024). LC_FCS30D: the first global 30 m land-cover dynamics monitoring product with a fine classification system for the period from 1985 to 2022 generated using dense-time-series Landsat imagery and the continuous change-detection method, Earth Syst. Sci. Data, 16, 1353–1381, https://doi.org/10.5194/essd-16-1353-2024.",
+    "key": "Zhang2024"
+  },
+  "UN2021": {
+    "examplecitation": "United Nations. (2021). System of Environmental-Economic Accounting - Ecosystem Accounting, Final Draft. Version 5 February 2021.",
+    "key": "UN2021"
+  }
+}

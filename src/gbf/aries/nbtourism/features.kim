@@ -1,0 +1,30 @@
+project private namespace gbf.aries.nbtourism.features;
+
+//preferential landcover for the years of reference
+@reliability(100)
+model
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic,
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic,
+	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic
+	as landcover:LandCoverType named glc_fcs30 classified according to im:glc-fcs30-enconding;
+
+model each earth:WaterBody 
+    observing landcover:LandCoverType named landcover_type
+    using gis.features.extract(select = [landcover_type is landcover:WaterBody]);
+
+model each earth:MountainPeak
+	observing geography:Elevation > 0 in m named elevation
+	using im.geomorphology.findmaxima(surface = elevation, threshold = [max * 0.65], radius = 8000);
+
+number distance_to_mountain
+	observing
+		distance to earth:MountainPeak in m named distance_to_mountain
+		set to [distance_to_mountain] ;
+
+model each behavior.incubation:Campsite
+	using gis.osm.query(
+		feature-type="point", 
+		equal=("tourism", "camp_site")); 
+
+model each 'local:srwohl:im.data.global:im-data-global-geography_global_coastline_10m'	
+    as earth:Coastline;

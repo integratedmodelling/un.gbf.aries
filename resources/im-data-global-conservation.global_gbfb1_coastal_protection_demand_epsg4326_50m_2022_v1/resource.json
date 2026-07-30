@@ -1,0 +1,48 @@
+{
+  "urn" : "local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_coastal_protection_demand_epsg4326_50m_2022_v1",
+  "version" : "0.0.1",
+  "adapterType" : "wcs",
+  "localPath" : "un.gbf.aries/resources/im-data-global-conservation.global_gbfb1_coastal_protection_demand_epsg4326_50m_2022_v1",
+  "geometry" : "τ1{tend=1672531200000,tstart=1640995200000,ttype=logical}S2(719999,280900){bbox=[-180.0 180.00000000000023 -56.758400000000094 83.6921],proj=EPSG:4326}",
+  "projectName" : "un.gbf.aries",
+  "localName" : "im-data-global-conservation.global_gbfb1_coastal_protection_demand_epsg4326_50m_2022_v1",
+  "type" : "NUMBER",
+  "resourceTimestamp" : 1782311409107,
+  "metadata" : {
+    "im:keywords" : "",
+    "dc:comment" : "This dataset includes ecosystem service supply results generated as part of Activity 1 of the “Monitoring Framework for the Kunming-Montreal Global Biodiversity Framework (KM-GBF)”. The objective of this activity is to support countries in compiling national data for reporting on GBF Indicator B.1 by enabling the estimation of ecosystem service supply in accordance with the System of Environmental-Economic Accounting – Ecosystem Accounting (SEEA EA). The four ecosystem services presented in the dataset are: - Grazed biomass provisioning - Coastal protection - Global climate regulation - Nature-based tourism\r\n\r\nThe datasets include supply, demand and use for each of the aforementioned ecosystem services. For more detail on the methodology used to obtain results and on their interpretation, please refer to the Concept Note document below.\r\n\r\nThis results have been generated as a third deliverable under the KM-GBF Project between UN-DESA and BC3.",
+    "im:notes" : "",
+    "dc:title" : "Coastal protection demand 2022",
+    "dc:url" : "https://data.integratedmodelling.org/dataset/four-global-ecosystem-services",
+    "dc:creator" : "",
+    "im:thematic-area" : "Conservation",
+    "dc:originator" : "ARIES",
+    "im:geographic-area" : "Global",
+    "dc:source" : ""
+  },
+  "parameters" : {
+    "wcsIdentifier" : "im-data-global-conservation__global_gbfb1_coastal_protection_demand_epsg4326_50m_2022_v1",
+    "transform" : "",
+    "serviceUrl" : "https://integration.integratedmodelling.org/geoserver/im-data-global-conservation/wcs",
+    "nodata" : "NaN",
+    "wcsVersion" : "2.0.1"
+  },
+  "localPaths" : [ ],
+  "history" : [ ],
+  "notifications" : [ ],
+  "attributes" : [ ],
+  "spatialExtent" : {
+    "east" : 180.00000000000023,
+    "west" : -180.0,
+    "north" : 83.6921,
+    "south" : -56.758400000000094,
+    "gridResolution" : null,
+    "gridUnit" : null
+  },
+  "dependencies" : null,
+  "outputs" : null,
+  "categorizables" : [ ],
+  "codelists" : [ ],
+  "availability" : null,
+  "exportFormats" : { }
+}

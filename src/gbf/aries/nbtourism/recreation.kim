@@ -1,0 +1,85 @@
+project private namespace gbf.aries.nbtourism.recreation
+using (HEMEROBY_TABLE, RECREATION_OPPORTUNITY_TABLE) from gbf.aries.nbtourism.tables;
+
+/*SUPPLY*/
+
+/* Restructured in 4 components */
+//1. human influence (aka the inverse of hemeroby/naturalness)
+//2. landscape features (attractiveness): waterbodies, coastline, mountain peaks and protected areas (includes management) 
+//3. (2.) + biodiversity (species ricchness) + facilities (campsites) : the first 3 components (1. + 3.) allow to compute the theoretical value of NBT
+//4. accessibility (travel time): 3. and 4. allow to compute the recreation opportunity spectrum
+
+//1.
+@documented(recreation.hemeroby)
+model proportion of (not conservation:Pristine) earth:Region caused by demography:HumanPopulation
+	observing
+	landcover:LandCoverType named land_cover_type
+	lookup (land_cover_type, ?) into HEMEROBY_TABLE
+	set to [self/7.0],
+	klab.data.normalize();
+//2.
+model im:Indicator distance to behavior:Recreational earth:Region  	
+	observing 
+		distance to conservation:ProtectedArea in m named distance_to_protected_areas,
+		distance to earth:WaterBody in m            named distance_to_water_bodies,
+		distance to earth:Coastline in m			named distance_to_coastline,
+		distance to earth:MountainPeak in m         named distance_to_mountains
+	set to [((nodata(distance_to_protected_areas) ? 0 : distance_to_protected_areas) 
+			  + (nodata(distance_to_water_bodies) ? 0 : distance_to_water_bodies) 
+			  + (nodata(distance_to_coastline)    ? 0 : distance_to_coastline)
+			  +    (nodata(distance_to_mountains) ? 0 : distance_to_mountains)
+			  )],
+	   klab.data.normalize(); 
+//3.
+model im:Indicator distance to behavior.incubation:Campsite
+	observing 
+	distance to behavior.incubation:Campsite in m named distance_to_campsite
+	set to [(distance_to_campsite - distance_to_campsite.min) / (distance_to_campsite.max - distance_to_campsite.min)];  
+
+model im:Indicator value of ecology:SpeciesRichness
+      observing 
+      value of ecology:SpeciesRichness named species_richness
+      set to [(species_richness - species_richness.min) / (species_richness.max - species_richness.min) ];
+
+//landscape features with biodiversity //inverted for convenience 
+model value of behavior:Outdoor landcover:LandscapeHeterogeneity named recreational_landscape_indicator_inverted
+	observing 
+		im:Indicator value of ecology:SpeciesRichness               named biodivesity_indicator, //include condition later
+		im:Indicator distance to behavior:Recreational earth:Region named recreation_distance, 
+		im:Indicator distance to behavior.incubation:Campsite       named campsite_indicator 
+    set to [(1 - biodivesity_indicator) + recreation_distance + 
+    	     (nodata(campsite_indicator) ? 0 : campsite_indicator)],
+    klab.data.normalize(); 
+
+@main 
+@documented(recreation.values.theoretical)
+model im:Theoretical value of behavior:Outdoor behavior:Recreation 
+		observing 
+		proportion of (not conservation:Pristine) earth:Region caused by demography:HumanPopulation named human_influence, 
+        recreational_landscape_indicator_inverted
+    set to [(human_influence == 1 ) ? unknown : ((human_influence ** 1.25) * (recreational_landscape_indicator_inverted ** 0.5))] //Non-symmetric utility function with increasing returns to scale
+    then [ self.invert() ],
+    klab.data.normalize(); 
+
+//4. /* correcting accessibility  */
+model im:Indicator(im:Duration of behavior:TravelConnection)
+		observing 
+        im:Duration of behavior:TravelConnection in min named travel_time,
+        presence of earth:WaterBody                     named water_body_presence,
+        distance to earth:Coastline in m                named distance_to_coastline
+       set to 
+       [ (water_body_presence ? unknown :((travel_time > 4000 && distance_to_coastline > 10000  ) ? 4000 : travel_time)) ];
+
+model  im:Normalized im:Indicator(im:Duration of behavior:TravelConnection)  
+      observing 
+      im:Indicator (im:Duration of behavior:TravelConnection) named travel_time_indicator
+      set to [ (travel_time_indicator - travel_time_indicator.min) / (travel_time_indicator.max -travel_time_indicator.min )];
+
+/*ROS METHOD */  
+@main  
+@documented(recreation.values.potential) 
+model im:Potential value of behavior:Outdoor behavior:Recreation 1 to 9
+	observing
+		im:Normalized im:Indicator(im:Duration of behavior:TravelConnection) named remoteness,
+		im:Theoretical value of behavior:Outdoor behavior:Recreation named theoretical_recreation_supply
+	lookup (remoteness, theoretical_recreation_supply, ?) into RECREATION_OPPORTUNITY_TABLE;

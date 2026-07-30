@@ -1,2 +1,186 @@
 {
+  "ChaplinKramerRetal2022" : {
+    "examplecitation" : "Chaplin-Kramer, R., Brauman, K. A., Cavender-Bares, J., Díaz, S., Duarte, G. T., Enquist, B. J., ... & Zafra-Calvo, N. (2022). Conservation needs to integrate knowledge across scales. Nature ecology & evolution, 6(2), 118-119.https://doi.org/10.1038/s41467-018-04568-z",
+    "key" : "ChaplinKramerRetal2022"
+  },
+  "IPCC2022" : {
+    "examplecitation" : "IPCC (2022). Climate Change 2022: Impacts, Adaptation and Vulnerability. Contribution of Working Group II to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change. Cambridge University Press.",
+    "key" : "IPCC2022"
+  },
+  "WorldBank(2024)" : {
+    "examplecitation" : "World Bank (2024). The Nature Based Solutions Opportunity Scan: Leveraging Earth Observation Data to Identify Investment Opportunities in NBS for Climate Resilience in Cities and Coasts across the World. Washington, DC: World Bank.",
+    "key" : "WorldBank(2024)"
+  },
+  "RobinsonNetal2014" : {
+    "examplecitation" : "Robinson, N., Regetz, J., and Guralnick, R. P. (2014). EarthEnv-DEM90: A nearly-global, void-free, multi-scale smoothed, 90m digital elevation model from fused ASTER and SRTM data. ISPRS Journal of Photogrammetry and Remote Sensing, 87:2014, 57-67. Available at http://www.sciencedirect.com/science/article/pii/S0924271613002360",
+    "key" : "RobinsonNetal2014"
+  },
+  "UNEP-WCMC(2025)" : {
+    "examplecitation" : "UNEP-WCMC (2025). Ocean+ Habitats [On-line], [accessed May 2025]. Available at: habitats.oceanplus.org.",
+    "key" : "UNEP-WCMC(2025)"
+  },
+  "ARIES2019" : {
+    "examplecitation" : "Martínez-López, J., Bagstad, K. J., Balbi, S., Magrach, A., Voigt, B., Athanasiadis, I., ... & Villa, F. (2019). Towards globally customizable ecosystem service models. Science of the Total Environment, 650, 2325-2336.",
+    "key" : "ARIES2019"
+  },
+  "Arantes2018" : {
+    "examplecitation" : "Arantes, A. E., Couto, V. R. de M., Sano, E. E., and Ferreira, L. G. (2018). Livestock intensification potential in Brazil based on agricultural census and satellite data analysis. Pesquisa Agropecuaria Brasileira, 53(9), 1053–1060. https://doi.org/10.1590/S0100-204X2018000900009",
+    "key" : "Arantes2018"
+  },
+  "EUSTAT24" : {
+    "examplecitation" : "EUROSTAT 2024: Guidance notes on ecosystem services accounts. Technical Note Version: December 2024 https://ec.europa.eu/eurostat/documents/1798247/12357920/Guidance+note+on+ecosystem+services+accounts.pdf/3bc39658-8de5-79e1-e9b6-afe81141446d?t=1743161354131",
+    "key" : "EUSTAT24"
+  },
+  "Veloso2020" : {
+    "examplecitation" : "Veloso, G.A., Ferreira, M.E., Ferreira Júnior, L.G., Barbosa da Silva.B. (2020). Modelling gross primary productivity in tropical savanna pasturelands for livestock intensification in Brazil, Remote Sensing Applications: Society and Environment, 17, 100288, ISSN 2352-9385, https://doi.org/10.1016/j.rsase.2020.100288.",
+    "key" : "Veloso2020"
+  },
+  "cmems" : {
+    "examplecitation" : "Ocean and Coastal data products, Copernicus Marine Environment Monitoring Service (CMEMS).",
+    "key" : "cmems"
+  },
+  "MacManusKetal2021" : {
+    "examplecitation" : "MacManus, K., Balk, D., Engin, H., McGranahan, G., & Inman, R. (2021). Estimating population and urban areas at risk of coastal hazards, 1990–2015: How data choices matter. Earth System Science Data, 13 (12), pp. 5747–5801. https://doi.org/10.5194/essd-13-5747-202",
+    "key" : "MacManusKetal2021"
+  },
+  "LaNotteAetal2025" : {
+    "examplecitation" : "La Notte, A., Marques, A., Petracco, M., Paracchini, M. L., Zurbaran-Nucci, M., Grammatikopoulou, I., & Tamborra, M. (2025). The assessment of nature-related risks: From ecosystem services vulnerability to economic exposure and financial disclosures. Ecological Economics, 235, 108636.",
+    "key" : "LaNotteAetal2025"
+  },
+  "ERA5ecmwf" : {
+    "examplecitation" : "ERA5 Reanalysis dataset, European Centre for Medium Range Weather Forecasts (ECMRWF).",
+    "key" : "ERA5ecmwf"
+  },
+  "BeckMWetal2018" : {
+    "examplecitation" : "Beck, M.W., Losada, I.J., Menéndez, P., Reguero, B.G., Díaz-Simal, P. and Fernández, F. (2018). The global flood protection benefits of mangroves. Nature Communications, 9, 2186.",
+    "key" : "BeckMWetal2018"
+  },
+  "UnitedNationsetal(2021)" : {
+    "examplecitation" : "United Nations et al. (2021). System of Environmental-Economic Accounting— Ecosystem Accounting (SEEA EA). White cover publication, pre-edited text subject to official editing. Available at: https://seea.un.org/ecosystem-accounting",
+    "key" : "UnitedNationsetal(2021)"
+  },
+  "IPCC2006" : {
+    "examplecitation" : "IPCC (2006). “2006 IPCC Guidelines for National Greenhouse Gas Inventories.” Institute for Global Environmental Strategies (IGES) for the IPCC.",
+    "key" : "IPCC2006"
+  },
+  "Potapov2022" : {
+    "examplecitation" : "Potapov P., Hansen M.C., Pickens, A., Hernandez-Serna, A., Tyukavina, A., Turubanova, S., Zalles, V., Li, X., Khan, A., Stolle, F., Harris, N., Song, X-P., Baggett, A., Kommareddy, I. and Kommareddy, Anil. (2022). The Global 2000-2020 Land Cover and Land Use Change Dataset Derived From the Landsat Archive: First Results.",
+    "key" : "Potapov2022"
+  },
+  "Hengl2025" : {
+    "examplecitation" : "Hengl, T., Consoli, D., Tian, X., Nauman, T. W., Nussbaum, M., Isik, M. S., Parente, L., Ho, Y.-F., Simoes, R., Gupta, S., Samuel-Rosa, A., Zborowski Horst, T., Safanelli, J. L., and Harris, N. (2026). OpenLandMap-soildb: global soil information at 30~m spatial resolution for 2000--2022+ based on spatiotemporal Machine Learning and harmonized legacy soil samples and observations. Earth Syst. Sci. Data, 18, 989–1036, https://doi.org/10.5194/essd-18-989-2026",
+    "key" : "Hengl2025"
+  },
+  "JRC2010" : {
+    "examplecitation" : "JRC (2010). The Climatic Zone Layer, Support to Renewable Energy Directive. Accessed at: https://esdac.jrc.ec.europa.eu/content/support-renewable-energy-directive#tabs-0-description=1 (Accessed March 2025).",
+    "key" : "JRC2010"
+  },
+  "Lin2024" : {
+    "examplecitation" : "Lin, Z., Dai, Y., Mishra, U., Wang, G., Shangguan, W., Zhang, W. and Qin, Z. (2024). Global and regional soil organic carbon estimates: Magnitudes and uncertainties, Pedosphere, 34, 4, 685-698, ISSN 1002-0160, https://doi.org/10.1016/j.pedsph.2023.06.005.",
+    "key" : "Lin2024"
+  },
+  "FAO2012" : {
+    "examplecitation" : "FAO (2012). “Global Ecological Zones for FAO Forest Reporting: 2010 Update.” Rome: Food and Agricultural Organization of the United Nations.",
+    "key" : "FAO2012"
+  },
+  "McGranahanetal2007" : {
+    "examplecitation" : "McGranahan, G., Balk, D., & Anderson, B. (2007). The rising tide: Assessing the risks of climate change and human settlements in low elevation coastal zones. Environ. Urban., 19, pp. 17–37. https://doi.org/10.1177/0956247807076960",
+    "key" : "McGranahanetal2007"
+  },
+  "INCA2025" : {
+    "examplecitation" : "European Commission (2025). INCA tool user guide. https://ecosystem-accounts.jrc.ec.europa.eu/sites/default/files/2025-02/INCA_ToolPlugIn_UserGuide_2.2.1_final.pdf  All tool related links at https://ecosystem-accounts.jrc.ec.europa.eu/inca-tool.",
+    "key" : "INCA2025"
+  },
+  "McIvoretal2012" : {
+    "examplecitation" : "McIvor, A.L., Möller, I., Spencer, T. and Spalding, M. (2012). Reduction of wind and swell waves by mangroves. Natural Coastal Protection Series: Report 1, Cambridge Coastal Research Unit Working Paper 40.",
+    "key" : "McIvoretal2012"
+  },
+  "Mulligan2024" : {
+    "examplecitation" : "Mulligan (Feb 9, 2024 update). Documentation for the Co$tingNature Model V3. www.policysupport.org/costingnature. Original V3 documentation 2017.",
+    "key" : "Mulligan2024"
+  },
+  "Hansen2013" : {
+    "examplecitation" : "Hansen, M. C., Potapov, P. V., Moore, R., Hancher, M., Turubanova, S.A., Tyukavina, A., Thau, D. et al. (2013). “High-Resolution Global Maps of 21st-Century Forest Cover Change.” Science, 342 (6160): 850–53. https://doi.org/10.1126/science.1244693.",
+    "key" : "Hansen2013"
+  },
+  "ChaplinKramer2023" : {
+    "examplecitation" : "Chaplin-Kramer, R., Neugarten, R.A., Sharp, R.P. et al. (2023). Mapping the planet’s critical natural assets. Nat Ecol Evol, 7, 51–61. https://doi.org/10.1038/s41559-022-01934-5",
+    "key" : "ChaplinKramer2023"
+  },
+  "NaturalCapital Project(2025)" : {
+    "examplecitation" : "Natural Capital Project (2025). InVEST 3.16.2. Stanford University, University of Minnesota, Chinese Academy of Sciences, The Nature Conservancy, World Wildlife Fund, Stockholm Resilience Centre and the Royal Swedish Academy of Sciences. https://doi.org/10.60793/natcap-invest-3.16.2",
+    "key" : "NaturalCapital Project(2025)"
+  },
+  "SanchezColon2020" : {
+    "examplecitation" : "Sanchez Colon, S (2020). Pilot testing of the SEEA-EEA Framework in Mexico: Coastal Protection by Mangrove Ecosystems. United Nations Statistics Division, Department of Economic and Social Affairs, New York.",
+    "key" : "SanchezColon2020"
+  },
+  "Bourgoin2025" : {
+    "examplecitation" : "Bourgoin, C., Verhegghen, A., Carboni, S., Degreve, L., Ameztoy Aramendi, I., Ceccherini, G., Colditz, R. and Achard, F. (2025). Global Forest Maps for the Year 2020 to Support the EU Regulation on Deforestation-free Supply Chains, Publications Office of the European Union, Luxembourg, https://data.europa.eu/doi/10.2760/1975879, JRC141702.",
+    "key" : "Bourgoin2025"
+  },
+  "IPCC2019" : {
+    "examplecitation" : "IPCC (2019). “2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories.” Switzerland: IPCC.",
+    "key" : "IPCC2019"
+  },
+  "NASAJapanSpacesystems" : {
+    "examplecitation" : "NASA/METI/AIST/Japan Spacesystems, and U.S./Japan ASTER Science Team. (2019). ASTER Global Digital Elevation Model (GDEM) Version 3. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/ASTER/ASTGTM.003.",
+    "key" : "NASAJapanSpacesystems"
+  },
+  "BalkDetal2009" : {
+    "examplecitation" : "Balk, D, Montgomery, MR, McGranahan, G, Kim, D, Mara, V, Todd, M, Buettner, T & Dor´elien, AD. (2009). Mapping urban settlements and the risks of climate change in Africa, Asia and South America. In Guzman, JM (ed.), Population Dynamics and Climate Change. New York; London, England: UNFPA, pp. 80–103",
+    "key" : "BalkDetal2009"
+  },
+  "Hunka2024" : {
+    "examplecitation" : "Hunka, N., Duncanson, L., Armston, J. et al. (2024). Intergovernmental Panel on Climate Change (IPCC) Tier 1 forest biomass estimates from Earth Observation. Sci Data 11, 1127. https://doi.org/10.1038/s41597-024-03930-9 doi:10.1038/s41597-024-03930-9",
+    "key" : "Hunka2024"
+  },
+  "Gibbs2025" : {
+    "examplecitation" : "Gibbs, D., Rose, M., Grassi, G., Melo, J., Rossi, S., Heinrich, V. and Harris, N. (2025). Revised and updated geospatial monitoring of 21st century forest carbon fluxes, Earth System Science Data, 17, 3, 2025, 1217-1243, Copernicus Publications, https://data.europa.eu/doi/10.5194/essd-17-1217-2025, JRC139289.",
+    "key" : "Gibbs2025"
+  },
+  "Canadell2025" : {
+    "examplecitation" : "Canadell,  J.G. (2025). Looking beyond the trees for carbon storage. Science 387, 1252-1253. DOI:10.1126/science.adw3259",
+    "key" : "Canadell2025"
+  },
+  "Potapov2017" : {
+    "examplecitation" : "Potapov, P., Hansen, M.C., Laestadius, L., Turubanova, S., Yaroshenko, A, Thies, C., Smith, W. et al. (2017). The Last Frontiers of Wilderness: Tracking Loss of Intact Forest Landscapes from 2000 to 2013. Science Advances, 3 (1): e1600821. https://doi.org/10.1126/sciadv.1600821.",
+    "key" : "Potapov2017"
+  },
+  "Spawn2020" : {
+    "examplecitation" : "Spawn, S.A., Sullivan, C.C., Lark, T.J. and Gibbs, H.K. (2020). “Harmonized Global Maps of Above and Belowground Biomass Carbon Density in the Year 2010.” Scientific Data, 7 (1): 112. 4",
+    "key" : "Spawn2020"
+  },
+  "Zhang2024" : {
+    "examplecitation" : "Zhang, X., Zhao, T., Xu, H., Liu, W., Wang, J., Chen, X., and Liu, L. (2024). GLC_FCS30D: the first global 30 m land-cover dynamics monitoring product with a fine classification system for the period from 1985 to 2022 generated using dense-time-series Landsat imagery and the continuous change-detection method. Earth Syst. Sci. Data, 16, 1353–1381, https://doi.org/10.5194/essd-16-1353-2024.",
+    "key" : "Zhang2024"
+  },
+  "Lesiv2022" : {
+    "examplecitation" : "Lesiv, M., Schepaschenko, D., Buchhorn, M., See, L., Dürauer, M., Georgieva, I., Jung, M. et al. (2022). “Global Forest Management Data for 2015 at a 100 m Resolution.” Scientific Data, 9 (1): 199. https://doi.org/10.1038/s41597-022-01332-3.",
+    "key" : "Lesiv2022"
+  },
+  "UN2024" : {
+    "examplecitation" : "United Nations (2024). SEEA Ecosystem Accounting Framework. https://seea.un.org/sites/seea.un.org/files/documents/EA/seea_ea_f124_web_12dec24.pdf",
+    "key" : "UN2024"
+  },
+  "UN2021" : {
+    "examplecitation" : "United Nations. (2021). System of Environmental-Economic Accounting - Ecosystem Accounting, Final Draft. Version 5 February 2021.",
+    "key" : "UN2021"
+  },
+  "Parente2024" : {
+    "examplecitation" : "Parente, L., Sloat, L., Mesquita, V., Consoli, D., Stanimirova, R., Hengl, T., Bonannella, C. et al. (2024). “Global Pasture Watch - Annual Grassland Class and Extent Maps at 30-m Spatial Resolution (2000—2022)”. Zenodo, https://doi.org/10.5281/zenodo.13890417.",
+    "key" : "Parente2024"
+  },
+  "Batjes2024" : {
+    "examplecitation" : "Batjes, N.H. and de Sousa L.M. (2024). Providing quality-assessed and standardised soil data to support global mapping and modelling (WoSIS snapshot 2023). ESSD, 16, 4735–4765, https://doi.org/10.5194/essd-16-4735-2024",
+    "key" : "Batjes2024"
+  },
+  "BarbierEBetal2011" : {
+    "examplecitation" : "Barbier, E.B., Hacker, S.D., Kennedy, C., Koch, E.W., Stier, A.C. and Silliman, B.R. (2011). The value of estuarine and coastal ecosystem services. Ecological Monographs, 81(2), pp.169–193. https://doi.org/10.1890/10-1510.1",
+    "key" : "BarbierEBetal2011"
+  },
+  "Parente2025" : {
+    "examplecitation" : "Parente, L., Ehrmann, S., Hengl, T., Fritz, S., Bonannella, C., Malek, Ž., Fischer, C., Perez-Guzman, K., Stanimirova, R., Meyer, C., Wisser, D., Cinardi, G. and Sloat, L. (2025). Global distribution of cattle, goats, sheep and horses at 1-km resolution for 2000-2022 based on sub-national census data and spatiotemporal Machine Learning. 10.21203/rs.3.rs-6201916/v1.",
+    "key" : "Parente2025"
+  }
 }

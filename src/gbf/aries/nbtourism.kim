@@ -1,22 +1,25 @@
-private namespace gbf.nbtourism;
+project private namespace gbf.aries.nbtourism;
 
 /* 1. Getting national tourism statistics metrics per country per year */
 
-model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitors'
-	as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
-	set to [ country_overnight_visitors == 0 ? null : country_overnight_visitors.mean];          
-//need to enable the mode.
-  
-////default only as number
-////TBD: enable user provided data in app?
-//@parameter(label = "visitors", default = "country_overnight_visitors", name = user_provided_country_visitors, description = "country specific user provided statistics on tourism")
-//number	user_provided_visitors
-//    observing country_overnight_visitors
-//	set to [user_provided_country_visitors];
+//buffering the country to avoid using statistics from neighbouring countries
+@hide
+private model each im:Reference earth:Location
+	observing geography:Country earth:Region named country_region
+	using 
+		im.geoprocessing.buffer(artifact = country_region, radius = -5000, subtract = false);
 
+@main
+model 'local:stefano.balbi:tower.sandbox:un_tourism_statistics_1995_2022#visitors'
+		as  behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors
+    observing 
+    	presence of im:Reference earth:Location named country_presence
+    set to [(country_overnight_visitors != 0 && country_presence) ? country_overnight_visitors : null];
+ 
 /*2. Separate Nature-Based Contribution   */
 
 //multiply country stats by nature-based ratio
+@main
 model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region  
 	observing 
 		behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region named country_overnight_visitors,
@@ -32,6 +35,7 @@ model behavior:Outdoor behavior.incubation:Inbound behavior.incubation:Overnight
  */ 
 
 // use ROS to select the NB tourism area
+@main
 model presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation  
 	observing 
 		im:Potential value of behavior:Outdoor behavior:Recreation named recreation_opportunity_spectrum
@@ -42,19 +46,22 @@ model presence of earth:Region with im:Realized value of behavior:Outdoor behavi
 		    recreation_opportunity_spectrum == 8 	]; // 'high provision, accessible' 	    
 
 /*compare extension of NB tourism area vs all country region */
+@hide
 model value of behavior:Outdoor im:Extent named cell_area_where_realized_outdoor_value
 	observing
 		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area 
 	set to [realized_outdoor_value_area ? space.area : unknown]; 
 
 //use only terrestrial part of the context 
+@hide
 model value of earth:Terrestrial im:Extent named cell_area_where_terrestrial
   observing
 		geography:Slope > 0 named terrestrial_area
 	set to [terrestrial_area / terrestrial_area * space.area];  
 
+@main
 model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:Numerosity 
-		observing
+	observing
 		cell_area_where_realized_outdoor_value,
 		cell_area_where_terrestrial
 	set to [ cell_area_where_realized_outdoor_value.getCurrentSum(context)  / cell_area_where_terrestrial.getCurrentSum(context)]; 
@@ -65,11 +72,13 @@ model proportion of behavior:Outdoor in behavior.incubation:OvernightVisitor im:
  * percentage of overnights stays attributed to an ecosystem is equal to the attractiveness metric (one component of the ROS)
  * of the ecosystem divided by the sum of all attractiveness metrics within the country region. 
  * While INCA uses 3 classes of weights low = 0, medium = 0,5 and high = 1 here we use the 
- * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB toursim is realized 
+ * NB tourism revised "im:Theoretical value of behavior:Outdoor behavior:Recreation", but rescaled where NB tourism is realized 
  * i.e. in "presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation". 
  */
 
-model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 // update using behavior:Tourism
+@documented(tourism.naturebased) 
+@main
+model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 to 10 named visitors_indicator_weight // main output in absence of statistics
 	observing 
 		presence of earth:Region with im:Realized value of behavior:Outdoor behavior:Recreation named realized_outdoor_value_area,
 		im:Theoretical value of behavior:Outdoor behavior:Recreation  named theoretical_recreation_supply
@@ -78,38 +87,52 @@ model im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation 1 t
 		    return (realized_outdoor_value_area ? rescaled : unknown)
 	];
 
+@main
 @extensive(space) // it's number of tourists in each gridcell 
-model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+model im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
 	 observing 
 		im:Indicator value of im:Realized behavior:Outdoor behavior:Recreation named visitors_indicator_weight, 
 		behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity of geography:Country earth:Region   named nature_based_country_visitors
-	 set to [visitors_indicator_weight * nature_based_country_visitors / visitors_indicator_weight.getCurrentSum(context)]; 	
+	 set to [visitors_indicator_weight * nature_based_country_visitors.mean / visitors_indicator_weight.getCurrentSum(context)]; 	
 
 //optional to get aprox. results per sq. km
 @intensive(space)  
-model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2 named realized_nature_based_visitors
 	observing  
-	im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
+		im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity named vistors_per_gridcell
 	set to [ vistors_per_gridcell * (1000000 / space.area)];
 
-
 /*4. Tabular reporting by ecosystem type or land cover type */
+/*This model should run at country scale, otherwise use the one in gbf.aries.nbtourism.reference */
 
-@var(timespan=(init end))
-define table tourism_biophysical_supply_dynamic as {
+ //Simplest, basic, static account per landcover type
+define table visitors_static as {
+	title: "Visitors by land cover type in given year",
+	label: "Visitors by land cover",
+	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
+	columns: ({ title: "{classifier}", target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity, filter: landcover:LandCoverType, aggregation: sum }
+			  { title: "Total", summarize: sum, style: bold
+	}),
+	rows: { title: "Visitors {start}" } 
+};
+
+
+//tabular output for dynamic context but needs fix to issue #114 
+@var(timespan=(init end)) 
+define table visitors_dynamic as {
 	name: "tourism_biophysical"
 	title: "Tourism Physical Supply (Visitors)",
 	label: "Tourism Physical Supply (Visitors) Change Summary",
 	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
-	observables: landcover:LandCoverType	 // not part of the model, add here if only mentioned in parameters
+	observables: landcover:LandCoverType	 
 	when: end
 	use: tables.compiler.summarize(contabilize-nulls = true, 
 		rowsummary = { filter: "change" title: "Net change"}, 
-		colsummary=  { filter: "total", title: "Total" }, // noticing a mismatch in the sum, sensitive to the resolution
+		colsummary=  { filter: "total", title: "Total" }, 
 		rows =       { filter: %timespan% }, 
 		columns =    { filter: landcover:LandCoverType	 }, 
 		//statistic =  "", default should be the sum
 		empty='', 
 		no-data = ''
 	)
-};
+}; 

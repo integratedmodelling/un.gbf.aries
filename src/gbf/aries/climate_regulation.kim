@@ -1,14 +1,21 @@
-private namespace gbf.aries.climate_regulation
+project private namespace gbf.aries.climate_regulation
 using nca.landuse.ipcc, nca.ecology.ipcc,
 		(IPCC_LANDUSE_TABLE) from gbf.aries.climate_regulation.input_tables,
 		(IPCC_CARBON_STOCK_VEGETATION_TABLE) from gbf.aries.climate_regulation.input_tables;
 
+
+//model 
+//'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2000',
+//'local:rubencc:im.data.global:im-data-global-conservation.global_nasa_forest_height_30m_2020'
+//	as im:Height of ecology:Vegetation earth:Region in m named vegetation_height;
+
 model type of nca.landuse.ipcc:LandUse
 observing
 	landcover:LandCoverType named landcover,
-	type of ecology:EcoFloristicRegion  named ecological_zone
-//	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone No need ti use layer inim.nca since we eventually kept
-	lookup (landcover, ecological_zone, ?) 
+//	type of ecology:EcoFloristicRegion  named ecological_zone 
+	type of nca.ecology.ipcc:EcologicalRegion named ecological_zone, //No need to use layer in im.nca // true but used in next steps, so reintroduced it 
+	im:Height of ecology:Forest earth:Region in m named forest_height//vegetation_height
+	lookup (landcover, ecological_zone, forest_height, ?) 
 	into IPCC_LANDUSE_TABLE; 
 
 model 'local:alessio.bulckaen:im.data.global:im-data-global-ecology_gez_2010_wgs840#gez_code'
@@ -52,7 +59,7 @@ model local:justus.muhando:im.data.global:im-data-global-ecology.global_jrc_ipcc
 //TODO:Verify IPCC_CARBON_STOCK_VEGETATION_TABLE columns structure - removed columns not used (all the * in the lookup should be removed)
 @intensive(space)
 @intensive(time)
-model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
+model nca.landuse.ipcc:YoungForest im:Yearly chemistry:Carbon im:Mass in t/ha named young_forest_carbon_stock
 	observing
 	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
 	landcover:LandCoverType 					named landcover,
@@ -60,5 +67,23 @@ model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbo
 	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
 	type of geography:ContinentalRegion			named continent,
 	nca.landuse.ipcc:ForestType 				named forest_type
-lookup (ipcc_landuse, landcover, * , ecological_zones, climate_zones, continent, forest_type,*,*,*,*,*, ?)
-	into IPCC_CARBON_STOCK_VEGETATION_TABLE;	
+lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, forest_type, *, ?)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE
+set to [(unknown ? 0 : self)];
+
+@documented(climateregulation.global)
+@intensive(space)
+@intensive(time)
+model ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
+	observing
+	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
+	landcover:LandCoverType 					named landcover,
+	type of nca.ecology.ipcc:EcologicalRegion 	named ecological_zones,
+	type of nca.ecology.ipcc:ClimaticZone 		named climate_zones,
+	type of geography:ContinentalRegion			named continent,
+	nca.landuse.ipcc:ForestType 				named forest_type,
+	nca.landuse.ipcc:YoungForest im:Yearly chemistry:Carbon im:Mass in t/ha named young_forest_carbon_stock
+lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, forest_type, ?, *)
+	into IPCC_CARBON_STOCK_VEGETATION_TABLE
+	set to [(young_forest_carbon_stock > 0 ? young_forest_carbon_stock : self)];
+
