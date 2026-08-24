@@ -1,0 +1,28 @@
+worldview im;
+
+@test(
+    name = "primary_forest_test_case",
+    description  = "",
+    // add to the list any concepts to be observed in the context below
+    observations = (
+    "gbf.aries.climate_regulation.ipcc_forest_type.tropical_humid_primary_forest_presence"
+    "im|un.gbf.aries/tests/primary_forest_test_case.primary_forest_data_non_semantic"
+    ),
+    // add assertions to check the observations after execution
+    assertions = ()
+)
+// change the concept to the one you want; use a URN optionally (in a separate test project including the resource)
+observe /* a:urn:to:use#objectid as */ earth:Region named primary_forest_test_case
+    // add any space and/or time extents: for example
+
+    over space(shape="EPSG:4326 POLYGON ((-59.69620628836989 0.1524165180694723, -92.02256828836988 0.1524165180694723, -92.02256828836988 16.71965173622071, -59.69620628836989 16.71965173622071, -59.69620628836989 0.1524165180694723))",
+    		     grid="3 km"),
+    	time(year=2020);
+
+//    over space(shape="EPSG:4326 POLYGON ((-69.4422605260837 2.660832031854625, -78.45890664199001 2.660832031854625, -78.45890664199001 7.3303650292509985, -69.4422605260837 7.3303650292509985, -69.4422605260837 2.660832031854625))",
+//    		   grid="3 km"),
+//    	time(year=2020);
+
+
+number local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001 as primary_forest_data_non_semantic;
+// add any models here
