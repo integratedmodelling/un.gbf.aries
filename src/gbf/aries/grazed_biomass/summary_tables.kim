@@ -12,7 +12,7 @@ define table grazing_biomass_demand_static as {
 define table grazing_biomass_supply_by_natural_ecosystem_typology_static as {
 	title: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes)",
 	label: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes)",
-	target: gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing_mass
+	target: gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing
 	columns:({ title:  "Supply", target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
