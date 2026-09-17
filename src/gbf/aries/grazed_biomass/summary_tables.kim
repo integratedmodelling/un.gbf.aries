@@ -20,7 +20,7 @@ define table grazing_biomass_use_by_natural_ecosystem_typology_static as {
 	title: "Potential use of dry matter for grazing by natural ecosystem type (tonnes/ha)",
 	label: "Potential use of dry matter for grazing by natural ecosystem type (tonnes/ha)",
 	target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass
-	columns:({ title:  "{classifier}", target: ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t, filter: landcover:LandCoverType}
+	columns:({ title:  "{classifier}", target: ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t, filter: landcover:LandCoverType}
 			 {title: "Total", summarize: sum, style: bold}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
@@ -46,11 +46,10 @@ define table grazing_biomass_demand_dynamic as {
 			 
 @var(timespan=(start end))	
 define table grazing_biomass_supply_by_natural_ecosystem_typology_dynamic as {
-	title: "Potential change in supply of dry matter for grazing by natural ecosystem type (tonnes/ha)",
-	label: "Potential change in supply of dry matter for grazing by natural ecosystem type (tonnes/ha)",
+	title: "Potential change in supply of dry matter for grazing by natural ecosystem type (tonnes)",
+	label: "Potential change in supply of dry matter for grazing by natural ecosystem type (tonnes)",
 	target: gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing
-	columns:({ title:  "{classifier}", target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t, filter: landcover:LandCoverType}
-			 {title: "Total", summarize: sum, style: bold}),
+	columns:({ title:  "Supply", target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
 	rows:   ({ name: initial_supply, title: "Opening supply ({init}) (tonnes)", filter: init, style: bold }
 			 { name: final_supply, title: "Closing supply ({end}) (tonnes)", filter: end, style: bold }
 			 { title: "Net change in supply (tonnes)", summarize: [final_supply - initial_supply], style: bold })
@@ -58,10 +57,10 @@ define table grazing_biomass_supply_by_natural_ecosystem_typology_dynamic as {
 
 @var(timespan=(start end))	
 define table grazing_biomass_use_by_natural_ecosystem_typology_dynamic as {
-	title: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes/ha)",
-	label: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes/ha)",
+	title: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes)",
+	label: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes)",
 	target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass
-	columns:({ title:  "{classifier}", target: ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity in t, filter: landcover:LandCoverType}
+	columns:({ title:  "{classifier}", target: ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t, filter: landcover:LandCoverType}
 			 {title: "Total", summarize: sum, style: bold})
 	rows:   ({ name: initial_use, title: "Opening use ({init}) (tonnes)", filter: init, style: bold }
 			 { name: final_use, title: "Closing use ({end}) (tonnes)", filter: end, style: bold }
