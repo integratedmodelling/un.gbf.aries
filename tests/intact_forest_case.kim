@@ -1,0 +1,43 @@
+worldview im;
+
+@test(
+    name = "intact_forest_case",
+    description  = "",
+    // add to the list any concepts to be observed in the context below
+    observations = (
+    "im|un.gbf.aries/tests/intact_forest_case.presence-of-forest-intact-region-resolver"
+//    "gbf.aries.climate_regulation.ipcc_forest_type.intact_forest_presence_2000"
+//    "gbf.aries.climate_regulation.ipcc_forest_type.tropical_humid_primary_forest_presence"
+	),
+    // add assertions to check the observations after execution
+    assertions = ()
+)
+// change the concept to the one you want; use a URN optionally (in a separate test project including the resource)
+observe /* a:urn:to:use#objectid as */ earth:Region named intact_forest_case
+    // add any space and/or time extents: for example
+    over space(shape="EPSG:4326 POLYGON ((-76.74502079583732 6.4742201182593675, -76.74642922109452 6.460011132270722, -76.75060037187332 6.446347813340779, -76.75737395318852 6.433755300485217, -76.76648966010882 6.4227176139722815, -76.77759718112942 6.413659039903337, -76.7902696604467 6.406927807853847, -76.80402010178729 6.40278269143991, -76.81832008340177 6.401383049310994, -76.83262006501629 6.40278269143991, -76.84637050635688 6.406927807853847, -76.85904298567415 6.413659039903337, -76.87015050669476 6.4227176139722815, -76.87926621361505 6.433755300485217, -76.88603979493026 6.446347813340779, -76.89021094570904 6.460011132270722, -76.89161937096624 6.4742201182593675, -76.89021094570904 6.488428704386067, -76.88603979493026 6.502090884605664, -76.87926621361505 6.5146816932611245, -76.87015050669476 6.5257173695334245, -76.85904298567415 6.53477393336226, -76.84637050635688 6.5415034612128835, -76.83262006501629 6.54564743891774, -76.81832008340177 6.54704668118525, -76.80402010178729 6.54564743891774, -76.7902696604467 6.5415034612128835, -76.77759718112942 6.53477393336226, -76.76648966010882 6.5257173695334245, -76.75737395318852 6.5146816932611245, -76.75060037187332 6.502090884605664, -76.74642922109452 6.488428704386067, -76.74502079583732 6.4742201182593675))", 
+    		   grid="20 m"),
+    time(year=2020);
+
+// add any models here
+
+model local:rubencc:im.data.global:im-data-global-conservation.global_intact_forest_landscapes_2000
+	as presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest
+	set to [self == 1 ? true : false];	 
+	  	
+model local:alessio.bulckaen:im.data.global:im-data-global-ecology.global_primary_humid_tropical_forests_epsg4326_30m_2001
+	as presence of ecology:Tropical conservation:Intact ecology:Forest earth:Region named tropical_primary_forest
+	set to [self == 1 ? true : false] 	// binary result: 1 or 0
+	over space(shape='EPSG:4326 POLYGON ((-161 -36, 180 -36, 180 33, -161 33, -161 -36))');
+
+@reliability(80)
+model presence of ecology:Tropical nca.landuse.ipcc:PrimaryForest earth:Region named tropical_humid_primary_forest_presence
+	set to [false];
+	
+model presence of conservation:Intact ecology:Forest earth:Region
+	observing
+		presence of im:Reference conservation:Intact ecology:Forest earth:Region named intact_forest,
+		presence of ecology:Tropical conservation:Intact ecology:Forest earth:Region named tropical_primary_forest
+	set to [intact_forest == true || tropical_primary_forest == true ? true : false  ];
+	
+number 5 as test;
