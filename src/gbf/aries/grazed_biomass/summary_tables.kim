@@ -10,11 +10,10 @@ define table grazing_biomass_demand_static as {
 	
 //TODO: Check the unit of the output, if possible generate results with extensive properties
 define table grazing_biomass_supply_by_natural_ecosystem_typology_static as {
-	title: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes/ha)",
-	label: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes/ha)",
-	target: gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing
-	columns:({ title:  "{classifier}", target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation ecology:PrimaryProductivity, filter: landcover:LandCoverType}
-			 {title: "Total", summarize: sum, style: bold}),
+	title: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes)",
+	label: "Potential supply of dry matter for grazing by natural ecosystem type (tonnes)",
+	target: gbf.aries.grazed_biomass.potential_natural_vegetation_supply_for_grazing_mass
+	columns:({ title:  "Supply", target: im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
 define table grazing_biomass_use_by_natural_ecosystem_typology_static as {
