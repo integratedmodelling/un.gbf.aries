@@ -19,8 +19,9 @@ define table grazing_biomass_supply_by_natural_ecosystem_typology_static as {
 define table grazing_biomass_use_by_natural_ecosystem_typology_static as {
 	title: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	label: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
-	target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass
-	columns:({ title:  "Use", target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass}),
+	target: landcover:LandCoverType
+	columns:({ title:  "Land cover type: {classifier}", target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass, filter: landcover:LandCoverType}
+			 { title: "Total", summarize: sum, style: bold}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
 //define table grazing_biomass_supply_by_natural_ecosystem_typology_dynamic as {

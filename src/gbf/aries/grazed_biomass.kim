@@ -345,11 +345,7 @@ observing
 /* MODELLING GRAZED BIOMASS USE */
 @documented(grazedbiomassprov.gbfgrazing)
 model ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t named estimated_use_of_natural_grazed_biomass
-observing
-	im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t named natural_vegetation_biomass_supply_for_grazing,
-	im:Yearly agriculture:Livestock biology.incubation:Intake in t named total_livestock_demand
-	set to [ (natural_vegetation_biomass_supply_for_grazing == unknown || total_livestock_demand == unknown) 
-			? 0 :
-			(natural_vegetation_biomass_supply_for_grazing > total_livestock_demand)
-			? total_livestock_demand : natural_vegetation_biomass_supply_for_grazing];
-
+	observing
+		im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t named natural_vegetation_biomass_supply_for_grazing,
+		im:Yearly agriculture:Livestock biology.incubation:Intake in t named total_livestock_demand
+	set to [ (nodata(natural_vegetation_biomass_supply_for_grazing) || nodata(total_livestock_demand)) ? 0 : ((natural_vegetation_biomass_supply_for_grazing > total_livestock_demand) ? total_livestock_demand : natural_vegetation_biomass_supply_for_grazing)];
