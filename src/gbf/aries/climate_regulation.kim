@@ -72,9 +72,8 @@ lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, 
 set to [(unknown ? 0 : self)];
 
 @documented(climateregulation.global)
-@extensive(space)
-@intensive(time)
-model ecology:Vegetation chemistry:Carbon im:Mass in t named vegetation_carbon_stock
+@intensive(space)
+model im:Reference ecology:Vegetation chemistry:Carbon im:Mass in t/ha named reference_vegetation_carbon_stock
 	observing
 	type of nca.landuse.ipcc:LandUse 			named ipcc_landuse,
 	landcover:LandCoverType 					named landcover,
@@ -85,7 +84,7 @@ model ecology:Vegetation chemistry:Carbon im:Mass in t named vegetation_carbon_s
 	nca.landuse.ipcc:YoungForest im:Yearly chemistry:Carbon im:Mass in t/ha named young_forest_carbon_stock
 lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, forest_type, ?, *)
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE
-	set to [(young_forest_carbon_stock*space.area*0.0001 > 0 ? young_forest_carbon_stock*space.area*0.0001 : self)];
+	set to [(young_forest_carbon_stock > 0 ? young_forest_carbon_stock : self)];
 
 
 //@extensive(space)	
@@ -94,3 +93,8 @@ lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, 
 //	observing 
 //		ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
 //	set to [vegetation_carbon_stock*space.area*0.0001];
+
+model ecology:Vegetation chemistry:Carbon im:Mass in t named vegetation_carbon_stock
+	observing
+		@intensive(space) im:Reference ecology:Vegetation chemistry:Carbon im:Mass in t/ha named reference_vegetation_carbon_stock
+	set to [reference_vegetation_carbon_stock * space.width * space.height * 0.0001];
