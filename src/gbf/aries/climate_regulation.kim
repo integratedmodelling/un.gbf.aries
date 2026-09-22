@@ -71,7 +71,7 @@ lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, 
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE
 set to [(unknown ? 0 : self)];
 
-@documented(climateregulation.global)
+
 @intensive(space)
 model im:Reference ecology:Vegetation chemistry:Carbon im:Mass in t/ha named reference_vegetation_carbon_stock
 	observing
@@ -93,7 +93,7 @@ lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, 
 //	observing 
 //		ecology:Vegetation chemistry:Carbon im:Mass in t/ha named vegetation_carbon_stock
 //	set to [vegetation_carbon_stock*space.area*0.0001];
-
+@documented(climateregulation.global)
 model ecology:Vegetation chemistry:Carbon im:Mass in t named vegetation_carbon_stock
 	observing
 		@intensive(space) im:Reference ecology:Vegetation chemistry:Carbon im:Mass in t/ha named reference_vegetation_carbon_stock
