@@ -20,7 +20,7 @@ define table grazing_biomass_use_by_natural_ecosystem_typology_static as {
 	title: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	label: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass
-	columns:({ title:  "Use", target: ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
+	columns:({ title:  "Use", target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
 //define table grazing_biomass_supply_by_natural_ecosystem_typology_dynamic as {
