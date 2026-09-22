@@ -11,7 +11,7 @@ define table vegetation_carbon_stock_statistics_static as {
 	label: "Vegetation carbon stock (tonnes) per forest type & land cover type"
 	target: gbf.aries.climate_regulation.vegetation_carbon_stock
 	columns:(
-		{ title: "Land Use Type: {classifier}", aggregation: sum, target: gbf.aries.climate_regulation.vegetation_carbon_stock, filter: nca.landuse.ipcc:LandUseType}
+		{ title: "Land Use Type: {classifier}", target: gbf.aries.climate_regulation.vegetation_carbon_stock, filter: nca.landuse.ipcc:LandUseType}
 //				{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
 		{ title: "Total vegetation carbon stock in {start} (tonnes)", summarize: sum, style: bold}
 	), 
@@ -20,6 +20,9 @@ define table vegetation_carbon_stock_statistics_static as {
 //		{ title: "Land Use Type: {classifier}", filter: nca.landuse.ipcc:LandUseType}
 		{ title: "Total vegetation carbon stock in {start} (tonnes)", summarize: sum, style: bold}
 	)};	
+	
+	/// aggregation: sum, potentially need to add
+
 /*
  * DYNAMIC VEGETATION CARBON STOCK REPORT
  * Groups carbon stock results by Land Use Type over time with Net Change calculations
