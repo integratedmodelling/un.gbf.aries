@@ -296,7 +296,7 @@ model im:Reference im:Age of ecology:Forest earth:Region in year named forest_ag
 		if ((ipcc_forest_type_2020 == nca.landuse.ipcc:PrimaryForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldPlantedForest) || (ipcc_forest_type_2020 == nca.landuse.ipcc:OldSecondaryForest)) {
 			ret = 30
 		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:YoungPlantedForest) {
-			if (planted_forest_age != null) {
+			if (!nodata(planted_forest_age)) {
 				ret = planted_forest_age
 			} else if (tropical_forest_type == 82) {
 				ret = 12
@@ -310,7 +310,7 @@ model im:Reference im:Age of ecology:Forest earth:Region in year named forest_ag
 				ret = 11
 			}
 		} else if (ipcc_forest_type_2020 == nca.landuse.ipcc:YoungSecondaryForest) {
-			if (boreal_forest_age != 999) {
+			if ((boreal_forest_age != 999) && !nodata(boreal_forest_age) && (boreal_forest_age < 20)) {
 				ret = boreal_forest_age
 			} else if (tropical_forest_type == 32) {
 				ret = 10

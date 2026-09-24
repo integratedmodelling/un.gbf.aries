@@ -70,7 +70,7 @@ model nca.landuse.ipcc:YoungForest im:Yearly chemistry:Carbon im:Mass in t/ha na
 	im:Age of ecology:Forest earth:Region in year named forest_age
 lookup (ipcc_landuse, landcover, *, ecological_zones, climate_zones, continent, forest_type, *, ?)
 	into IPCC_CARBON_STOCK_VEGETATION_TABLE
-set to [(!nodata(self) && (forest_age < 20)) ? (self * forest_age) : 0];
+set to [(!nodata(self) && (forest_age < 20)) ? (self * forest_age) : 0]; // add forest type ( forest_type = young secondary || forest type = young_plantation ) 
 
 @intensive(space)
 model im:Reference ecology:Vegetation chemistry:Carbon im:Mass in t/ha named reference_vegetation_carbon_stock
