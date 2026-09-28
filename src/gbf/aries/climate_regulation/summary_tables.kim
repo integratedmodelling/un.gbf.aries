@@ -6,12 +6,12 @@ project private namespace gbf.aries.climate_regulation.summary_tables
 /*
  * The account table for vegetation carbon stock.
  */
-define table vegetation_carbon_stock_statistics_static as {
+define table not_working_vegetation_carbon_stock_statistics_static as {
 	title: "Vegetation carbon account - Vegetation carbon stock (tonnes)"
 	label: "Vegetation carbon stock (tonnes) per forest type & land cover type"
 	target: gbf.aries.climate_regulation.vegetation_carbon_stock
 	columns:(
-		{ title: "Land Use Type: {classifier}", target: gbf.aries.climate_regulation.vegetation_carbon_stock, filter: nca.landuse.ipcc:LandUseType}
+		{ title: "Land Use Type: {classifier}", target: gbf.aries.climate_regulation.vegetation_carbon_stock, filter: type of nca.landuse.ipcc:LandUse}
 //				{ title: "Forest Type: {classifier}", filter: nca.landuse.ipcc:ForestType}
 		{ title: "Total vegetation carbon stock in {start} (tonnes)", summarize: sum, style: bold}
 	), 
@@ -22,6 +22,13 @@ define table vegetation_carbon_stock_statistics_static as {
 	)};	
 	
 	/// aggregation: sum, potentially need to add
+	
+define table vegetation_carbon_stock_statistics_static as {
+	title: "Total vegetation carbon (tonnes)",
+	label: "Total vegetation carbon (tonnes)",
+	target: gbf.aries.climate_regulation.vegetation_carbon_stock
+	columns:({ title:  "Total", target: ecology:Vegetation chemistry:Carbon im:Mass in t}),
+	rows:   ({ title: "Vegetation carbon {start} (tonnes)" })};
 
 /*
  * DYNAMIC VEGETATION CARBON STOCK REPORT
