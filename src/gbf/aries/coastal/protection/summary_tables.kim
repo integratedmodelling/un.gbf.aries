@@ -16,7 +16,7 @@ define table cp_demand_endangered_people_table_static as {
 //			{	title: "Sum", 
 //				summarize: sum, style: bold
 //			}
-			{	title: "Total (not sum)", 
+			{	title: "Total", 
 //				summarize: sum, style: bold
 				target: count of (demography:HumanIndividual with risk:Exposure)
 			}
@@ -38,10 +38,10 @@ define table cp_supply_protected_people_table_static as {
 				filter: es.coastalprotection:ProtectiveHabitatType
 
 			}
-			{	title: "Sum", 
-				summarize: sum, style: bold
-			}
-			{	title: "Total (not sum)", 
+//			{	title: "Sum", 
+//				summarize: sum, style: bold
+//			}
+			{	title: "Total", 
 //				summarize: sum, style: bold
 				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
 			}
@@ -555,9 +555,9 @@ define table cp_demand_endangered_people_table_precomputed_static as {
 //			{	title: "Sum", 
 //				summarize: sum, style: bold
 //			}
-			{	title: "Total (not sum)", 
+			{	title: "Total", 
 //				summarize: sum, style: bold
-				target: count of (demography:HumanIndividual with risk:Exposure)
+				target: gbf.aries.coastal.protection.exposurevulnerability.cp_demand_precomputed
 			}
 			)
 	rows:   ({	title: "{classifier}",  
@@ -573,14 +573,14 @@ define table cp_supply_protected_people_table_precomputed_static as {
 	label: "Coastal Protection Supply (number of people)",
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
-				target: im:Conformant count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual ,
+				target: gbf.aries.coastal.protection.exposurevulnerability.cp_supply_protected_people_precomputed,
 				filter: es.coastalprotection:ProtectiveHabitatType
 
 			}
-			{	title: "Sum", 
-				summarize: sum, style: bold
-			}
-			{	title: "Total (not sum)", 
+//			{	title: "Sum", 
+//				summarize: sum, style: bold
+//			}
+			{	title: "Total", 
 //				summarize: sum, style: bold
 				target: im:Conformant count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
 			}
@@ -597,7 +597,7 @@ define table cp_supply_hazard_reduction_table_precomputed_static as {
 	label: "Coastal Protection Supply (delta hazard)",
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "All",
-				target: im:Conformant value of im:Maximum im:Differential risk:HazardMetric earth:Coast
+				target: gbf.aries.coastal.protection.exposurevulnerability.combined_delta_precomputed
 			}
 			)
 	rows:   ({	title: "{classifier}",  
@@ -613,8 +613,12 @@ define table cp_supply_cpi_table_precomputed_static as {
 	label: "Coastal Protection Supply (number of people)",
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
-				target: im:Conformant es.coastalprotection:CoastalProtectionIndex of earth:Coast,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				target: gbf.aries.coastal.protection.exposurevulnerability.cp_supply_cpi_aggregated_precomputed,
+				filter: es.coastalprotection:ProtectiveHabitatType, 
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 			}
 			{	title: "Sum", 
 				summarize: sum, style: bold
@@ -644,7 +648,7 @@ define table cp_demand_endangered_people_table_precomputed_dynamic as {
 //				style: bold
 //			}
 			{	title: "Total Landscape Exposure", 
-				target: im:Conformant count of (demography:HumanIndividual with risk:Exposure)
+				target: gbf.aries.coastal.protection.exposurevulnerability.cp_demand_precomputed
 			}
 			)
 			
@@ -743,7 +747,7 @@ define table cp_supply_protected_people_table_precomputed_dynamic as {
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	
 	columns:({ 	title:  "{classifier}",
-				target:  im:Conformant count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual,
+				target:  gbf.aries.coastal.protection.exposurevulnerability.cp_supply_protected_people_precomputed,
 				filter: es.coastalprotection:ProtectiveHabitatType
 			}
 //			{	title: "Sum (Habitats)", 
@@ -751,7 +755,7 @@ define table cp_supply_protected_people_table_precomputed_dynamic as {
 //				style: bold
 //			}
 			{	title: "Total Landscape Protection", 
-				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual
+				target: gbf.aries.coastal.protection.exposurevulnerability.cp_supply_protected_people_precomputed
 			}
 			)
 			
@@ -850,7 +854,7 @@ define table cp_supply_hazard_reduction_table_precomputed_dynamic as {
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	
 	columns:({ 	title:  "{classifier}",
-				target: im:Conformant value of im:Maximum im:Differential risk:HazardMetric earth:Coast,
+				target: gbf.aries.coastal.protection.exposurevulnerability.combined_delta_precomputed,
 				filter: es.coastalprotection:ProtectiveHabitatType
 			}
 			{	title: "Sum", 
@@ -954,7 +958,7 @@ define table cp_supply_cpi_table_precomputed_dynamic as {
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	
 	columns:({ 	title:  "{classifier}",
-				target: im:Conformant es.coastalprotection:CoastalProtectionIndex of earth:Coast,
+				target: gbf.aries.coastal.protection.exposurevulnerability.cp_supply_cpi_aggregated_precomputed,
 				filter: es.coastalprotection:ProtectiveHabitatType
 			}
 			{	title: "Sum", 
