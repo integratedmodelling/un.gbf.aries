@@ -35,7 +35,11 @@ define table cp_supply_protected_people_table_static as {
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
 				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual ,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				filter: es.coastalprotection:ProtectiveHabitatType,
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 
 			}
 //			{	title: "Sum", 
@@ -219,7 +223,11 @@ define table cp_supply_protected_people_table_dynamic as {
 	
 	columns:({ 	title:  "{classifier}",
 				target: count of es.coastalprotection:CoastalProtectionBeneficiary demography:HumanIndividual,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				filter: es.coastalprotection:ProtectiveHabitatType,
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 			}
 //			{	title: "Sum (Habitats)", 
 //				summarize: sum, 
@@ -574,7 +582,11 @@ define table cp_supply_protected_people_table_precomputed_static as {
 	target: es.coastalprotection:GlobalVulnerabilityMetric
 	columns:({ 	title:  "{classifier}",
 				target: gbf.aries.coastal.protection.exposurevulnerability.cp_supply_protected_people_precomputed,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				filter: es.coastalprotection:ProtectiveHabitatType,
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 
 			}
 //			{	title: "Sum", 
@@ -748,7 +760,11 @@ define table cp_supply_protected_people_table_precomputed_dynamic as {
 	
 	columns:({ 	title:  "{classifier}",
 				target:  gbf.aries.coastal.protection.exposurevulnerability.cp_supply_protected_people_precomputed,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				filter: es.coastalprotection:ProtectiveHabitatType,
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 			}
 //			{	title: "Sum (Habitats)", 
 //				summarize: sum, 
@@ -855,7 +871,11 @@ define table cp_supply_hazard_reduction_table_precomputed_dynamic as {
 	
 	columns:({ 	title:  "{classifier}",
 				target: gbf.aries.coastal.protection.exposurevulnerability.combined_delta_precomputed,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				filter: es.coastalprotection:ProtectiveHabitatType,
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 			}
 			{	title: "Sum", 
 				summarize: sum, style: bold
@@ -959,7 +979,11 @@ define table cp_supply_cpi_table_precomputed_dynamic as {
 	
 	columns:({ 	title:  "{classifier}",
 				target: gbf.aries.coastal.protection.exposurevulnerability.cp_supply_cpi_aggregated_precomputed,
-				filter: es.coastalprotection:ProtectiveHabitatType
+				filter: es.coastalprotection:ProtectiveHabitatType,
+				keep: (	es.coastalprotection:Mangrove,
+						es.coastalprotection:SaltMarsh,
+		 				es.coastalprotection:CoralReef,
+		 				es.coastalprotection:SeaGrass)
 			}
 			{	title: "Sum", 
 				summarize: sum, style: bold
