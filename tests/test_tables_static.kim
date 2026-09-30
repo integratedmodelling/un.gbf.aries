@@ -6,7 +6,7 @@ worldview im;
     // add to the list any concepts to be observed in the context below
     observations = (
  	"gbf.aries.climate_regulation.summary_tables.vegetation_carbon_stock_statistics_static"
-    "gbf.aries.grazed_biomass.summary_tables.grazing_biomass_use_static "
+    "gbf.aries.grazed_biomass.summary_tables.grazing_biomass_use_static"
     ),
     // add assertions to check the observations after execution
     assertions = ()
