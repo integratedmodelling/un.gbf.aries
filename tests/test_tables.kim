@@ -1,0 +1,22 @@
+worldview im;
+
+@test(
+    name = "test_tables_dynamic",
+    description  = "",
+    // add to the list any concepts to be observed in the context below
+    observations = (
+    "gbf.aries.climate_regulation.summary_tables.vegetation_carbon_stock_statistics_dynamic"
+    "gbf.aries.grazed_biomass.summary_tables.grazing_biomass_use_by_natural_ecosystem_typology_dynamic"
+    ),
+    // add assertions to check the observations after execution
+    assertions = ()
+)
+// change the concept to the one you want; use a URN optionally (in a separate test project including the resource)
+observe /* a:urn:to:use#objectid as */ earth:Region named test_tables
+    // add any space and/or time extents: for example
+    over space(shape="EPSG:4326 POLYGON ((32.42635892743744 1.5461304129762539, 33.003280901445734 1.5444587835320505, 33.009969851869016 1.1298576956858, 32.421342214619976 1.131529607680946, 32.42635892743744 1.5461304129762539))",
+    grid="150 m"),
+    time(start=2020, end=2021, step=1.year)
+;
+
+// add any models here

@@ -343,7 +343,7 @@ observing
 	set to [yearly_dairy_cattle_nutrient_intake + yearly_beef_cattle_nutrient_intake + yearly_goat_nutrient_intake + yearly_sheep_nutrient_intake + yearly_horse_nutrient_intake];
 
 /* MODELLING GRAZED BIOMASS USE */
-@documented(grazedbiomassprov.gbfgrazing)
+//@documented(grazedbiomassprov.gbfgrazing)
 model ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t named estimated_use_of_natural_grazed_biomass
 	observing
 		im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t named natural_vegetation_biomass_supply_for_grazing,

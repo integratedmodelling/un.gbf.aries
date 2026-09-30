@@ -6,7 +6,7 @@ model
 	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic,
 	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2021_mosaic,
 	local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2022_mosaic
-	as landcover:LandCoverType named glc_fcs30 classified according to im:glc-fcs30-enconding;
+	as landcover:LandCoverType named glc_fcs30 classified according to im:glc-fcs30-encoding;
 
 model each earth:WaterBody 
     observing landcover:LandCoverType named landcover_type
