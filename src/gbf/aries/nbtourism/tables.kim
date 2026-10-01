@@ -6,7 +6,7 @@ define HEMEROBY_TABLE as {{
 	-----------------------------------------------------------------
 	landcover:ArtificialSurface                     |  7,
 	landcover:Vineyard                              |  4,
-	landcover:FruitAndBerryPlantation               |  5, 
+	landcover:FruitBerryPlantation               |  5, 
 	landcover:OliveGrove                            |  4,
 	landcover:RiceField                             |  4.5,
     landcover:AgriculturalLandWithNaturalVegetation |  4.5,
