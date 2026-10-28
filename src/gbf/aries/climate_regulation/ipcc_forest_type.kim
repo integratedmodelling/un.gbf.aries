@@ -246,7 +246,8 @@ model presence of nca.landuse.ipcc:PerennialCropland earth:Region named perennia
  */		
 model local:alessio.bulckaen:im.data.global:im-data-global-landcover.global_glc_fcs30d_landcover_epsg4326_30m_2020_mosaic
 	as im:Reference landcover:LandCoverType named landcover_2020 
-	classified according to im:glc-fcs30-enconding;
+	classified according to im:glc-fcs30-encoding;
+
 	
 model im:Reference type of nca.landuse.ipcc:LandUse named landuse_2020
 	observing
