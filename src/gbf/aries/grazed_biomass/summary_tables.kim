@@ -27,7 +27,7 @@ define table grazing_biomass_use_static as {
 	title: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	label: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	target: landcover:LandCoverType
-	columns:({ title:  "Total", target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass}),
+	columns:({ title:  "Total", target: im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
 //define table grazing_biomass_supply_by_natural_ecosystem_typology_dynamic as {
@@ -61,20 +61,36 @@ define table grazing_biomass_supply_dynamic as {
 			 { title: "Net change in supply (tonnes)", summarize: [final_supply - initial_supply], style: bold })
 			 };
 
-@var(timespan=(start end))	
+//@var(timespan=(start end))	
+//define table grazing_biomass_use_dynamic as {
+//	title: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes)",
+//	label: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes)",
+//	target: landcover:LandCoverType
+//	columns:({ title:  "Total use", target:  im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
+//	//		 {title: "Total", summarize: sum, style: bold})
+//	rows:   ({ name: initial_use, title: "Opening use ({init}) (tonnes)", filter: init, style: bold }
+//			 { name: final_use, title: "Closing use ({end}) (tonnes)", filter: end, style: bold }
+//			 { title: "Net change in use (tonnes)", summarize: [final_use - initial_use], style: bold }
+//			 )};
+
+@var(timespan=(init end)) 
 define table grazing_biomass_use_dynamic as {
-	title: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes)",
-	label: "Potential change in use of dry matter for grazing by natural ecosystem type (tonnes)",
-	target: landcover:LandCoverType
-	columns:({ title:  "Total use", target: gbf.aries.grazed_biomass.estimated_use_of_natural_grazed_biomass}),
-	//		 {title: "Total", summarize: sum, style: bold})
-	rows:   ({ name: initial_use, title: "Opening use ({init}) (tonnes)", filter: init, style: bold }
-			 { name: final_use, title: "Closing use ({end}) (tonnes)", filter: end, style: bold }
-			 { title: "Net change in use (tonnes)", summarize: [final_use - initial_use], style: bold }
-			 )};
-
-
-
+	name: "Potential change in use of dry matter"
+	title: "Potential change in use of dry matter",
+	label: "Potential change in use of dry matter",
+	target: im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t
+	observables: landcover:LandCoverType	 
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, 
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: landcover:LandCoverType	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
+};
 
 	
 // WE ARE ONLY LOOKING AT NATURAL
