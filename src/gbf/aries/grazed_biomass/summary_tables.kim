@@ -23,11 +23,11 @@ define table grazing_biomass_supply_static as {
 //	columns:({ title:  "Total", target: ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
 //	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
-define table grazing_biomass_use_static as {
+define table grazing_biomass_use_static3  as {
 	title: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	label: "Potential use of dry matter for grazing by natural ecosystem type (tonnes)",
 	target: landcover:LandCoverType
-	columns:({ title:  "Total", target: im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
+	columns:({ title:  "Total", target: ses:UseFlow  im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t}),
 	rows:   ({ title: "Dry Matter {start} (tonnes)" })};
 
 //define table grazing_biomass_supply_by_natural_ecosystem_typology_dynamic as {
