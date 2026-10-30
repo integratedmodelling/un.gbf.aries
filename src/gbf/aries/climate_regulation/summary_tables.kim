@@ -7,35 +7,78 @@ project private namespace gbf.aries.climate_regulation.summary_tables
  * The account table for vegetation carbon stock.
  */ 
 
-/// Basic table that works, but just gives the total value:
-define table vegetation_carbon_stock_statistics_static as {
-	title: "Total vegetation carbon (tonnes)",
-	label: "Total vegetation carbon (tonnes)",
+
+@var(timespan=(start end)) 
+define table landuse_vegetation_carbon_stock as {
+	name: "Total vegetation carbon (tonnes) by IPCC Land Use Type"
+	title: "Total vegetation carbon (tonnes)by IPCC Land Use Type",
+	label: "Total vegetation carbon (tonnes)by IPCC Land Use Type",
 	target: ecology:Vegetation chemistry:Carbon im:Mass in t
-	columns:({ title:  "Total", target: ecology:Vegetation chemistry:Carbon im:Mass in t}),
-	rows:   ({ title: "Vegetation carbon {start} (tonnes)" })};
- 
-/// Table of just forest type breakdown 
+	observables: type of nca.landuse.ipcc:LandUse	 
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, 
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: type of nca.landuse.ipcc:LandUse	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
+}; 
 
-define table forest_vegetation_carbon_stock_statistics_static as {
-	title: "Forest vegetation carbon (tonnes) by forest type",
-	label: "Forest vegetation carbon (tonnes)",
-	target: gbf.aries.climate_regulation.vegetation_carbon_stock
-	columns: ({ title: "{classifier}", target: ecology:Vegetation chemistry:Carbon im:Mass in t, filter: nca.landuse.ipcc:ForestType, aggregation: sum}
-			  { title: "Total", summarize: sum, style: bold
-	}),
-	rows: { title: "Forest vegetation carbon {start} (tonnes)" } 
+
+@var(timespan=(start end)) 
+define table forest_vegetation_carbon_stock as {
+	name: "Total vegetation carbon (tonnes) by Forest Type"
+	title: "Total vegetation carbon (tonnes)by Forest Type",
+	label: "Total vegetation carbon (tonnes)by Forest Type",
+	target: ecology:Vegetation chemistry:Carbon im:Mass in t
+	observables: nca.landuse.ipcc:ForestType	 
+	when: end
+	use: tables.compiler.summarize(contabilize-nulls = true, 
+		rowsummary = { filter: "change" title: "Net change"}, 
+		colsummary=  { filter: "total", title: "Total" }, 
+		rows =       { filter: %timespan% }, 
+		columns =    { filter: nca.landuse.ipcc:ForestType	 }, 
+		//statistic =  "", default should be the sum
+		empty='', 
+		no-data = ''
+	)
 };
 
-define table landuse_vegetation_carbon_stock_statistics_static as {
-	title: "Vegetation carbon (tonnes) by landuse type",
-	label: "Vegetation carbon (tonnes)",
-	target: gbf.aries.climate_regulation.vegetation_carbon_stock
-	columns: ({ title: "{classifier}", target: ecology:Vegetation chemistry:Carbon im:Mass in t, filter: type of nca.landuse.ipcc:LandUse, aggregation: sum}
-			  { title: "Total", summarize: sum, style: bold
-	}),
-	rows: { title: "Forest vegetation carbon {start} (tonnes)" } 
-};
+
+
+
+/// Basic table that works, but just gives the total value:
+//define table vegetation_carbon_stock_statistics_static as {
+//	title: "Total vegetation carbon (tonnes)",
+//	label: "Total vegetation carbon (tonnes)",
+//	target: ecology:Vegetation chemistry:Carbon im:Mass in t
+//	columns:({ title:  "Total", target: ecology:Vegetation chemistry:Carbon im:Mass in t}),
+//	rows:   ({ title: "Vegetation carbon {start} (tonnes)" })};
+// 
+///// Table of just forest type breakdown 
+//
+//define table forest_vegetation_carbon_stock_statistics_static as {
+//	title: "Forest vegetation carbon (tonnes) by forest type",
+//	label: "Forest vegetation carbon (tonnes)",
+//	target: gbf.aries.climate_regulation.vegetation_carbon_stock
+//	columns: ({ title: "{classifier}", target: ecology:Vegetation chemistry:Carbon im:Mass in t, filter: nca.landuse.ipcc:ForestType, aggregation: sum}
+//			  { title: "Total", summarize: sum, style: bold
+//	}),
+//	rows: { title: "Forest vegetation carbon {start} (tonnes)" } 
+//};
+//
+//define table landuse_vegetation_carbon_stock_statistics_static as {
+//	title: "Vegetation carbon (tonnes) by landuse type",
+//	label: "Vegetation carbon (tonnes)",
+//	target: gbf.aries.climate_regulation.vegetation_carbon_stock
+//	columns: ({ title: "{classifier}", target: ecology:Vegetation chemistry:Carbon im:Mass in t, filter: type of nca.landuse.ipcc:LandUse, aggregation: sum}
+//			  { title: "Total", summarize: sum, style: bold
+//	}),
+//	rows: { title: "Forest vegetation carbon {start} (tonnes)" } 
+//};
  
   
  
@@ -67,138 +110,138 @@ define table landuse_vegetation_carbon_stock_statistics_static as {
  * DYNAMIC VEGETATION CARBON STOCK REPORT
  * Groups carbon stock results by Land Use Type over time with Net Change calculations
  */
-@var(timespan=(start end))
-define table vegetation_carbon_stock_statistics_dynamic as {
-	title: "Vegetation carbon account - Vegetation carbon stock (tonnes)"
-	label: "Vegetation carbon stock (tonnes) per forest type & land cover type"
-	target: type of nca.landuse.ipcc:LandUse
-	
-	columns:(
-		{ title: "Forest Type: {classifier}", 
-			aggregation: sum,
-			target: gbf.aries.climate_regulation.vegetation_carbon_stock,
-			filter: nca.landuse.ipcc:ForestType
-		}
-		{ title: "Total vegetation carbon stock (tonnes)", 
-//			summarize: sum, 
-			style: bold
-		}
-	)
-	
-	rows:   (
-			// --- OPENING STOCK (evaluated at start year) ---
-			{	title: "#Opening Stock ({init})", 
-				separator: true 
-			}
-			{	title: "##Forest land", 
-				name: forest_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:ForestLand
-			}
-			{	title: "##Grassland", 
-				name: grassland_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:Grassland
-			}
-			{	title: "##Cropland", 
-				name: cropland_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:Cropland
-			}
-			{	title: "##Wetland", 
-				name: wetland_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:Wetland
-			}
-			{	title: "##Settlement", 
-				name: settlement_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:Settlement
-			}
-			{	title: "##Other land", 
-				name: otherland_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:OtherLand
-			}
-			{	title: "##Water body", 
-				name: waterbody_open,
-				filter: (type of nca.landuse.ipcc:LandUse, init),
-				keep: nca.landuse.ipcc:WaterBody
-			}
-			empty
-			
-			// --- CLOSING STOCK (evaluated at end year) ---
-			{	title: "#Closing Stock ({end})", 
-				separator: true 
-			}
-			{	title: "##Forest land", 
-				name: forest_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:ForestLand
-			}
-			{	title: "##Grassland", 
-				name: grassland_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:Grassland
-			}
-			{	title: "##Cropland", 
-				name: cropland_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:Cropland
-			}
-			{	title: "##Wetland", 
-				name: wetland_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:Wetland
-			}
-			{	title: "##Settlement", 
-				name: settlement_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:Settlement
-			}
-			{	title: "##Other land", 
-				name: otherland_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:OtherLand
-			}
-			{	title: "##Water body", 
-				name: waterbody_close,
-				filter: (type of nca.landuse.ipcc:LandUse, end),
-				keep: nca.landuse.ipcc:WaterBody
-			}
-			empty
-			
-			// --- NET CHANGE (Closing - Opening) ---
-			{	title: "#Net Change in Stock", 
-				separator: true 
-			}
-			{	title: "##Net Change Forest Land", 
-				summarize: [forest_close - forest_open], 
-				style: bold
-			}
-			{	title: "##Net Change Grassland", 
-				summarize: [grassland_close - grassland_open], 
-				style: bold
-			}
-			{	title: "##Net Change Cropland", 
-				summarize: [cropland_close - cropland_open], 
-				style: bold
-			}
-			{	title: "##Net Change Wetland", 
-				summarize: [wetland_close - wetland_open], 
-				style: bold
-			}
-			{	title: "##Net Change Settlement", 
-				summarize: [settlement_close - settlement_open], 
-				style: bold
-			}
-			{	title: "##Net Change Other Land", 
-				summarize: [otherland_close - otherland_open], 
-				style: bold
-			}
-			{	title: "##Net Change Water Body", 
-				summarize: [waterbody_close - waterbody_open], 
-				style: bold
-			}
-			)
-	};
+//@var(timespan=(start end))
+//define table vegetation_carbon_stock_statistics_dynamic as {
+//	title: "Vegetation carbon account - Vegetation carbon stock (tonnes)"
+//	label: "Vegetation carbon stock (tonnes) per forest type & land cover type"
+//	target: type of nca.landuse.ipcc:LandUse
+//	
+//	columns:(
+//		{ title: "Forest Type: {classifier}", 
+//			aggregation: sum,
+//			target: gbf.aries.climate_regulation.vegetation_carbon_stock,
+//			filter: nca.landuse.ipcc:ForestType
+//		}
+//		{ title: "Total vegetation carbon stock (tonnes)", 
+////			summarize: sum, 
+//			style: bold
+//		}
+//	)
+//	
+//	rows:   (
+//			// --- OPENING STOCK (evaluated at start year) ---
+//			{	title: "#Opening Stock ({init})", 
+//				separator: true 
+//			}
+//			{	title: "##Forest land", 
+//				name: forest_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:ForestLand
+//			}
+//			{	title: "##Grassland", 
+//				name: grassland_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:Grassland
+//			}
+//			{	title: "##Cropland", 
+//				name: cropland_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:Cropland
+//			}
+//			{	title: "##Wetland", 
+//				name: wetland_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:Wetland
+//			}
+//			{	title: "##Settlement", 
+//				name: settlement_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:Settlement
+//			}
+//			{	title: "##Other land", 
+//				name: otherland_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:OtherLand
+//			}
+//			{	title: "##Water body", 
+//				name: waterbody_open,
+//				filter: (type of nca.landuse.ipcc:LandUse, init),
+//				keep: nca.landuse.ipcc:WaterBody
+//			}
+//			empty
+//			
+//			// --- CLOSING STOCK (evaluated at end year) ---
+//			{	title: "#Closing Stock ({end})", 
+//				separator: true 
+//			}
+//			{	title: "##Forest land", 
+//				name: forest_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:ForestLand
+//			}
+//			{	title: "##Grassland", 
+//				name: grassland_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:Grassland
+//			}
+//			{	title: "##Cropland", 
+//				name: cropland_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:Cropland
+//			}
+//			{	title: "##Wetland", 
+//				name: wetland_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:Wetland
+//			}
+//			{	title: "##Settlement", 
+//				name: settlement_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:Settlement
+//			}
+//			{	title: "##Other land", 
+//				name: otherland_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:OtherLand
+//			}
+//			{	title: "##Water body", 
+//				name: waterbody_close,
+//				filter: (type of nca.landuse.ipcc:LandUse, end),
+//				keep: nca.landuse.ipcc:WaterBody
+//			}
+//			empty
+//			
+//			// --- NET CHANGE (Closing - Opening) ---
+//			{	title: "#Net Change in Stock", 
+//				separator: true 
+//			}
+//			{	title: "##Net Change Forest Land", 
+//				summarize: [forest_close - forest_open], 
+//				style: bold
+//			}
+//			{	title: "##Net Change Grassland", 
+//				summarize: [grassland_close - grassland_open], 
+//				style: bold
+//			}
+//			{	title: "##Net Change Cropland", 
+//				summarize: [cropland_close - cropland_open], 
+//				style: bold
+//			}
+//			{	title: "##Net Change Wetland", 
+//				summarize: [wetland_close - wetland_open], 
+//				style: bold
+//			}
+//			{	title: "##Net Change Settlement", 
+//				summarize: [settlement_close - settlement_open], 
+//				style: bold
+//			}
+//			{	title: "##Net Change Other Land", 
+//				summarize: [otherland_close - otherland_open], 
+//				style: bold
+//			}
+//			{	title: "##Net Change Water Body", 
+//				summarize: [waterbody_close - waterbody_open], 
+//				style: bold
+//			}
+//			)
+//	};
