@@ -125,7 +125,7 @@ define table nature_based_tourism as {
 	label: "Tourism Physical Supply (Visitors) Change Summary",
 	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
 	observables: landcover:LandCoverType	 
-	when: end
+	when: start
 	use: tables.compiler.summarize(contabilize-nulls = true, 
 		rowsummary = { filter: "change" title: "Net change"}, 
 		colsummary=  { filter: "total", title: "Total" }, 
