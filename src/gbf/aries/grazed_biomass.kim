@@ -1,4 +1,4 @@
-private namespace gbf.aries.grazed_biomass
+project private namespace gbf.aries.grazed_biomass
 	using
 		(ADJUSTED_GPP_TABLE, 
 		VEGETATION_SUITABLE_FOR_PASTURE, 
@@ -344,7 +344,7 @@ observing
 
 /* MODELLING GRAZED BIOMASS USE */
 //@documented(grazedbiomassprov.gbfgrazing)
-model ses:UseFlow im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t  //named estimated_use_of_natural_grazed_biomass
+model im:Natural agriculture:Pasture ecology:Vegetation ecology:Biomass in t  named estimated_use_of_natural_grazed_biomass
 	observing
 		im:Potential im:Natural agriculture:Pasture ecology:Vegetation im:Mass in t named natural_vegetation_biomass_supply_for_grazing,
 		im:Yearly agriculture:Livestock biology.incubation:Intake in t named total_livestock_demand
