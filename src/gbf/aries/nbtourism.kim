@@ -106,20 +106,20 @@ model count of im:Realized behavior:Outdoor behavior.incubation:Inbound behavior
 /*This model should run at country scale, otherwise use the one in gbf.aries.nbtourism.reference */
 
  //Simplest, basic, static account per landcover type
-define table visitors_static as {
-	title: "Visitors by land cover type in given year",
-	label: "Visitors by land cover",
-	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
-	columns: ({ title: "{classifier}", target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity, filter: landcover:LandCoverType, aggregation: sum }
-			  { title: "Total", summarize: sum, style: bold
-	}),
-	rows: { title: "Visitors {start}" } 
-};
+//define table visitors_static as {
+//	title: "Visitors by land cover type in given year",
+//	label: "Visitors by land cover",
+//	target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity 
+//	columns: ({ title: "{classifier}", target: im:Realized behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity, filter: landcover:LandCoverType, aggregation: sum }
+//			  { title: "Total", summarize: sum, style: bold
+//	}),
+//	rows: { title: "Visitors {start}" } 
+//};
 
 
 //tabular output for dynamic context but needs fix to issue #114 
-@var(timespan=(init end)) 
-define table visitors_dynamic as {
+@var(timespan=(start end)) 
+define table nature_based_tourism as {
 	name: "tourism_biophysical"
 	title: "Tourism Physical Supply (Visitors)",
 	label: "Tourism Physical Supply (Visitors) Change Summary",
