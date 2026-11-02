@@ -8,16 +8,17 @@ project private namespace gbf.aries.nbtourism.reference;
 model local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2020_v2,  
 	  local:rubencc:un.gbf.aries:im-data-global-conservation.global_gbfb1_nature_based_tourism_epsg4326_1km_2022_v1 
 	 as 
-	  count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2;    
+	  im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
+	  set to [self * space.area / 1000000]; //rescales the extensive value (1km) at current resolution    
  
 @var(timespan=(start end)) 
-define table nature_based_tourism as {
+define table reference_nature_based_tourism as {
 	name: "tourism_biophysical"
-	title: "Tourism Physical Supply (Visitors)",
+	title: "Tourism Physical Supply (Visitors) pre-computed from global results at 1km (2020-2022)",
 	label: "Tourism Physical Supply (Visitors) Change Summary",
-	target: count of im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor demography:HumanIndividual per km^2
+	target: im:Reference behavior:Outdoor behavior.incubation:Inbound behavior.incubation:OvernightVisitor im:Numerosity
 	observables: landcover:LandCoverType	 
-	when: start
+	when: end
 	use: tables.compiler.summarize(contabilize-nulls = true, 
 		rowsummary = { filter: "change" title: "Net change"}, 
 		colsummary=  { filter: "total", title: "Total" }, 
